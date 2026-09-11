@@ -298,7 +298,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-blue-700 text-base">insights</span>
                 <span class="font-bold">Key Operational Finding:</span>
-                <span class="text-blue-900">Completion delay is the dominant anomaly signal (52.7%), followed by spatial clustering (33.6%) and cost outliers (27.5%).</span>
+                <span class="text-blue-900"><span id="overview-finding-text">Completion delay is the dominant anomaly signal (52.7%), followed by spatial clustering (33.6%) and cost outliers (27.5%).</span></span>
             </div>
             <div class="flex items-center gap-3 font-mono text-[11px] text-blue-800">
                 <span>13.6% of analyzed works require review</span>
@@ -430,7 +430,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="font-mono text-[9px] font-bold text-red-800 bg-red-100/80 px-1.5 py-0.2 rounded">z ≥ 3.5</span>
                             </div>
                             <p id="sev-critical-count" class="text-xl font-black font-mono text-red-700 leading-tight mt-1">1,137</p>
-                            <p class="text-[9.5px] text-red-800 mt-0.5">4.9% of flagged works</p>
+                            <p id="sev-critical-pct" class="text-[9.5px] text-red-800 mt-0.5">4.9% of flagged works</p>
                         </div>
 
                         <div class="p-2.5 rounded-lg bg-orange-50/70 border border-orange-200">
@@ -439,7 +439,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="font-mono text-[9px] font-bold text-orange-800 bg-orange-100/80 px-1.5 py-0.2 rounded">≥ 2 Signals</span>
                             </div>
                             <p id="sev-high-count" class="text-xl font-black font-mono text-orange-700 leading-tight mt-1">5,507</p>
-                            <p class="text-[9.5px] text-orange-800 mt-0.5">23.6% of flagged works</p>
+                            <p id="sev-high-pct" class="text-[9.5px] text-orange-800 mt-0.5">23.6% of flagged works</p>
                         </div>
 
                         <div class="p-2.5 rounded-lg bg-amber-50/70 border border-amber-200">
@@ -448,7 +448,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="font-mono text-[9px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.2 rounded">Single Signal</span>
                             </div>
                             <p id="sev-med-count" class="text-xl font-black font-mono text-amber-700 leading-tight mt-1">17,761</p>
-                            <p class="text-[9.5px] text-amber-800 mt-0.5">76.1% of flagged works</p>
+                            <p id="sev-med-pct" class="text-[9.5px] text-amber-800 mt-0.5">76.1% of flagged works</p>
                         </div>
 
                         <div class="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200">
@@ -457,14 +457,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="font-mono text-[9px] font-bold text-emerald-800 bg-emerald-100/80 px-1.5 py-0.2 rounded">Conforming</span>
                             </div>
                             <p id="sev-low-count" class="text-xl font-black font-mono text-emerald-700 leading-tight mt-1">148,561</p>
-                            <p class="text-[9.5px] text-emerald-800 mt-0.5">86.4% of scanned</p>
+                            <p id="sev-low-pct" class="text-[9.5px] text-emerald-800 mt-0.5">86.4% of scanned</p>
                         </div>
                     </div>
                 </div>
 
                 <a href="Flagged_Cases.html" class="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
-                    <span>Launch Triage Workbench (23,329 Cases)</span>
+                    <span id="btn-launch-triage-text">Launch Triage Workbench (23,329 Cases)</span>
                 </a>
             </div>
         </div>
@@ -608,7 +608,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 <script src="app.js"></script>
 <script src="assets/js/nidhi-assistant.js?v=3.1"></script>
 <script>
-// Dynamic Overview Ingestion: Connects to new FastAPI backend API with resilient fallback
+// Dynamic Overview Ingestion: Fully connects to FastAPI backend API and renders 100% dynamic data
 document.addEventListener("DOMContentLoaded", async () => {
     let data = null;
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -616,7 +616,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isLocal) {
         try {
             const controller = new AbortController();
-            const tid = setTimeout(() => controller.abort(), 500);
+            const tid = setTimeout(() => controller.abort(), 1200);
             const apiRes = await fetch('/api/anomalies/overview', { signal: controller.signal });
             clearTimeout(tid);
             if (apiRes.ok) data = await apiRes.json();
@@ -633,54 +633,143 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     if (!data) return;
 
+    // 1. KPI Top Row
     if (data.totalRegisteredWorks) {
-        document.getElementById('kpi-total-works').innerText = data.totalRegisteredWorks.toLocaleString();
+        const el = document.getElementById('kpi-total-works');
+        if (el) el.innerText = data.totalRegisteredWorks.toLocaleString();
     }
     if (data.totalScannedWorks) {
-        document.getElementById('kpi-scanned-works').innerText = data.totalScannedWorks.toLocaleString();
+        const el = document.getElementById('kpi-scanned-works');
+        if (el) el.innerText = data.totalScannedWorks.toLocaleString();
     }
     if (data.coveragePct) {
-        document.getElementById('kpi-scanned-pct').innerText = data.coveragePct + '%';
-        document.getElementById('kpi-scanned-bar').style.width = data.coveragePct + '%';
-        document.getElementById('overview-coverage-pill').innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> ${data.coveragePct}% AUDIT COVERAGE`;
+        const pctEl = document.getElementById('kpi-scanned-pct');
+        if (pctEl) pctEl.innerText = data.coveragePct + '%';
+        const barEl = document.getElementById('kpi-scanned-bar');
+        if (barEl) barEl.style.width = data.coveragePct + '%';
+        const pillEl = document.getElementById('overview-coverage-pill');
+        if (pillEl) pillEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> ${data.coveragePct}% AUDIT COVERAGE`;
     }
     if (data.flaggedCount) {
-        document.getElementById('kpi-flagged-works').innerText = data.flaggedCount.toLocaleString();
-        document.getElementById('sidebar-flagged-count').innerText = data.flaggedCount.toLocaleString();
+        const el = document.getElementById('kpi-flagged-works');
+        if (el) el.innerText = data.flaggedCount.toLocaleString();
+        const sbEl = document.getElementById('sidebar-flagged-count');
+        if (sbEl) sbEl.innerText = data.flaggedCount.toLocaleString();
+        const btnText = document.getElementById('btn-launch-triage-text');
+        if (btnText) btnText.innerText = `Launch Triage Workbench (${data.flaggedCount.toLocaleString()} Cases)`;
     }
     if (data.flaggedPct) {
-        document.getElementById('kpi-flagged-pct').innerText = data.flaggedPct + '% of scanned';
+        const el = document.getElementById('kpi-flagged-pct');
+        if (el) el.innerText = data.flaggedPct + '% of scanned';
     }
     if (data.criticalCount) {
-        document.getElementById('kpi-critical-works').innerText = data.criticalCount.toLocaleString();
-        document.getElementById('sev-critical-count').innerText = data.criticalCount.toLocaleString();
+        const el = document.getElementById('kpi-critical-works');
+        if (el) el.innerText = data.criticalCount.toLocaleString();
+        const sevCritEl = document.getElementById('sev-critical-count');
+        if (sevCritEl) sevCritEl.innerText = data.criticalCount.toLocaleString();
     }
     if (data.highCount) {
-        document.getElementById('sev-high-count').innerText = data.highCount.toLocaleString();
+        const el = document.getElementById('sev-high-count');
+        if (el) el.innerText = data.highCount.toLocaleString();
     }
     if (data.medCount) {
-        document.getElementById('sev-med-count').innerText = data.medCount.toLocaleString();
+        const el = document.getElementById('sev-med-count');
+        if (el) el.innerText = data.medCount.toLocaleString();
+    }
+    if (data.lowCount) {
+        const el = document.getElementById('sev-low-count');
+        if (el) el.innerText = data.lowCount.toLocaleString();
     }
     if (data.scrutinyExposureCr) {
-        document.getElementById('kpi-scrutiny-exposure').innerText = '₹' + data.scrutinyExposureCr.toLocaleString();
+        const el = document.getElementById('kpi-scrutiny-exposure');
+        if (el) el.innerText = '₹' + data.scrutinyExposureCr.toLocaleString();
     }
 
-    // Render Immediate Queue if present
-    if (data.immediateQueue && data.immediateQueue.length) {
+    // 2. Severity Breakdown Percentages
+    if (data.severityBreakdown) {
+        if (data.severityBreakdown.critical?.pct) {
+            const el = document.getElementById('sev-critical-pct');
+            if (el) el.innerText = `${data.severityBreakdown.critical.pct}% of flagged works`;
+        }
+        if (data.severityBreakdown.high?.pct) {
+            const el = document.getElementById('sev-high-pct');
+            if (el) el.innerText = `${data.severityBreakdown.high.pct}% of flagged works`;
+        }
+        if (data.severityBreakdown.med?.pct) {
+            const el = document.getElementById('sev-med-pct');
+            if (el) el.innerText = `${data.severityBreakdown.med.pct}% of flagged works`;
+        }
+        if (data.severityBreakdown.low?.pct) {
+            const el = document.getElementById('sev-low-pct');
+            if (el) el.innerText = `${data.severityBreakdown.low.pct}% of scanned`;
+        }
+    }
+
+    // 3. Render 100% Dynamic Anomaly Categories List
+    if (data.anomalyCategories && data.anomalyCategories.length) {
+        const catList = document.getElementById('anomaly-categories-list');
+        if (catList) {
+            catList.innerHTML = data.anomalyCategories.map(cat => {
+                const color = cat.color || '#dc2626';
+                return `
+                    <div>
+                        <div class="flex justify-between items-center text-[11px] mb-1">
+                            <span class="font-semibold text-slate-800 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${color};"></span>
+                                <span>${cat.name}</span>
+                            </span>
+                            <span class="font-mono font-bold text-slate-900">${cat.count.toLocaleString()} <span class="text-slate-400 font-normal">(${cat.pct}%)</span></span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full transition-all duration-500" style="width: ${cat.pct}%; background-color: ${color};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Dynamically synthesize Key Operational Finding
+        const sortedCats = [...data.anomalyCategories].sort((a, b) => b.count - a.count);
+        if (sortedCats.length >= 3) {
+            const findingEl = document.getElementById('overview-finding-text');
+            if (findingEl) {
+                findingEl.innerText = `${sortedCats[0].name.split('(')[0].trim()} is the dominant anomaly signal (${sortedCats[0].pct}%), followed by ${sortedCats[1].name.split('(')[0].trim().toLowerCase()} (${sortedCats[1].pct}%) and ${sortedCats[2].name.split('(')[0].trim().toLowerCase()} (${sortedCats[2].pct}%).`;
+            }
+        }
+    }
+
+    // 4. Render Dynamic Immediate Queue Table
+    let queueItems = data.immediateQueue;
+    if (!queueItems || !queueItems.length) {
+        try {
+            const fcRes = await fetch('/api/anomalies/?limit=5');
+            if (fcRes.ok) {
+                const fc = await fcRes.json();
+                queueItems = fc.map(item => ({
+                    id: item.work_id || item.id,
+                    severity: item.severity || 'critical',
+                    title: item.title || item.work_description || 'MPLAD Work',
+                    location: item.location || `${item.constituency || ''}, ${item.state || ''}`,
+                    sanctioned: item.sanctioned || ('₹' + ((item.sanction_amount || 0)/1e5).toFixed(1) + ' L'),
+                    anomaly: item.anomaly || 'Statistical Outlier'
+                }));
+            }
+        } catch (e) {}
+    }
+
+    if (queueItems && queueItems.length) {
         const tbody = document.getElementById('overview-queue-tbody');
         if (tbody) {
-            tbody.innerHTML = data.immediateQueue.map(item => {
-                const isCritical = item.severity === 'critical' || (item.flags && (item.flags.amount_zscore >= 3.5 || item.flags.gap_zscore >= 3.5));
-                const zVal = item.flags ? Math.max(item.flags.amount_zscore || 0, item.flags.gap_zscore || 0, item.flags.mp_drift_zscore || 0) : 3.8;
+            tbody.innerHTML = queueItems.slice(0, 5).map(item => {
+                const sev = (item.severity || 'critical').toLowerCase();
+                const isCritical = sev.includes('crit');
                 const badge = isCritical ? 
                     `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-red-50 text-red-800 border border-red-200 font-mono font-bold text-[10px] whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> CRITICAL (z ≥ 3.5)</span>` :
-                    `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-50 text-orange-800 border border-orange-200 font-mono font-bold text-[10px] whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-orange-600"></span> HIGH (z = ${zVal.toFixed(1)})</span>`;
+                    `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-50 text-orange-800 border border-orange-200 font-mono font-bold text-[10px] whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-orange-600"></span> HIGH</span>`;
 
                 return `
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="py-2.5 px-3.5">
-                        ${badge}
-                    </td>
+                <tr class="hover:bg-slate-50/80 transition-colors h-[44px]">
+                    <td class="py-2.5 px-3.5">${badge}</td>
                     <td class="py-2.5 px-3.5 font-mono font-bold text-blue-700">
                         <a href="Case_Details.html?id=${encodeURIComponent(item.id)}" class="hover:underline">#${item.id}</a>
                     </td>
@@ -693,9 +782,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <span class="px-2 py-0.5 rounded bg-orange-50 text-orange-800 border border-orange-200 text-[10px] font-semibold">${item.anomaly}</span>
                     </td>
                     <td class="py-2.5 px-3.5 text-center">
-                        <a href="Case_Details.html?id=${encodeURIComponent(item.id)}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-blue-700 text-white font-bold text-[10px] hover:bg-blue-800 transition-colors shadow-2xs">
+                        <a href="Case_Details.html?id=${encodeURIComponent(item.id)}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10.5px] transition-colors shadow-2xs">
                             <span>Audit</span>
-                            <span class="material-symbols-outlined text-[11px]">arrow_forward</span>
+                            <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
                         </a>
                     </td>
                 </tr>

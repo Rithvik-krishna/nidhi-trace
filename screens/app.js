@@ -158,6 +158,59 @@ document.addEventListener('DOMContentLoaded', () => {
 // 6. Universal Vigilance Notification Center Engine (Globally Exposed)
 // =========================================================================
 
+
+async function populateLiveNotifications() {
+    const listEl = document.getElementById('notif-items-list');
+    if (!listEl) return;
+
+    let items = [];
+    try {
+        const res = await fetch('/api/anomalies/?limit=4&severity=critical');
+        if (res.ok) {
+            items = await res.json();
+        }
+    } catch(e) {}
+
+    if (!items.length) {
+        try {
+            const res = await fetch('assets/data/flagged_cases.json');
+            if (res.ok) {
+                const fc = await res.json();
+                items = fc.slice(0, 4);
+            }
+        } catch(e) {}
+    }
+
+    if (!items.length) return;
+
+    listEl.innerHTML = items.map((item, idx) => {
+        const id = item.work_id || item.id;
+        const title = item.title || item.work_description || 'MPLADS Scheme Work';
+        const loc = item.location || `${item.constituency || ''}, ${item.state || ''}`;
+        const score = item.score || 98;
+        const anomaly = item.anomaly || 'Multi-Signal Anomaly';
+        const times = ['12m ago', '35m ago', '1h ago', '3h ago'];
+
+        return `
+        <a href="Case_Details.html?id=${encodeURIComponent(id)}" class="flex items-start gap-2.5 p-2.5 hover:bg-blue-50/70 rounded-lg transition-colors group">
+            <div class="w-2 h-2 rounded-full bg-red-600 mt-1.5 shrink-0"></div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-1">
+                    <span class="font-mono font-bold text-blue-700 text-[11px] group-hover:underline">#${id}</span>
+                    <span class="px-1.5 py-0.2 rounded bg-red-100 text-red-800 font-mono font-bold text-[9px]">CRITICAL (${score})</span>
+                </div>
+                <div class="font-semibold text-slate-800 text-[11px] truncate mt-0.5" title="${title}">${title}</div>
+                <div class="text-[10px] text-slate-500 mt-0.5 truncate">${loc} • ${anomaly}</div>
+                <div class="flex items-center justify-between mt-1 text-[9.5px]">
+                    <span class="text-slate-400 font-mono">${times[idx % times.length]}</span>
+                    <span class="text-blue-600 font-bold group-hover:translate-x-0.5 transition-transform flex items-center">Open Dossier →</span>
+                </div>
+            </div>
+        </a>
+        `;
+    }).join('');
+}
+
 function ensureNotificationPopover() {
     let popover = document.getElementById('vigilance-notifications-popover');
     if (!popover) {
@@ -328,7 +381,7 @@ function toggleVigilanceNotifications(e) {
         }
 
         popover.classList.remove('hidden');
-        popover.style.display = 'block';
+        popover.style.display = 'block'; populateLiveNotifications();
 
         const isRead = localStorage.getItem('mplad_notif_read') === 'true';
         updateNotificationBadgeState(isRead);

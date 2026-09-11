@@ -12,7 +12,7 @@
   "scrutinyExposureCr": 1661.7,
   "anomalyCategories": [
     {
-      "name": "Completion Delay (>200% over timeline)",
+      "name": "Completion Delay (>200% over sanctioned timeline)",
       "type": "Delay",
       "count": 13435,
       "pct": 52.7,
@@ -26,7 +26,7 @@
       "color": "#ea580c"
     },
     {
-      "name": "Spatial / Cluster ML Outlier (Isolation Forest)",
+      "name": "Spatial Cluster ML Outlier (Isolation Forest)",
       "type": "Spatial",
       "count": 8563,
       "pct": 33.6,
@@ -35,34 +35,41 @@
     {
       "name": "MP Spending Habit Drift",
       "type": "MP Drift",
-      "count": 6223,
-      "pct": 24.4,
+      "count": 4110,
+      "pct": 16.1,
       "color": "#2563eb"
     },
     {
-      "name": "Round Number Heuristic Anomaly",
+      "name": "Round Number Benford Law Anomaly",
       "type": "Round Number",
       "count": 1522,
       "pct": 6.0,
       "color": "#475569"
+    },
+    {
+      "name": "Data Quality & Stale Status (MoSPI Reporting Discrepancy)",
+      "type": "Data Quality",
+      "count": 62089,
+      "pct": 36.1,
+      "color": "#e11d48"
     }
   ],
   "severityBreakdown": {
     "critical": {
       "count": 1137,
-      "pct": 4.5
+      "pct": 4.9
     },
     "high": {
       "count": 5507,
-      "pct": 21.6
+      "pct": 23.6
     },
     "med": {
       "count": 17761,
-      "pct": 69.7
+      "pct": 76.1
     },
     "low": {
-      "count": 147485,
-      "pct": 85.8
+      "count": 148561,
+      "pct": 86.4
     }
   },
   "immediateQueue": [
