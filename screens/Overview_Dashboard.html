@@ -586,38 +586,24 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 // Dynamic Overview Ingestion: Connects to new FastAPI backend API with resilient fallback
 document.addEventListener("DOMContentLoaded", async () => {
     let data = null;
-    try {
-        const apiRes = await fetch('/api/anomalies/overview', { cache: 'no-store' });
-        if (apiRes.ok) {
-            data = await apiRes.json();
-        }
-    } catch (e) {
-        console.log('Backend overview notice, trying breakdown endpoint:', e);
-    }
-    if (!data) {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    if (isLocal) {
         try {
-            const sumRes = await fetch('/api/anomalies/summary/breakdown', { cache: 'no-store' });
-            if (sumRes.ok) {
-                const sData = await sumRes.json();
-                data = {
-                    totalRegisteredWorks: sData.total_registered || sData.total_works,
-                    totalScannedWorks: sData.ai_scanned || 171890,
-                    coveragePct: sData.coverage_pct || 86.8,
-                    flaggedCount: sData.flagged_count,
-                    criticalCount: sData.critical_count || 1137,
-                    highCount: sData.high_count || sData.high_severity_count,
-                    medCount: sData.med_count || 17761,
-                    scrutinyExposureCr: sData.scrutiny_exposure_cr || 1661.7
-                };
-            }
+            const controller = new AbortController();
+            const tid = setTimeout(() => controller.abort(), 500);
+            const apiRes = await fetch('/api/anomalies/overview', { signal: controller.signal });
+            clearTimeout(tid);
+            if (apiRes.ok) data = await apiRes.json();
         } catch (e) {}
     }
+
     if (!data) {
         try {
-            const res = await fetch('assets/data/overview_kpis.json?v=' + Date.now(), { cache: 'no-store' });
+            const res = await fetch('assets/data/overview_kpis.json');
             data = await res.json();
         } catch (e) {
-            console.log('Static asset fallback notice:', e);
+            console.log('Static asset notice:', e);
         }
     }
     if (!data) return;

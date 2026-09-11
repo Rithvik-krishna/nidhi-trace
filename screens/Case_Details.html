@@ -407,19 +407,60 @@ function extractWorkDescription(workId, existingTitle) {
     return workId;
 }
 
+// In-memory cache for ultra-fast instant navigation between cases
+let casesIndexCache = null;
+
 async function loadCaseDossier() {
     const params = new URLSearchParams(window.location.search);
     const caseId = (params.get('id') || params.get('work_id') || 'MPLAD-03983').trim();
     const cleanId = caseId.replace(/^#/, '').trim();
     const numOnly = cleanId.replace(/\D/g, '');
 
-    console.log('[Dossier] Requested Case ID:', caseId, 'cleanId:', cleanId, 'numOnly:', numOnly);
+    // Check in-memory or session cache first (0ms instantaneous lookup)
+    if (window.__CASES_INDEX_CACHE) {
+        casesIndexCache = window.__CASES_INDEX_CACHE;
+    } else {
+        try {
+            const cached = sessionStorage.getItem('nidhi_cases_index');
+            if (cached) {
+                casesIndexCache = JSON.parse(cached);
+                window.__CASES_INDEX_CACHE = casesIndexCache;
+            }
+        } catch (e) {}
+    }
 
-    // 1. Primary Source: Local static cases_index.json (Fast, reliable on Vercel & local)
+    if (casesIndexCache) {
+        let found = casesIndexCache[caseId] || casesIndexCache[cleanId] || casesIndexCache[cleanId.toUpperCase()];
+        if (!found && numOnly) {
+            const paddedId = `MPLAD-${numOnly.padStart(5, '0')}`;
+            found = casesIndexCache[paddedId];
+            if (!found) {
+                const foundKey = Object.keys(casesIndexCache).find(k => {
+                    const kNum = k.replace(/\D/g, '');
+                    return kNum === numOnly || (numOnly.length >= 4 && kNum.endsWith(numOnly));
+                });
+                if (foundKey) found = casesIndexCache[foundKey];
+            }
+        }
+        if (found) {
+            currentCase = normalizeDossierData(found);
+            populateDossier(currentCase);
+            return;
+        }
+    }
+
+    // 1. Fetch static cases_index.json with standard browser caching
     try {
-        const res = await fetch('assets/data/cases_index.json?v=' + Date.now(), { cache: 'no-store' });
+        const res = await fetch('assets/data/cases_index.json');
         if (res.ok) {
             const cases = await res.json();
+            casesIndexCache = cases;
+            window.__CASES_INDEX_CACHE = cases;
+            try {
+                // Cache a subset or lightweight reference in session
+                sessionStorage.setItem('nidhi_cases_index_loaded', '1');
+            } catch (e) {}
+
             let found = cases[caseId] || cases[cleanId] || cases[cleanId.toUpperCase()];
             if (!found && numOnly) {
                 const paddedId = `MPLAD-${numOnly.padStart(5, '0')}`;
@@ -433,19 +474,18 @@ async function loadCaseDossier() {
                 }
             }
             if (found) {
-                console.log('[Dossier] Found in cases_index.json:', found);
                 currentCase = normalizeDossierData(found);
                 populateDossier(currentCase);
                 return;
             }
         }
     } catch (e) {
-        console.debug('[Dossier] cases_index.json check error:', e);
+        console.debug('[Dossier] cases_index.json error:', e);
     }
 
-    // 2. Secondary Source: flagged_cases.json & ledger_works.json
+    // 2. Fetch static flagged_cases.json fallback
     try {
-        const fcRes = await fetch('assets/data/flagged_cases.json?v=' + Date.now(), { cache: 'no-store' });
+        const fcRes = await fetch('assets/data/flagged_cases.json');
         if (fcRes.ok) {
             const fcList = await fcRes.json();
             const found = fcList.find(c => {
@@ -454,59 +494,37 @@ async function loadCaseDossier() {
                        (numOnly && numOnly.length >= 4 && cId.replace(/\D/g, '').endsWith(numOnly));
             });
             if (found) {
-                console.log('[Dossier] Found in flagged_cases.json:', found);
                 currentCase = normalizeDossierData(found);
                 populateDossier(currentCase);
                 return;
             }
         }
-    } catch (e) {
-        console.debug('[Dossier] flagged_cases.json check error:', e);
-    }
-
-    // 3. Tertiary Source: Local FastAPI /api/anomalies/dossier
-    try {
-        const res = await fetch(`/api/anomalies/dossier?work_id=${encodeURIComponent(cleanId)}`);
-        if (res.ok) {
-            const data = await res.json();
-            if (data && (data.work_id || data.id)) {
-                console.log('[Dossier] Found in local FastAPI dossier endpoint:', data);
-                currentCase = normalizeDossierData(data);
-                populateDossier(currentCase);
-                return;
-            }
-        }
     } catch (e) {}
 
-    // 4. Quaternary Source: Live Render backend search (STRICT MATCH ONLY, NEVER DEFAULT TO items[0])
-    try {
-        const queryTerm = numOnly.length >= 4 ? numOnly : cleanId;
-        const res = await fetch(`https://nidhitrace-api.onrender.com/api/anomalies?q=${encodeURIComponent(queryTerm)}&limit=10`);
-        if (res.ok) {
-            const searchData = await res.json();
-            const items = Array.isArray(searchData) ? searchData : (searchData.items || []);
-            if (items.length > 0) {
-                // ONLY accept if work_id actually matches cleanId or numOnly
-                const match = items.find(it => {
-                    const wId = (it.work_id || '').toLowerCase();
-                    return wId.includes(cleanId.toLowerCase()) || (numOnly.length >= 4 && wId.includes(numOnly));
-                });
-                if (match) {
-                    console.log('[Dossier] Strict match found in Render search:', match);
-                    currentCase = normalizeDossierData(match);
+    // 3. If running on local server, try local FastAPI route with fast 500ms timeout
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocal) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 600);
+            const res = await fetch(`/api/anomalies/dossier?work_id=${encodeURIComponent(cleanId)}`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (res.ok) {
+                const data = await res.json();
+                if (data && (data.work_id || data.id)) {
+                    currentCase = normalizeDossierData(data);
                     populateDossier(currentCase);
                     return;
                 }
             }
-        }
-    } catch (e) {}
+        } catch (e) {}
+    }
 
-    // 5. Final Fallback: If still not found, synthesize a clean docket for the requested ID rather than showing unrelated work
-    console.warn('[Dossier] Case not found in any database, synthesizing baseline docket for:', cleanId);
+    // 4. Default graceful fallback
     currentCase = normalizeDossierData({
         id: cleanId,
         work_id: cleanId,
-        title: `MPLADS Community Work Docket #${cleanId}`,
+        title: `MPLADS Scheme Work Docket #${cleanId}`,
         state: 'National Jurisdiction',
         constituency: 'Parliamentary Constituency',
         sanction_amount: 5000000.0,

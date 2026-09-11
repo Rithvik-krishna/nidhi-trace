@@ -387,22 +387,23 @@ async function initLedger() {
     try {
         setExplorerView('skeleton');
         let data = null;
-        // 1. Try new backend API endpoint first: /api/works/?limit=1000
-        try {
-            const apiRes = await fetch('/api/works/?limit=1000', { cache: 'no-store' });
-            if (apiRes.ok) {
-                const apiData = await apiRes.json();
-                if (apiData && apiData.length) {
-                    data = apiData;
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+        if (isLocal) {
+            try {
+                const controller = new AbortController();
+                const tid = setTimeout(() => controller.abort(), 600);
+                const apiRes = await fetch('/api/works/?limit=1000', { signal: controller.signal });
+                clearTimeout(tid);
+                if (apiRes.ok) {
+                    const apiData = await apiRes.json();
+                    if (apiData && apiData.length) data = apiData;
                 }
-            }
-        } catch (e) {
-            console.log('Backend works API notice, trying static asset cache:', e);
+            } catch (e) {}
         }
 
-        // 2. Fall back to static dataset if backend not reachable
         if (!data) {
-            const res = await fetch('assets/data/ledger_works.json?v=' + Date.now(), { cache: 'no-store' });
+            const res = await fetch('assets/data/ledger_works.json');
             if (!res.ok) throw new Error('Network error loading ledger');
             data = await res.json();
         }

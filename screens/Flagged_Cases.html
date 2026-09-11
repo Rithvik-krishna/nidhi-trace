@@ -494,22 +494,26 @@ function resetFilters() {
 document.addEventListener("DOMContentLoaded", async () => {
     setTableView("skeleton");
     let data = null;
-    // 1. Try new backend API endpoint first: /api/anomalies/?limit=1000
-    try {
-        const apiRes = await fetch('/api/anomalies/?limit=1000', { cache: 'no-store' });
-        if (apiRes.ok) {
-            const apiData = await apiRes.json();
-            if (apiData && apiData.length) {
-                data = apiData;
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // If on localhost, try fast local backend with 500ms abort timeout
+    if (isLocal) {
+        try {
+            const controller = new AbortController();
+            const tid = setTimeout(() => controller.abort(), 600);
+            const apiRes = await fetch('/api/anomalies/?limit=1000', { signal: controller.signal });
+            clearTimeout(tid);
+            if (apiRes.ok) {
+                const apiData = await apiRes.json();
+                if (apiData && apiData.length) data = apiData;
             }
-        }
-    } catch (e) {
-        console.log('Backend API notice, trying static asset cache:', e);
+        } catch (e) {}
     }
-    // 2. Fall back to static dataset if backend not reachable
+
+    // Fall back immediately to browser-cached static dataset
     if (!data) {
         try {
-            const res = await fetch('assets/data/flagged_cases.json?v=' + Date.now(), { cache: 'no-store' });
+            const res = await fetch('assets/data/flagged_cases.json');
             data = await res.json();
         } catch (err) {
             console.error('Failed to load flagged cases:', err);
