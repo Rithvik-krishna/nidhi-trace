@@ -312,7 +312,7 @@ class DataRetriever:
             "totalCorpusCr": 8501.1,
             "flaggedWorks": 23329,
             "criticalWorks": 4112,
-            "scrutinyCr": 2001.2,
+            "scrutinyCr": 1661.7,
             "medianLatencyDays": 142
         }
 
@@ -397,7 +397,7 @@ def build_prompt_with_context(user_message: str, page_context: dict, authentic_c
 - Total Sanctioned Corpus: ₹{summary.get('totalCorpusCr', 8501.1):,} Cr
 - Flagged Works Under Review: {summary.get('flaggedWorks', 23329):,} (13.6%)
 - Critical Severity Anomalies: {summary.get('criticalWorks', 4112):,}
-- Scrutiny Exposure Corpus: ₹{summary.get('scrutinyCr', 2001.2):,} Cr
+- Scrutiny Exposure Corpus: ₹{summary.get('scrutinyCr', 1661.7):,} Cr
 - Median Approval Latency: {summary.get('medianLatencyDays', 142)} Days
 - Current Page Route: {page_context.get('page', 'overview')}
 """

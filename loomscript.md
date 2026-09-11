@@ -77,7 +77,7 @@
 
 > *"Next, we enter **Forensic Econometric Analytics**. This view reveals the macro-financial dynamics and temporal surges that file-by-file audits completely miss.
 > 
-> In the top badge strip, we monitor the total fund envelope: **₹8,501.1 Crores total corpus**, an overall **66.5% utilization rate**, and **₹2,001.2 Crores under active scrutiny**.
+> In the top badge strip, we monitor the total fund envelope: **₹8,501.1 Crores total corpus**, an overall **66.5% utilization rate**, and **₹1,661.7 Crores under active scrutiny**.
 > 
 > The dashboard presents four complementary models:
 > 1. **Fund Allocation vs. Release vs. Actual Expenditure**: Tracks the quarterly capital deployment velocity across 2023 to 2026, pinpointing where pipeline bottlenecks occur.
@@ -86,7 +86,7 @@
 > 4. **Anomaly Vector Donut**: Breaks down composition across Completion Delays, Cost Outliers, Isolation Forest spatial outliers, and Benford's Law round-number violations."*
 
 **On-Screen Actions**:
-- **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `UTILIZATION: 66.5%`, `SCRUTINY: ₹2,001.2 Cr`.
+- **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `UTILIZATION: 66.5%`, `SCRUTINY: ₹1,661.7 Cr`.
 - **Point to the cohort selector**: `17th & 18th Lok Sabha (2019–2024)`.
 - **Top-Left Line Chart**: Hover over the quarterly curve points (e.g., `2024 Q1`) to show the interactive Chart.js tooltip displaying Allocated, Released, and Utilized figures.
 - **Top-Right Area Chart**: Point out the red `2025 SURGES` badge and trace the spike curve in early 2025.

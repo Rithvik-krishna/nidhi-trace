@@ -224,21 +224,34 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <div class="flex-1 min-h-0 bg-white border border-borderline rounded-lg shadow-2xs flex flex-col overflow-hidden">
             
             <!-- 1. LIVE DATA TABLE -->
-            <div id="view-live" class="flex-1 min-h-0 overflow-auto">
-                <table class="w-full text-left border-collapse text-xs">
+            <div id="view-live" class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+                <table class="w-full table-fixed border-collapse text-xs">
+                    <colgroup>
+                        <col style="width: 7%;">    <!-- Severity -->
+                        <col style="width: 8.5%;">  <!-- Work ID -->
+                        <col style="width: 18%;">   <!-- Project Title -->
+                        <col style="width: 10.5%;"> <!-- Constituency / State -->
+                        <col style="width: 10.5%;"> <!-- MP / Nodal Entity -->
+                        <col style="width: 7%;">    <!-- Sanctioned -->
+                        <col style="width: 6.5%;">  <!-- Utilized -->
+                        <col style="width: 13%;">   <!-- Primary Anomaly -->
+                        <col style="width: 10%;">   <!-- Implementing Agency -->
+                        <col style="width: 4%;">    <!-- Status -->
+                        <col style="width: 5%;">    <!-- Action -->
+                    </colgroup>
                     <thead>
                         <tr class="bg-slate-100/90 text-slate-700 font-bold uppercase tracking-wider border-b border-borderline select-none text-[10px]">
-                            <th class="py-2.5 px-3 text-center w-[100px]">Severity</th>
-                            <th class="py-2.5 px-3 font-mono w-[115px]">Work ID</th>
-                            <th class="py-2.5 px-3 min-w-[220px]">Project Title</th>
-                            <th class="py-2.5 px-3 w-[150px]">Constituency / State</th>
-                            <th class="py-2.5 px-3 w-[150px]">MP / Nodal Entity</th>
-                            <th class="py-2.5 px-3 text-right w-[95px]">Sanctioned</th>
-                            <th class="py-2.5 px-3 text-right w-[90px]">Utilized</th>
-                            <th class="py-2.5 px-3 w-[180px]">Primary Anomaly</th>
-                            <th class="py-2.5 px-3 w-[150px]">Implementing Agency</th>
-                            <th class="py-2.5 px-3 text-center w-[90px]">Status</th>
-                            <th class="py-2.5 px-3 text-center w-[90px]">Action</th>
+                            <th class="py-2 px-1.5 text-center">Severity</th>
+                            <th class="py-2 px-1.5 font-mono">Work ID</th>
+                            <th class="py-2 px-1.5">Project Title</th>
+                            <th class="py-2 px-1.5">Constituency / State</th>
+                            <th class="py-2 px-1.5">MP / Nodal Entity</th>
+                            <th class="py-2 px-1.5 text-right">Sanctioned</th>
+                            <th class="py-2 px-1.5 text-right">Utilized</th>
+                            <th class="py-2 px-1.5">Primary Anomaly</th>
+                            <th class="py-2 px-1.5">Agency</th>
+                            <th class="py-2 px-1 text-center">Status</th>
+                            <th class="py-2 px-1 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody id="case-tbody" class="divide-y divide-borderline font-tabular text-xs">
@@ -376,25 +389,29 @@ function renderTable() {
     const pageItems = filteredCases.slice(startIdx, endIdx);
 
     tbody.innerHTML = pageItems.map(row => `
-        <tr class="hover:bg-slate-50/80 transition-colors border-b border-borderline/60">
-            <td class="py-2.5 px-3 text-center w-[95px]">${getSeverityBadge(row)}</td>
-            <td class="py-2.5 px-3 font-mono font-bold text-blue-700 w-[115px]">#${row.id}</td>
-            <td class="py-2.5 px-3 font-semibold text-slate-800 min-w-[220px] max-w-[280px] truncate" title="${row.title}">${row.title}</td>
-            <td class="py-2.5 px-3 text-slate-600 w-[150px] truncate" title="${row.location}">${row.location}</td>
-            <td class="py-2.5 px-3 text-slate-500 font-medium w-[150px] truncate" title="${row.mp}">${row.mp}</td>
-            <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900 w-[95px] whitespace-nowrap">${row.sanctioned}</td>
-            <td class="py-2.5 px-3 text-right font-mono text-slate-600 w-[90px] whitespace-nowrap">${row.utilized}</td>
-            <td class="py-2.5 px-3 w-[180px] truncate" title="${row.anomaly}">
-                <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200 text-[10px] font-semibold truncate block">${row.anomaly}</span>
+        <tr class="hover:bg-slate-50/80 transition-colors border-b border-borderline/60 h-[40px]">
+            <td class="py-1 px-1.5 text-center truncate">${getSeverityBadge(row)}</td>
+            <td class="py-1 px-1.5 font-mono font-bold truncate">
+                <a href="Case_Details.html?id=${encodeURIComponent(row.id)}" class="text-blue-700 hover:text-blue-900 hover:underline" title="View Dossier for #${row.id}">#${row.id}</a>
             </td>
-            <td class="py-2.5 px-3 text-slate-600 w-[150px] truncate" title="${row.agency}">${row.agency}</td>
-            <td class="py-2.5 px-3 text-center w-[90px]">
+            <td class="py-1 px-1.5 font-semibold text-slate-800 truncate" title="${row.title}">
+                <a href="Case_Details.html?id=${encodeURIComponent(row.id)}" class="hover:text-blue-700 hover:underline truncate block">${row.title}</a>
+            </td>
+            <td class="py-1 px-1.5 text-slate-600 truncate text-[11px]" title="${row.location}">${row.location}</td>
+            <td class="py-1 px-1.5 text-slate-500 font-medium truncate text-[11px]" title="${row.mp}">${row.mp}</td>
+            <td class="py-1 px-1.5 text-right font-mono font-bold text-slate-900 whitespace-nowrap text-[11px]">${row.sanctioned}</td>
+            <td class="py-1 px-1.5 text-right font-mono text-slate-600 whitespace-nowrap text-[11px]">${row.utilized}</td>
+            <td class="py-1 px-1.5 truncate" title="${row.anomaly}">
+                <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-800 border border-slate-200 text-[9.5px] font-semibold truncate block">${row.anomaly}</span>
+            </td>
+            <td class="py-1 px-1.5 text-slate-600 truncate text-[10.5px]" title="${row.agency}">${row.agency}</td>
+            <td class="py-1 px-1 text-center truncate">
                 ${getRowStatusBadge(row)}
             </td>
-            <td class="py-2.5 px-3 text-center w-[90px]">
-                <a href="Case_Details.html?id=${encodeURIComponent(row.id)}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-blue-700 text-white font-bold text-[10px] hover:bg-blue-800 transition-colors shadow-2xs">
+            <td class="py-1 px-1 text-center whitespace-nowrap">
+                <a href="Case_Details.html?id=${encodeURIComponent(row.id)}" class="inline-flex items-center justify-center gap-0.5 px-2 py-1 rounded bg-blue-700 text-white font-bold text-[9.5px] hover:bg-blue-800 transition-colors shadow-2xs">
                     <span>Dossier</span>
-                    <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+                    <span class="material-symbols-outlined text-[10px]">arrow_forward</span>
                 </a>
             </td>
         </tr>

@@ -1,10 +1,10 @@
 {
   "summary": {
     "totalCorpusCr": 8501.1,
-    "scrutinyCr": 2001.2,
+    "scrutinyCr": 1661.7,
     "utilizationPct": 66.5,
     "totalWorks": 171890,
-    "flaggedWorks": 25483,
+    "flaggedWorks": 23329,
     "criticalCount": 1137
   },
   "quarterlyTrajectory": {
@@ -253,10 +253,10 @@
     "all": {
       "summary": {
         "totalCorpusCr": 8501.1,
-        "scrutinyCr": 2001.2,
+        "scrutinyCr": 1661.7,
         "utilizationPct": 66.5,
         "totalWorks": 171890,
-        "flaggedWorks": 25483,
+        "flaggedWorks": 23329,
         "criticalCount": 1137
       },
       "quarterlyTrajectory": {
