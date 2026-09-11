@@ -64,11 +64,13 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 </style>
+    <!-- NIDHI TRACE Unified Reusable Design System -->
+    <link rel="stylesheet" href="assets/css/nidhi-design-system.css">
 </head>
 <body class="bg-canvas text-slate-800 antialiased text-xs h-screen max-h-screen w-full overflow-hidden relative flex">
 
 <!-- UNIFIED SHELL: Side Navigation (230px, Deep Navy Institutional) -->
-<aside class="w-[230px] h-screen shrink-0 flex flex-col bg-brand-900 border-r border-slate-800 z-50 text-slate-300 select-none overflow-hidden">
+<aside class="fixed md:static inset-y-0 left-0 z-50 transform -translate-x-full md:translate-x-0 w-[230px] h-screen shrink-0 flex flex-col bg-brand-900 border-r border-slate-800 text-slate-300 select-none overflow-hidden transition-transform duration-300 ease-in-out">
     <!-- Brand Header -->
     <div class="px-4 py-3.5 border-b border-slate-800/80 flex items-center gap-2.5 shrink-0">
         <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
@@ -78,6 +80,9 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <span class="font-black text-white text-xs tracking-wider uppercase leading-tight">NIDHI TRACE</span>
             <span class="text-[8.5px] text-blue-400 uppercase tracking-widest font-semibold truncate">Fund Intelligence</span>
         </div>
+        <button id="mobile-sidebar-close" onclick="closeMobileSidebar()" class="md:hidden ml-auto p-1 text-slate-400 hover:text-white rounded-md transition-colors cursor-pointer" title="Close Navigation">
+            <span class="material-symbols-outlined text-lg">close</span>
+        </button>
     </div>
 
     <!-- Navigation List -->
@@ -124,12 +129,18 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     </div>
 </aside>
 
+<!-- Mobile Sidebar Backdrop -->
+<div id="sidebar-backdrop" onclick="closeMobileSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+
 <!-- Main Wrapper (Single Screen, Viewport-Locked) -->
 <div class="flex-1 min-w-0 h-screen max-h-screen flex flex-col bg-canvas overflow-hidden">
     
     <!-- UNIFIED SHELL: Compact Top Bar (52px) -->
     <header class="h-[52px] min-h-[52px] max-h-[52px] shrink-0 w-full bg-white border-b border-slate-200 shadow-2xs z-40 flex justify-between items-center px-4 sticky top-0">
         <div class="flex items-center gap-3">
+        <button id="mobile-menu-btn" onclick="toggleMobileSidebar()" class="md:hidden flex items-center justify-center p-1.5 -ml-1 mr-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors shrink-0 cursor-pointer" title="Toggle Navigation Menu">
+            <span class="material-symbols-outlined text-xl">menu</span>
+        </button>
             <span class="font-bold text-slate-900 text-xs tracking-wide flex items-center gap-2">
                 <span class="material-symbols-outlined text-blue-600 text-base" style="font-variation-settings: 'FILL' 1;">insights</span>
                 Macro Surveillance &amp; Econometric Intelligence
@@ -162,14 +173,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <!-- Export Button -->
             <button onclick="exportAgencyTableToCSV('nidhi-trace-analytics.csv')" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-md text-xs font-semibold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer">
                 <span class="material-symbols-outlined text-sm">file_download</span>
-                <span>Export Dataset</span>
+                <span class="hidden sm:inline">Export Dataset</span>
             </button>
 
             <div class="h-5 w-px bg-slate-200"></div>
 
             <div class="flex items-center gap-2 pl-0.5">
                 <div class="w-7 h-7 rounded-md bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-[11px] shadow-2xs">AO</div>
-                <div class="flex flex-col text-left">
+                <div class="hidden sm:flex flex-col text-left">
                     <span class="text-xs font-bold text-slate-900 leading-tight">AO #104</span>
                     <span class="text-[9.5px] text-slate-500 font-medium">MoSPI Oversight</span>
                 </div>
@@ -209,10 +220,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     <main class="flex-1 min-h-0 p-3.5 flex flex-col overflow-hidden">
         
         <!-- View 1: 4 Forensic Charts in 2x2 Responsive Grid -->
-        <div id="view-charts" class="flex-1 min-h-0 grid grid-cols-12 grid-rows-2 gap-3 h-full">
+        <div id="view-charts" class="flex-1 min-h-0 flex flex-col md:grid md:grid-cols-12 md:grid-rows-2 gap-3 overflow-y-auto md:overflow-hidden h-full">
             
             <!-- Chart 1: Fund Allocation vs Release vs Actual Expenditure (8 cols, row 1) -->
-            <div class="col-span-8 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col min-h-0">
+            <div class="col-span-12 md:col-span-8 min-h-[270px] md:min-h-0 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-1 mb-1.5 shrink-0">
                     <div>
                         <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Fund Allocation vs Release vs Actual Expenditure</h2>
@@ -230,7 +241,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             </div>
 
             <!-- Chart 2: Monthly Risk Trend Spike Chart (4 cols, row 1) -->
-            <div class="col-span-4 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col min-h-0">
+            <div class="col-span-12 md:col-span-4 min-h-[270px] md:min-h-0 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-1 mb-1.5 shrink-0">
                     <div>
                         <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Monthly Flagged Cases Trend</h2>
@@ -244,7 +255,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             </div>
 
             <!-- Chart 3: Inter-State Anomaly Exposure Comparison (8 cols, row 2) -->
-            <div class="col-span-8 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col min-h-0">
+            <div class="col-span-12 md:col-span-8 min-h-[270px] md:min-h-0 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-1 mb-1.5 shrink-0">
                     <div>
                         <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Inter-State Anomaly Exposure Comparison</h2>
@@ -261,7 +272,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             </div>
 
             <!-- Chart 4: Anomaly Vector Composition (4 cols, row 2) -->
-            <div class="col-span-4 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col min-h-0">
+            <div class="col-span-12 md:col-span-4 min-h-[270px] md:min-h-0 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col">
                 <div class="border-b border-slate-200 pb-1 mb-1.5 shrink-0">
                     <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Anomaly Vector Composition</h2>
                     <p class="text-[9.5px] text-slate-500">Breakdown across flagged records</p>
@@ -288,8 +299,8 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
             </div>
 
-            <div class="flex-1 min-h-0 overflow-y-auto">
-                <table class="w-full text-left border-collapse text-xs">
+            <div class="flex-1 min-h-0 overflow-y-auto overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs min-w-[860px]">
                     <thead class="sticky top-0 bg-slate-100 z-10 shadow-2xs">
                         <tr class="text-slate-700 font-bold uppercase tracking-wider border-b border-slate-200 font-mono text-[9.5px]">
                             <th class="py-1.5 px-3">Implementing Agency</th>

@@ -79,11 +79,13 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     display: none;
 }
 </style>
+    <!-- NIDHI TRACE Unified Reusable Design System -->
+    <link rel="stylesheet" href="assets/css/nidhi-design-system.css">
 </head>
 <body class="bg-canvas text-slate-800 antialiased text-xs h-screen max-h-screen w-full overflow-hidden relative flex">
 
 <!-- UNIFIED SHELL: Side Navigation (230px, Deep Navy Institutional) -->
-<aside class="w-[230px] h-screen shrink-0 flex flex-col bg-brand-900 border-r border-slate-800 z-50 text-slate-300 select-none overflow-hidden">
+<aside class="fixed md:static inset-y-0 left-0 z-50 transform -translate-x-full md:translate-x-0 w-[230px] h-screen shrink-0 flex flex-col bg-brand-900 border-r border-slate-800 text-slate-300 select-none overflow-hidden transition-transform duration-300 ease-in-out">
     <!-- Brand Header -->
     <div class="px-4 py-3.5 border-b border-slate-800/80 flex items-center gap-2.5 shrink-0">
         <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
@@ -93,6 +95,9 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <span class="font-black text-white text-xs tracking-wider uppercase leading-tight">NIDHI TRACE</span>
             <span class="text-[8.5px] text-blue-400 uppercase tracking-widest font-semibold truncate">Fund Intelligence</span>
         </div>
+        <button id="mobile-sidebar-close" onclick="closeMobileSidebar()" class="md:hidden ml-auto p-1 text-slate-400 hover:text-white rounded-md transition-colors cursor-pointer" title="Close Navigation">
+            <span class="material-symbols-outlined text-lg">close</span>
+        </button>
     </div>
 
     <!-- Navigation List -->
@@ -142,12 +147,18 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     </div>
 </aside>
 
+<!-- Mobile Sidebar Backdrop -->
+<div id="sidebar-backdrop" onclick="closeMobileSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+
 <!-- Main Wrapper -->
 <div class="main-container flex-1 min-w-0 h-screen max-h-screen flex flex-col bg-canvas overflow-hidden">
     
     <!-- UNIFIED SHELL: Compact Top Bar (52px) -->
     <header class="h-[52px] min-h-[52px] max-h-[52px] shrink-0 w-full bg-white border-b border-slate-200 shadow-2xs z-40 flex justify-between items-center px-4">
         <div class="flex items-center gap-2.5">
+        <button id="mobile-menu-btn" onclick="toggleMobileSidebar()" class="md:hidden flex items-center justify-center p-1.5 -ml-1 mr-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors shrink-0 cursor-pointer" title="Toggle Navigation Menu">
+            <span class="material-symbols-outlined text-xl">menu</span>
+        </button>
             <a href="Flagged_Cases.html" class="flex items-center gap-1 text-slate-600 hover:text-slate-900 text-xs font-semibold py-1 px-2 rounded-md hover:bg-slate-100 transition-colors">
                 <span class="material-symbols-outlined text-sm">arrow_back</span>
                 <span>Triage Queue</span>
@@ -166,14 +177,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <!-- Export Dossier Button -->
             <button type="button" onclick="exportDossierReport()" class="no-toast-intercept flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-md text-xs font-semibold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer">
                 <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
-                <span>Export Dossier (Print / PDF)</span>
+                <span class="hidden sm:inline">Export Dossier (Print / PDF)</span><span class="sm:hidden">PDF</span>
             </button>
 
             <div class="h-5 w-px bg-slate-200"></div>
 
             <div class="flex items-center gap-2 pl-0.5">
                 <div class="w-7 h-7 rounded-md bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-[11px] shadow-2xs">AO</div>
-                <div class="flex flex-col text-left">
+                <div class="hidden sm:flex flex-col text-left">
                     <span class="text-xs font-bold text-slate-900 leading-tight">AO #104</span>
                     <span class="text-[9.5px] text-slate-500 font-medium">MoSPI Oversight</span>
                 </div>
@@ -196,23 +207,26 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     </div>
 
     <!-- Main Dossier Content -->
-    <main class="flex-1 min-h-0 overflow-y-auto p-4 md:p-5 space-y-4 max-w-[1600px] w-full mx-auto">
+    <!-- Main Dossier Content (Two-Column Investigation Workspace) -->
+    <main class="flex-1 min-h-0 overflow-y-auto p-3.5 md:p-4 space-y-3.5 max-w-[1600px] w-full mx-auto">
         
-        <!-- Case Header & Triage Status Workspace -->
-        <div id="case-header-card" class="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs relative overflow-hidden">
+        <!-- Case Header & Identification Workspace -->
+        <div id="case-header-card" class="nt-card p-3.5 shadow-2xs relative overflow-hidden">
             <div id="dossier-bar" class="absolute top-0 left-0 bottom-0 w-1.5 bg-red-600"></div>
             
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pl-2">
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-2 mb-1 flex-wrap">
-                        <span id="dossier-case-id" class="font-mono font-bold text-blue-700 text-xs">ID: Loading...</span>
+                        <span id="dossier-case-id" class="nt-badge nt-badge-blue">ID: Loading...</span>
                         <span class="text-slate-300">•</span>
-                        <span id="dossier-location" class="text-slate-600 font-medium text-xs">Constituency, State</span>
+                        <span id="dossier-location" class="text-slate-700 font-semibold text-xs">Constituency, State</span>
                         <span class="text-slate-300">•</span>
                         <span id="dossier-term" class="text-slate-500 font-mono text-[10.5px]">17th Lok Sabha</span>
+                        <span class="text-slate-300">•</span>
+                        <span class="text-slate-500 text-[10.5px]">Implementing Agency: <strong id="dossier-agency" class="text-slate-700 font-medium">District Authority</strong></span>
                     </div>
-                    <h1 id="dossier-title" class="text-lg font-bold text-slate-900 truncate">Work Title</h1>
-                    <p class="text-xs text-slate-500 mt-1">
+                    <h1 id="dossier-title" class="text-base md:text-lg font-bold text-slate-900 tracking-tight leading-snug">Work Title</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">
                         Recommending MP: <strong id="dossier-mp" class="text-slate-800 font-semibold">—</strong> • 
                         Sanction Date: <span id="dossier-sanction-date" class="font-mono text-slate-700 font-semibold">—</span> 
                         <span id="dossier-rec-wrap">(Rec: <span id="dossier-rec-date" class="font-mono text-slate-500">—</span>)</span>
@@ -221,290 +235,333 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 
                 <!-- Independent Multi-Signal Review Badges -->
                 <div class="flex items-center gap-2 flex-wrap shrink-0">
-                    <span id="dossier-high-sev-badge" class="px-2.5 py-1 rounded-md bg-red-50 text-red-800 border border-red-200 font-mono font-bold text-[10.5px] hidden">
+                    <span id="dossier-high-sev-badge" class="nt-badge nt-badge-critical hidden">
                         HIGH SEVERITY (z ≥ 3.5)
                     </span>
-                    <span id="dossier-dq-badge" class="px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-mono font-bold text-[10.5px] hidden">
+                    <span id="dossier-dq-badge" class="nt-badge nt-badge-medium hidden">
                         DATA QUALITY REVIEW
                     </span>
-                    <span id="dossier-signal-count-badge" class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 border border-slate-200 font-mono font-bold text-[10.5px]">
+                    <span id="dossier-signal-count-badge" class="nt-badge nt-badge-neutral">
                         0 Signals Triggered
                     </span>
                 </div>
             </div>
         </div>
 
-        <!-- 1. Financial Utilization & Operational KPI Strip -->
-        <div class="bg-white border border-slate-200 rounded-lg shadow-2xs grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200">
-            <!-- Sanctioned -->
-            <div class="p-3.5">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Sanctioned</span>
-                <span id="dossier-sanction-amount" class="text-xl font-black font-mono text-slate-900">₹0.0 L</span>
-                <p id="dossier-amount-sub" class="text-[10px] text-slate-400 mt-0.5">Approved Work Allocation</p>
-            </div>
-
-            <!-- Utilized & Unspent Balance -->
-            <div class="p-3.5">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Utilized Amount</span>
-                <div class="flex items-baseline gap-1.5">
-                    <span id="dossier-utilized-amount" class="text-xl font-black font-mono text-slate-900">₹0.0 L</span>
-                    <span id="dossier-unspent-amount" class="text-[10.5px] font-mono text-slate-500 font-semibold">(₹0.0 L balance)</span>
-                </div>
-                <p class="text-[10px] text-slate-400 mt-0.5">Cumulative Disbursal</p>
-            </div>
-
-            <!-- Financial Utilization Progress -->
-            <div class="p-3.5">
-                <div class="flex items-center justify-between mb-1">
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Utilization</span>
-                    <span id="dossier-util-pct" class="font-mono text-xs font-bold text-blue-700">0%</span>
-                </div>
-                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-1">
-                    <div id="dossier-util-bar" class="bg-blue-600 h-full rounded-full w-[0%] transition-all duration-500"></div>
-                </div>
-                <p id="dossier-work-status" class="text-[10px] font-bold text-slate-600 mt-1 truncate">Status: Active Scrutiny</p>
-            </div>
-
-            <!-- Recommendation Gap -->
-            <div class="p-3.5">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Rec. → Sanction Gap</span>
-                <div class="flex items-baseline gap-1.5">
-                    <span id="dossier-gap-days" class="text-xl font-black font-mono text-slate-900">0 Days</span>
-                    <span id="dossier-gap-zscore" class="font-mono text-[10.5px] text-slate-500 font-bold"></span>
-                </div>
-                <p id="dossier-gap-sub" class="text-[10px] text-slate-500 mt-0.5">Statutory 45-day SLA benchmark</p>
-            </div>
-        </div>
-
-        <!-- 2. WHY THIS CASE WAS FLAGGED (Auditor Evidence Matrix) -->
-        <div class="space-y-2.5">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-amber-600 text-sm">flag</span>
-                        <span>Why This Case Was Flagged</span>
-                    </h2>
-                    <p class="text-[10px] text-slate-500">Plain-language audit evidence synthesized from statistical and econometric models</p>
-                </div>
-                <span id="dossier-flag-count-badge" class="px-2 py-0.5 rounded bg-red-50 text-red-800 border border-red-200 text-[10px] font-bold font-mono">3 SIGNALS FLAGGED</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-                <!-- Card A: Cost Outlier -->
-                <div class="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs space-y-2 border-l-4 border-l-orange-500">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider">Cost Outlier</span>
-                        <span id="card-cost-z" class="px-1.5 py-0.5 rounded bg-orange-50 text-orange-800 border border-orange-200 font-mono font-bold text-[10px]">z = 4.23</span>
-                    </div>
-                    <div class="font-mono text-lg font-black text-slate-900" id="card-cost-val">₹73.80 L</div>
-                    <p class="text-[11px] text-slate-600 leading-snug">
-                        Sanctioned amount is an econometric anomaly exceeding the median expenditure distribution for <span id="card-cost-category" class="font-semibold text-slate-800">Public Infrastructure</span> in <span id="card-cost-loc" class="font-semibold text-slate-800">Vizianagaram</span>.
-                    </p>
-                </div>
-
-                <!-- Card B: MP Category Baseline -->
-                <div class="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs space-y-2 border-l-4 border-l-amber-500">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider">MP Category Baseline</span>
-                        <span id="card-mp-sigma" class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-mono font-bold text-[10px]">+14.4σ</span>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-[10.5px] text-slate-500">
-                            <span>Historical Avg: <strong id="card-mp-mean" class="text-slate-800 font-mono">₹3.34 L</strong></span>
-                            <span>Current: <strong id="card-mp-current" class="text-slate-900 font-mono">₹73.80 L</strong></span>
-                        </div>
-                        <!-- Visual comparison bars -->
-                        <div class="space-y-1 pt-1 font-mono text-[9px]">
-                            <div class="flex items-center gap-1.5">
-                                <span class="w-14 text-slate-400 text-right">Avg (<span id="card-mp-n-bar">247</span>)</span>
-                                <div class="flex-1 bg-slate-100 rounded-full h-2 overflow-hidden">
-                                    <div id="card-mp-bar-mean" class="bg-slate-400 h-full rounded-full" style="width: 8%;"></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                                <span class="w-14 text-amber-700 font-bold text-right">Current</span>
-                                <div class="flex-1 bg-slate-100 rounded-full h-2 overflow-hidden">
-                                    <div id="card-mp-bar-current" class="bg-amber-600 h-full rounded-full" style="width: 100%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-[10.5px] text-slate-600 leading-snug">
-                        Computed across <strong id="card-mp-n" class="text-slate-800">247</strong> historical works by this MP in this category.
-                    </p>
-                </div>
-
-                <!-- Card C: Multivariate Outlier (Isolation Forest) -->
-                <div class="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs space-y-2 border-l-4 border-l-purple-500">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider">Multivariate Outlier</span>
-                        <span id="card-iso-tag" class="px-1.5 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-200 font-mono font-bold text-[10px]">Unsupervised ML</span>
-                    </div>
-                    <div class="font-mono text-sm font-bold text-purple-900" id="card-iso-status">Anomalous Feature Cluster</div>
-                    <p class="text-[11px] text-slate-600 leading-snug">
-                        This work differs significantly from comparable works when cost, approval timing, agency concentration, and location are considered together.
-                    </p>
-                </div>
-
-                <!-- Card D: Project Timeline -->
-                <div class="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs space-y-2 border-l-4 border-l-blue-500">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider">Project Timeline</span>
-                        <span id="card-timeline-tag" class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200 font-mono font-bold text-[10px]">38 Days</span>
-                    </div>
-                    <div class="space-y-1.5 text-[10.5px] pt-0.5">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="text-slate-500">Recommended:</span>
-                            <strong id="card-timeline-rec" class="font-mono text-slate-800">09 Jul 2023</strong>
-                        </div>
-                        <div class="border-l border-slate-200 ml-1 pl-3 text-[9.5px] text-slate-400 italic">
-                            <span id="card-timeline-gap">38 days elapsed</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
-                            <span class="text-slate-500">Sanctioned:</span>
-                            <strong id="card-timeline-sanc" class="font-mono text-slate-800">16 Aug 2023</strong>
-                        </div>
-                        <div class="flex items-center gap-2 pt-0.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                            <span class="text-slate-500">Execution:</span>
-                            <span id="card-timeline-status" class="font-bold text-emerald-700">Work Completed</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Section: Forensic Diagnostics & Pipeline Synthesis & Auditor Notes -->
+        <!-- 2-COLUMN INVESTIGATION WORKSPACE (LEFT 68% / RIGHT 32%) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
             
-            <!-- Left: Anomaly Vector Contribution & Forensic Diagnostics (7 Cols) -->
-            <div class="lg:col-span-7 bg-white border border-slate-200 rounded-lg shadow-2xs p-3.5 space-y-3">
-                <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
-                    <div>
-                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Anomaly Vector Contribution</h3>
-                        <p class="text-[10px] text-slate-500">Relative statistical signal weight in overall risk classification</p>
+            <!-- =========================================================
+                 LEFT INVESTIGATION COLUMN (68% ~ 8 Cols)
+                 Evidence, Baseline Comparison, Timeline, Signal Breakdown
+                 ========================================================= -->
+            <div class="lg:col-span-8 space-y-3.5">
+                
+                <!-- 1. Financial Utilization & Operational Flow Panel -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-600 text-sm">payments</span>
+                            <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Financial Utilization &amp; Disbursal Progress</h2>
+                        </div>
+                        <span id="dossier-work-status" class="nt-badge nt-badge-neutral">Status: Active Scrutiny</span>
                     </div>
-                    <button onclick="openTechnicalModal()" class="text-blue-700 hover:text-blue-900 text-xs font-bold flex items-center gap-1 hover:underline cursor-pointer">
-                        <span>Technical Details</span>
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                    </button>
-                </div>
 
-                <!-- Attribution Bars -->
-                <div class="space-y-2 font-mono text-xs">
-                    <div>
-                        <div class="flex justify-between text-[11px] mb-0.5">
-                            <span class="font-sans font-semibold text-slate-700">Cost Outlier Magnitude (<span id="attr-cost-z">z = 4.23</span>)</span>
-                            <span class="font-bold text-slate-900" id="attr-cost-pct">38%</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded">
+                            <span class="text-[9.5px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Sanctioned</span>
+                            <span id="dossier-sanction-amount" class="text-lg font-black text-slate-900">₹0.0 L</span>
+                            <p id="dossier-amount-sub" class="text-[9px] text-slate-400 mt-0.5">Total Approved</p>
                         </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                            <div id="bar-attr-cost" class="bg-orange-500 h-full rounded-full" style="width: 38%;"></div>
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded">
+                            <span class="text-[9.5px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Utilized</span>
+                            <span id="dossier-utilized-amount" class="text-lg font-black text-slate-900">₹0.0 L</span>
+                            <p class="text-[9px] text-slate-400 mt-0.5">Disbursed Expenditure</p>
                         </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-[11px] mb-0.5">
-                            <span class="font-sans font-semibold text-slate-700">MP Category Baseline Drift (<span id="attr-mp-sigma">+14.4σ</span>)</span>
-                            <span class="font-bold text-slate-900" id="attr-mp-pct">29%</span>
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded">
+                            <span class="text-[9.5px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Unspent Balance</span>
+                            <span id="dossier-unspent-amount" class="text-lg font-black text-slate-900">₹0.0 L</span>
+                            <p class="text-[9px] text-slate-400 mt-0.5">Remaining Treasury Fund</p>
                         </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                            <div id="bar-attr-mp" class="bg-amber-500 h-full rounded-full" style="width: 29%;"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-[11px] mb-0.5">
-                            <span class="font-sans font-semibold text-slate-700">Multivariate Spatial / Feature Cluster</span>
-                            <span class="font-bold text-slate-900" id="attr-iso-pct">21%</span>
-                        </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                            <div id="bar-attr-iso" class="bg-purple-500 h-full rounded-full" style="width: 21%;"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-[11px] mb-0.5">
-                            <span class="font-sans font-semibold text-slate-700">Timeline & Agency Weighting</span>
-                            <span class="font-bold text-slate-900" id="attr-time-pct">12%</span>
-                        </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                            <div id="bar-attr-time" class="bg-slate-400 h-full rounded-full" style="width: 12%;"></div>
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded">
+                            <span class="text-[9.5px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Utilization Rate</span>
+                            <span id="dossier-util-pct" class="text-lg font-black text-blue-700">0%</span>
+                            <div class="nt-progress-track mt-1.5">
+                                <div id="dossier-util-bar" class="nt-progress-fill w-[0%]"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Forensic Diagnostics Table -->
-                <div class="border-t border-slate-100 pt-2.5">
-                    <h4 class="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider mb-2">Forensic Diagnostics Summary</h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10.5px]">
-                        <div class="bg-slate-50 border border-slate-200 rounded p-2">
-                            <span class="text-slate-400 block text-[9.5px]">Cost Outlier</span>
-                            <strong class="text-slate-800 font-mono" id="fd-cost">z = 4.23</strong>
+                <!-- 2. WHY THIS CASE WAS FLAGGED (Auditor Evidence Matrix) -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div>
+                            <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-amber-600 text-sm">flag</span>
+                                <span>Why This Case Was Flagged</span>
+                            </h2>
+                            <p class="text-[10px] text-slate-500">Core anomaly vectors triggered by statistical &amp; econometric surveillance models</p>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded p-2">
-                            <span class="text-slate-400 block text-[9.5px]">MP Drift</span>
-                            <strong class="text-slate-800 font-mono" id="fd-mp">z = 14.40</strong>
+                        <span id="dossier-flag-count-badge" class="nt-badge nt-badge-critical">3 SIGNALS FLAGGED</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Card A: Cost Outlier -->
+                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-orange-500">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Cost Outlier</span>
+                                <span id="card-cost-z" class="nt-badge nt-badge-high">z = 4.23</span>
+                            </div>
+                            <div class="font-mono text-base font-black text-slate-900" id="card-cost-val">₹73.80 L</div>
+                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                                Sanctioned amount is an econometric outlier exceeding the median expenditure distribution for <span id="card-cost-category" class="font-semibold text-slate-800">Public Infrastructure</span> in <span id="card-cost-loc" class="font-semibold text-slate-800">Vizianagaram</span>.
+                            </p>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded p-2">
-                            <span class="text-slate-400 block text-[9.5px]">Isolation Forest</span>
-                            <strong class="text-purple-700 font-mono" id="fd-iso">Outlier</strong>
+
+                        <!-- Card B: MP Category Baseline -->
+                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-amber-500">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">MP Category Drift</span>
+                                <span id="card-mp-sigma" class="nt-badge nt-badge-medium">+14.4σ</span>
+                            </div>
+                            <div class="font-mono text-base font-black text-slate-900" id="card-mp-current">₹73.80 L</div>
+                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                                Significant divergence from this MP's historical category average of <strong id="card-mp-mean" class="font-mono text-slate-800">₹3.34 L</strong> across <span id="card-mp-n">247</span> prior works.
+                            </p>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded p-2">
-                            <span class="text-slate-400 block text-[9.5px]">Round Number BoQ</span>
-                            <strong class="text-emerald-700 font-mono" id="fd-boq">Not Detected</strong>
+
+                        <!-- Card C: Multivariate Outlier (Isolation Forest) -->
+                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-purple-500">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Multivariate Cluster</span>
+                                <span id="card-iso-tag" class="nt-badge nt-badge-neutral">Isolation Forest</span>
+                            </div>
+                            <div class="font-mono text-sm font-bold text-purple-900" id="card-iso-status">Anomalous Feature Cluster</div>
+                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                                Unsupervised spatial and feature clustering identifies atypical combination of high allocation, vendor density, and quick approval.
+                            </p>
+                        </div>
+
+                        <!-- Card D: Project Timeline SLA -->
+                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-blue-500">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Timeline Gap SLA</span>
+                                <span id="card-timeline-tag" class="nt-badge nt-badge-blue">38 Days</span>
+                            </div>
+                            <div class="font-mono text-sm font-bold text-slate-900" id="card-timeline-gap">38 days elapsed</div>
+                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                                Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Detailed Flags List Accordion -->
-                <div class="border-t border-slate-100 pt-2 space-y-2" id="dossier-flags-list">
-                    <!-- Dynamic flag cards -->
+                <!-- 3. MP Historical Category Baseline (Deep-Dive Explainer) -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-indigo-600 text-sm">history_edu</span>
+                                <span>MP Historical Category Baseline Comparison</span>
+                            </h3>
+                            <p class="text-[10px] text-slate-500">Contextualizes ML outlier deviation against this representative's longitudinal track record</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-500">Sample: <strong id="card-mp-n-bar" class="text-slate-800">247</strong> works</span>
+                    </div>
+
+                    <!-- Visual Comparison Bars -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2.5 font-mono text-xs">
+                        <div class="space-y-1">
+                            <div class="flex justify-between items-center text-[10.5px]">
+                                <span class="text-slate-600 font-sans font-medium">MP Historical Category Average:</span>
+                                <span class="font-bold text-slate-800">₹3.34 L</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                                <div id="card-mp-bar-mean" class="bg-slate-500 h-full rounded-full transition-all" style="width: 8%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between items-center text-[10.5px]">
+                                <span class="text-amber-800 font-sans font-bold">Current Sanctioned Project:</span>
+                                <span class="font-bold text-amber-900">₹73.80 L (+14.4σ deviation)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                                <div id="card-mp-bar-current" class="bg-amber-600 h-full rounded-full transition-all" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                        <strong>Auditor Interpretation:</strong> Across 247 historical community works recommended by this MP in the same category, the mean sanction value was ₹3.34 L. The current allocation of ₹73.80 L represents an unprecedented 22× surge (+14.4σ deviation), establishing prima facie grounds for physical BoQ verification.
+                    </p>
                 </div>
+
+                <!-- 4. Administrative Timeline & Milestones -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-blue-600 text-sm">timeline</span>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Administrative Lifecycle Timeline</h3>
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-500">Statutory 45-Day SLA Benchmark</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-slate-400 mt-1 shrink-0"></span>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">1. Recommended</span>
+                                <span id="card-timeline-rec" class="font-mono font-bold text-slate-800">09 Jul 2023</span>
+                                <p class="text-[9.5px] text-slate-500 mt-0.5">MP recommendation registered</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-600 mt-1 shrink-0"></span>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">2. Sanction Order</span>
+                                <span id="card-timeline-sanc" class="font-mono font-bold text-slate-800">16 Aug 2023</span>
+                                <p class="text-[9.5px] text-slate-500 mt-0.5">District Collector order issued</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-600 mt-1 shrink-0"></span>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">3. Execution Status</span>
+                                <span id="card-timeline-status" class="font-mono font-bold text-emerald-800">Work Completed</span>
+                                <p class="text-[9.5px] text-slate-500 mt-0.5">Physical completion logged</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Signal Attribution & Risk Breakdown -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Model Signal Attribution</h3>
+                            <p class="text-[10px] text-slate-500">Relative statistical signal weighting in overall anomaly triage</p>
+                        </div>
+                        <button onclick="openTechnicalModal()" class="nt-btn nt-btn-outline nt-btn-sm" title="View technical diagnostic parameters">
+                            <span>Technical Diagnostic Vector</span>
+                            <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-2 font-mono text-xs">
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-0.5">
+                                <span class="font-sans font-semibold text-slate-700">Cost Outlier Magnitude (<span id="attr-cost-z">z = 4.23</span>)</span>
+                                <span class="font-bold text-slate-900" id="attr-cost-pct">38%</span>
+                            </div>
+                            <div class="nt-progress-track">
+                                <div id="bar-attr-cost" class="nt-progress-fill bg-orange-500" style="width: 38%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-0.5">
+                                <span class="font-sans font-semibold text-slate-700">MP Category Baseline Drift (<span id="attr-mp-sigma">+14.4σ</span>)</span>
+                                <span class="font-bold text-slate-900" id="attr-mp-pct">29%</span>
+                            </div>
+                            <div class="nt-progress-track">
+                                <div id="bar-attr-mp" class="nt-progress-fill bg-amber-500" style="width: 29%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-0.5">
+                                <span class="font-sans font-semibold text-slate-700">Multivariate Spatial / Feature Cluster</span>
+                                <span class="font-bold text-slate-900" id="attr-iso-pct">21%</span>
+                            </div>
+                            <div class="nt-progress-track">
+                                <div id="bar-attr-iso" class="nt-progress-fill bg-purple-500" style="width: 21%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-0.5">
+                                <span class="font-sans font-semibold text-slate-700">Timeline &amp; Agency Weighting</span>
+                                <span class="font-bold text-slate-900" id="attr-time-pct">12%</span>
+                            </div>
+                            <div class="nt-progress-track">
+                                <div id="bar-attr-time" class="nt-progress-fill bg-slate-400" style="width: 12%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Right: Automated Pipeline Explanation & Auditor Notes (5 Cols) -->
-            <div class="lg:col-span-5 space-y-3">
-                <!-- Card 1: Pipeline Irregularity Analysis -->
-                <div class="bg-white border border-slate-200 rounded-lg shadow-2xs p-3.5 space-y-2.5">
-                    <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-blue-600 text-sm">psychology</span>
-                                <span>Pipeline Irregularity Analysis</span>
-                            </h3>
-                            <p class="text-[10px] text-slate-500">Deterministic diagnostic synthesis from multi-signal audit run</p>
+            <!-- =========================================================
+                 RIGHT INVESTIGATION COLUMN (32% ~ 4 Cols)
+                 Risk Summary, Pipeline Synthesis, Notes, Actions
+                 ========================================================= -->
+            <div class="lg:col-span-4 space-y-3.5">
+                
+                <!-- 1. Pipeline Irregularity Analysis & Synthesis -->
+                <div class="nt-card p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-blue-600 text-sm">psychology</span>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Pipeline Synthesis</h3>
                         </div>
-                        <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 text-[9.5px] font-mono font-bold">SYNTHESIS</span>
+                        <span class="nt-badge nt-badge-blue">DETERMINISTIC</span>
                     </div>
 
                     <div id="dossier-explanation-box" class="p-3 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-700 leading-relaxed font-sans">
                         <p id="dossier-explanation-text" class="text-slate-800 text-[11px] leading-relaxed">Loading automated pipeline explanation...</p>
                     </div>
 
-                    <div class="p-2.5 bg-blue-50/50 border border-blue-100 rounded text-[10.5px] text-blue-900 flex items-start gap-2">
+                    <div class="p-2.5 bg-blue-50/60 border border-blue-200 rounded text-[10.5px] text-blue-950 flex items-start gap-2">
                         <span class="material-symbols-outlined text-blue-600 text-sm mt-0.5 shrink-0">info</span>
                         <div class="leading-relaxed">
-                            <span class="font-bold">Human Review Required:</span> Statistical triage flags highlight statistical variance relative to constituency and sector baselines. Final irregularity determinations require administrative corroboration.
+                            <span class="font-bold">Human Corroboration Required:</span> Statistical triage flags highlight statistical deviation. Consequential administrative decisions require physical inspection.
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: Auditor Review & Case Notes -->
-                <div class="bg-white border border-slate-200 rounded-lg shadow-2xs p-3.5 space-y-3">
-                    <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-slate-700 text-sm">rate_review</span>
-                                <span>Auditor Review & Case Notes</span>
-                            </h3>
-                            <p class="text-[10px] text-slate-500">Local officer annotations for case docket review</p>
-                        </div>
-                        <span id="review-status-tag" class="px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 text-[9.5px] font-mono font-bold">PENDING REVIEW</span>
+                <!-- 2. Forensic Diagnostics Matrix -->
+                <div class="nt-card p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Anomaly Detector Matrix</h3>
+                        <span class="nt-badge nt-badge-neutral">4 MODELS</span>
                     </div>
 
-                    <div class="space-y-2">
+                    <div class="divide-y divide-slate-100 text-xs font-mono">
+                        <div class="py-1.5 flex justify-between items-center">
+                            <span class="font-sans text-slate-600">Cost Outlier:</span>
+                            <strong class="text-slate-900" id="fd-cost">z = 4.23</strong>
+                        </div>
+                        <div class="py-1.5 flex justify-between items-center">
+                            <span class="font-sans text-slate-600">MP Category Drift:</span>
+                            <strong class="text-amber-800" id="fd-mp">z = 14.40</strong>
+                        </div>
+                        <div class="py-1.5 flex justify-between items-center">
+                            <span class="font-sans text-slate-600">Isolation Forest:</span>
+                            <strong class="text-purple-800" id="fd-iso">Outlier</strong>
+                        </div>
+                        <div class="py-1.5 flex justify-between items-center">
+                            <span class="font-sans text-slate-600">Round-Number BoQ:</span>
+                            <strong class="text-emerald-800" id="fd-boq">Not Detected</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Auditor Review & Working Notes -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-slate-700 text-sm">rate_review</span>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Auditor Review Docket</h3>
+                        </div>
+                        <span id="review-status-tag" class="nt-badge nt-badge-medium">PENDING REVIEW</span>
+                    </div>
+
+                    <div class="space-y-2.5">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Triage Disposition</label>
-                            <select id="review-disposition" onchange="updateDisposition(this.value)" class="w-full px-2.5 py-1.5 rounded border border-slate-300 bg-white text-xs text-slate-900 font-medium focus:border-blue-600 focus:outline-none cursor-pointer">
+                            <label class="nt-label" for="review-disposition">Triage Disposition</label>
+                            <select id="review-disposition" onchange="updateDisposition(this.value)" class="nt-select">
                                 <option value="pending">Pending Human Scrutiny</option>
                                 <option value="priority">Priority Field Corroboration Needed</option>
                                 <option value="verified">Verified Irregularity / Escalated</option>
@@ -513,97 +570,76 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         </div>
 
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Auditor Working Notes</label>
-                            <textarea id="auditor-notes" rows="3" placeholder="Enter findings, physical verification references, or justifications..." class="w-full px-2.5 py-1.5 rounded border border-slate-300 bg-white text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none font-sans"></textarea>
+                            <label class="nt-label" for="auditor-notes">Auditor Working Notes</label>
+                            <textarea id="auditor-notes" rows="3" placeholder="Enter findings, physical verification references, or justifications..." class="nt-textarea"></textarea>
                         </div>
 
                         <div class="flex items-center justify-between pt-1">
                             <span id="notes-save-status" class="text-[10px] text-slate-500 italic"></span>
                             <div class="flex items-center gap-2">
-                                <button onclick="saveAuditorNotes()" class="px-3 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1 shadow-2xs transition-colors cursor-pointer">
+                                <button onclick="saveAuditorNotes()" class="nt-btn nt-btn-primary nt-btn-sm cursor-pointer">
                                     <span class="material-symbols-outlined text-xs">save</span>
                                     <span>Save Notes</span>
                                 </button>
-                                <button onclick="exportDossierReport()" class="px-3 py-1 rounded border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer">
+                                <button onclick="exportDossierReport()" class="nt-btn nt-btn-outline nt-btn-sm cursor-pointer">
                                     <span class="material-symbols-outlined text-xs">print</span>
-                                    <span>Export</span>
+                                    <span>Print</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- 4. Section: Audit Action Workflow (Responsible Administrative Governance) -->
-        <div class="bg-white border border-slate-200 rounded-lg shadow-2xs p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-blue-700 text-sm">gavel</span>
-                    <span>Audit Action Workflow</span>
-                </h3>
-                <p class="text-[10px] text-slate-500">Authorized administrative decisions and inspection routing</p>
-            </div>
+                <!-- 4. Administrative Action Workflow & Defensible Governance -->
+                <div class="nt-card p-3.5 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-blue-700 text-sm">gavel</span>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Administrative Governance</h3>
+                        </div>
+                        <span class="text-[10px] text-slate-400 font-mono">Actions</span>
+                    </div>
 
-            <div class="flex items-center gap-2 flex-wrap relative">
-                <!-- Routine Actions -->
-                <button onclick="handleRoutineAction('verify')" class="px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs transition-colors cursor-pointer flex items-center gap-1">
-                    <span class="material-symbols-outlined text-xs text-blue-600">location_searching</span>
-                    <span>Request Physical Verification</span>
-                </button>
+                    <!-- Routine Inspection Actions -->
+                    <div class="space-y-1.5">
+                        <button onclick="handleRoutineAction('verify')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
+                            <span class="material-symbols-outlined text-xs text-blue-600">location_searching</span>
+                            <span>Request Physical Site Verification</span>
+                        </button>
 
-                <button onclick="handleRoutineAction('boq')" class="px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs transition-colors cursor-pointer flex items-center gap-1">
-                    <span class="material-symbols-outlined text-xs text-slate-600">description</span>
-                    <span>Request Supporting Documents (BOQ)</span>
-                </button>
+                        <button onclick="handleRoutineAction('boq')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
+                            <span class="material-symbols-outlined text-xs text-slate-600">description</span>
+                            <span>Request Itemized BoQ &amp; Vouchers</span>
+                        </button>
 
-                <button onclick="handleRoutineAction('assign')" class="px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs transition-colors cursor-pointer flex items-center gap-1">
-                    <span class="material-symbols-outlined text-xs text-slate-600">person_add</span>
-                    <span>Assign for Detailed Review</span>
-                </button>
+                        <button onclick="handleRoutineAction('assign')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
+                            <span class="material-symbols-outlined text-xs text-slate-600">person_add</span>
+                            <span>Assign to Senior Vigilance Officer</span>
+                        </button>
+                    </div>
 
-                <button onclick="handleRoutineAction('followup')" class="px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs transition-colors cursor-pointer flex items-center gap-1">
-                    <span class="material-symbols-outlined text-xs text-amber-600">bookmark</span>
-                    <span>Mark for Follow-up</span>
-                </button>
-
-                <!-- Consequential Actions Dropdown (Requiring Approval & Confirmation Modal) -->
-                <div class="relative inline-block text-left">
-                    <button onclick="toggleMoreActionsDropdown(event)" id="btn-more-actions" class="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer flex items-center gap-1 border border-slate-300">
-                        <span>More Actions</span>
-                        <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
-                    </button>
-                    <div id="dropdown-more-actions" class="hidden absolute right-0 bottom-full mb-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 divide-y divide-slate-100">
-                        <div class="py-1">
-                            <button onclick="openApprovalModal('escalate')" class="w-full text-left px-3 py-2 text-xs text-red-700 hover:bg-red-50 flex items-center gap-2 cursor-pointer">
-                                <span class="material-symbols-outlined text-sm">warning</span>
-                                <div>
-                                    <span class="font-bold block">Escalate Case</span>
-                                    <span class="text-[9.5px] text-slate-500">Route to CVC / State Vigilance</span>
-                                </div>
+                    <!-- High-Impact Consequential Actions (Confirmed via Modal) -->
+                    <div class="pt-2 border-t border-slate-100 space-y-1.5">
+                        <span class="nt-label">Consequential Decisions (Requires Confirmation)</span>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button onclick="openApprovalModal('escalate')" class="nt-btn nt-btn-danger-outline nt-btn-sm justify-center">
+                                <span class="material-symbols-outlined text-xs">warning</span>
+                                <span>Escalate Case</span>
+                            </button>
+                            <button onclick="openApprovalModal('freeze')" class="nt-btn nt-btn-warning-outline nt-btn-sm justify-center">
+                                <span class="material-symbols-outlined text-xs">lock</span>
+                                <span>Freeze Disbursal</span>
                             </button>
                         </div>
-                        <div class="py-1">
-                            <button onclick="openApprovalModal('freeze')" class="w-full text-left px-3 py-2 text-xs text-amber-800 hover:bg-amber-50 flex items-center gap-2 cursor-pointer">
-                                <span class="material-symbols-outlined text-sm">lock</span>
-                                <div>
-                                    <span class="font-bold block">Freeze Disbursement</span>
-                                    <span class="text-[9.5px] text-slate-500">Hold further financial sanction</span>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="py-1">
-                            <button onclick="openApprovalModal('clear')" class="w-full text-left px-3 py-2 text-xs text-emerald-800 hover:bg-emerald-50 flex items-center gap-2 cursor-pointer">
-                                <span class="material-symbols-outlined text-sm">check_circle</span>
-                                <div>
-                                    <span class="font-bold block">Clear / Conforming</span>
-                                    <span class="text-[9.5px] text-slate-500">Conforms to MPLADS guidelines</span>
-                                </div>
-                            </button>
-                        </div>
+                        <button onclick="openApprovalModal('clear')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-center text-emerald-800 border-emerald-300 hover:bg-emerald-50">
+                            <span class="material-symbols-outlined text-xs text-emerald-600">check_circle</span>
+                            <span>Clear Anomaly / Log Justification</span>
+                        </button>
                     </div>
                 </div>
+
             </div>
+
         </div>
 
     </main>
@@ -919,6 +955,9 @@ function populateDossier(c) {
 
     const rDateEl = document.getElementById('dossier-rec-date');
     if (rDateEl) rDateEl.innerText = c.recommended_date;
+
+    const agencyEl = document.getElementById('dossier-agency');
+    if (agencyEl) agencyEl.innerText = c.ida;
 
     // Badges: High Severity & Data Quality & Signal Count
     const highSevBadge = document.getElementById('dossier-high-sev-badge');
