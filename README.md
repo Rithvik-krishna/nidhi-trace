@@ -71,10 +71,10 @@ flowchart TD
 ```
 
 ### 1. Recommendation-to-Sanction Latency (`flag_delay`)
-- **Metric**: Elapsed calendar days ($\text{gap\_days}$) between MP recommendation and district administrative sanction.
+- **Metric**: Elapsed calendar days (`gap_days`) between MP recommendation and district administrative sanction.
 - **Formulation**:
-  $$\text{Robust } z = \frac{\text{gap\_days} - \text{Median}(\text{district})}{\text{MAD}(\text{district}) \times 1.4826}$$
-- **Threshold**: Triggered when $\text{Robust } z \ge 3.5$ or $\text{gap\_days} > 180$ days relative to median district processing latency.
+  $$\text{Robust } z = \frac{\text{Delay} - \text{Median}(\text{district})}{\text{MAD}(\text{district}) \times 1.4826}$$
+- **Threshold**: Triggered when $\text{Robust } z \ge 3.5$ or `gap_days` > 180 days relative to median district processing latency.
 
 ### 2. Sanction Amount Outlier (`flag_amount`)
 - **Metric**: Sanctioned allocation amount evaluated against category distribution within the specific constituency and state.
