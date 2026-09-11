@@ -145,37 +145,37 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 <!-- Main Wrapper -->
 <div class="main-container flex-1 min-w-0 min-h-screen flex flex-col bg-canvas overflow-x-hidden">
     
-    <!-- UNIFIED SHELL: Compact Top Bar (48px) -->
-    <header class="h-12 min-h-[48px] max-h-[48px] shrink-0 w-full sticky top-0 bg-white border-b border-borderline shadow-2xs z-40 flex justify-between items-center px-4">
-        <div class="flex items-center gap-2">
-            <a href="Flagged_Cases.html" class="flex items-center gap-1 text-slate-500 hover:text-slate-900 text-xs font-semibold py-1 px-2 rounded hover:bg-slate-100 transition-colors">
+    <!-- UNIFIED SHELL: Compact Top Bar (52px) -->
+    <header class="h-[52px] min-h-[52px] max-h-[52px] shrink-0 w-full sticky top-0 bg-white border-b border-slate-200 shadow-2xs z-40 flex justify-between items-center px-4">
+        <div class="flex items-center gap-2.5">
+            <a href="Flagged_Cases.html" class="flex items-center gap-1 text-slate-600 hover:text-slate-900 text-xs font-semibold py-1 px-2 rounded-md hover:bg-slate-100 transition-colors">
                 <span class="material-symbols-outlined text-sm">arrow_back</span>
-                <span>Back to Triage</span>
+                <span>Triage Queue</span>
             </a>
             <span class="text-slate-300">/</span>
-            <span class="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-700 font-mono text-[11px] font-bold" id="dossier-header-breadcrumb">Dossier Loading...</span>
+            <span class="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-800 font-mono text-[11px] font-bold" id="dossier-header-breadcrumb">Dossier Loading...</span>
         </div>
 
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-3">
             <!-- Alert Bell -->
-            <button onclick="toggleVigilanceNotifications(event)" class="notification-bell-btn relative p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer" title="Live Vigilance Notifications">
-                <span class="material-symbols-outlined text-base">notifications</span>
-                <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-600 rounded-full ring-2 ring-white"></span>
+            <button onclick="toggleVigilanceNotifications(event)" class="notification-bell-btn relative p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors cursor-pointer" title="Vigilance Notifications">
+                <span class="material-symbols-outlined text-[18px]">notifications</span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full ring-2 ring-white"></span>
             </button>
 
             <!-- Export Dossier Button -->
-            <button type="button" onclick="exportDossierReport()" class="no-toast-intercept flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white rounded text-xs font-semibold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer">
+            <button type="button" onclick="exportDossierReport()" class="no-toast-intercept flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-md text-xs font-semibold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer">
                 <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
                 <span>Export Dossier (Print / PDF)</span>
             </button>
 
-            <div class="h-4 w-px bg-slate-200 mx-0.5"></div>
+            <div class="h-5 w-px bg-slate-200"></div>
 
             <div class="flex items-center gap-2 pl-0.5">
-                <div class="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center font-mono font-bold text-[10px] shadow-2xs">AO</div>
+                <div class="w-7 h-7 rounded-md bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-[11px] shadow-2xs">AO</div>
                 <div class="flex flex-col text-left">
-                    <span class="text-xs font-bold text-slate-900 leading-none">AO #104</span>
-                    <span class="text-[9px] text-slate-500 font-medium">MoSPI Oversight</span>
+                    <span class="text-xs font-bold text-slate-900 leading-tight">AO #104</span>
+                    <span class="text-[9.5px] text-slate-500 font-medium">MoSPI Oversight</span>
                 </div>
             </div>
         </div>
@@ -196,10 +196,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     </div>
 
     <!-- Main Dossier Content -->
-    <main class="flex-1 p-4 space-y-3.5 max-w-7xl w-full mx-auto">
+    <main class="flex-1 p-4 md:p-5 space-y-4 max-w-[1600px] w-full mx-auto">
         
-        <!-- Case Header & Compound Status Banner -->
-        <div id="case-header-card" class="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs relative overflow-hidden">
+        <!-- Case Header & Triage Status Workspace -->
+        <div id="case-header-card" class="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs relative overflow-hidden">
             <div id="dossier-bar" class="absolute top-0 left-0 bottom-0 w-1.5 bg-red-600"></div>
             
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pl-2">
@@ -211,60 +211,60 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         <span class="text-slate-300">•</span>
                         <span id="dossier-term" class="text-slate-500 font-mono text-[10.5px]">17th Lok Sabha</span>
                     </div>
-                    <h1 id="dossier-title" class="text-base font-extrabold text-slate-900 truncate">Work Title</h1>
-                    <p class="text-[11px] text-slate-500 mt-0.5">
+                    <h1 id="dossier-title" class="text-lg font-bold text-slate-900 truncate">Work Title</h1>
+                    <p class="text-xs text-slate-500 mt-1">
                         Recommending MP: <strong id="dossier-mp" class="text-slate-800 font-semibold">—</strong> • 
                         Sanction Date: <span id="dossier-sanction-date" class="font-mono text-slate-700 font-semibold">—</span> 
                         <span id="dossier-rec-wrap">(Rec: <span id="dossier-rec-date" class="font-mono text-slate-500">—</span>)</span>
                     </p>
                 </div>
 
-                <!-- Compound Triage Status Badges (Independent Multi-Signal Review) -->
+                <!-- Independent Multi-Signal Review Badges -->
                 <div class="flex items-center gap-2 flex-wrap shrink-0">
-                    <span id="dossier-high-sev-badge" class="px-2.5 py-1 rounded bg-red-100 text-red-900 border border-red-300 font-mono font-bold text-[10.5px] hidden">
-                        HIGH SEVERITY (2+ Flags)
+                    <span id="dossier-high-sev-badge" class="px-2.5 py-1 rounded-md bg-red-50 text-red-800 border border-red-200 font-mono font-bold text-[10.5px] hidden">
+                        HIGH SEVERITY (z ≥ 3.5)
                     </span>
-                    <span id="dossier-dq-badge" class="px-2.5 py-1 rounded bg-amber-100 text-amber-900 border border-amber-300 font-mono font-bold text-[10.5px] hidden">
+                    <span id="dossier-dq-badge" class="px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-mono font-bold text-[10.5px] hidden">
                         DATA QUALITY REVIEW
                     </span>
-                    <span id="dossier-signal-count-badge" class="px-2.5 py-1 rounded bg-slate-100 text-slate-800 border border-slate-300 font-mono font-bold text-[10.5px]">
+                    <span id="dossier-signal-count-badge" class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 border border-slate-200 font-mono font-bold text-[10.5px]">
                         0 Signals Triggered
                     </span>
                 </div>
             </div>
         </div>
 
-        <!-- Work Metrics (4 Validated Metric Cards) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <!-- Card 1: Sanction Amount -->
-            <div class="bg-white border border-borderline rounded-lg p-3 shadow-2xs">
-                <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Sanction Amount</span>
-                <span id="dossier-sanction-amount" class="text-lg font-black font-mono text-slate-900">₹0.0 L</span>
-                <p id="dossier-amount-sub" class="text-[9.5px] text-slate-400 mt-0.5">Approved Work Allocation</p>
+        <!-- Metric Strip Workspace (Unified 4-Metric Strip) -->
+        <div class="bg-white border border-slate-200 rounded-lg shadow-2xs grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200">
+            <!-- Metric 1: Sanction Amount -->
+            <div class="p-3.5">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Sanction Amount</span>
+                <span id="dossier-sanction-amount" class="text-xl font-black font-mono text-slate-900">₹0.0 L</span>
+                <p id="dossier-amount-sub" class="text-[10px] text-slate-400 mt-0.5">Approved Work Allocation</p>
             </div>
 
-            <!-- Card 2: Recommendation Gap -->
-            <div class="bg-white border border-borderline rounded-lg p-3 shadow-2xs">
-                <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Recommendation Gap</span>
+            <!-- Metric 2: Recommendation Gap -->
+            <div class="p-3.5">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Recommendation Gap</span>
                 <div class="flex items-baseline gap-1.5">
-                    <span id="dossier-gap-days" class="text-lg font-black font-mono text-slate-900">0 Days</span>
-                    <span id="dossier-gap-zscore" class="font-mono text-[10px] text-slate-500 font-bold"></span>
+                    <span id="dossier-gap-days" class="text-xl font-black font-mono text-slate-900">0 Days</span>
+                    <span id="dossier-gap-zscore" class="font-mono text-[10.5px] text-slate-500 font-bold"></span>
                 </div>
-                <p id="dossier-gap-sub" class="text-[9.5px] text-slate-500 mt-0.5">Recommendation to Sanction</p>
+                <p id="dossier-gap-sub" class="text-[10px] text-slate-500 mt-0.5">Recommendation to Sanction</p>
             </div>
 
-            <!-- Card 3: Work Category & Term -->
-            <div class="bg-white border border-borderline rounded-lg p-3 shadow-2xs">
-                <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Work Category</span>
+            <!-- Metric 3: Work Category & Term -->
+            <div class="p-3.5">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Work Category</span>
                 <span id="dossier-category" class="block font-bold text-slate-900 text-xs truncate" title="Category">—</span>
-                <p id="dossier-term-sub" class="text-[9.5px] text-slate-400 mt-0.5 font-mono">17th Lok Sabha</p>
+                <p id="dossier-term-sub" class="text-[10px] text-slate-400 mt-0.5 font-mono">17th Lok Sabha</p>
             </div>
 
-            <!-- Card 4: Implementing Agency & Status -->
-            <div class="bg-white border border-borderline rounded-lg p-3 shadow-2xs">
-                <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Implementing Agency</span>
+            <!-- Metric 4: Implementing Agency & Status -->
+            <div class="p-3.5">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Implementing Agency</span>
                 <span id="dossier-agency" class="block font-bold text-slate-900 text-xs truncate" title="Agency">—</span>
-                <p id="dossier-status" class="text-[9.5px] font-bold text-blue-700 mt-0.5 uppercase">Status: —</p>
+                <p id="dossier-status" class="text-[10px] font-bold text-blue-700 mt-0.5 uppercase">Status: —</p>
             </div>
         </div>
 

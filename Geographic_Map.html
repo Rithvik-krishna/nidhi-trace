@@ -152,35 +152,41 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 <!-- Main Wrapper -->
 <div class="flex-1 min-w-0 h-screen max-h-screen flex flex-col relative bg-canvas overflow-hidden">
     
-    <!-- UNIFIED SHELL: Compact Top Bar (48px) -->
-    <header class="h-12 min-h-[48px] max-h-[48px] shrink-0 w-full bg-white border-b border-borderline shadow-2xs z-40 flex justify-between items-center px-4">
+    <!-- UNIFIED SHELL: Compact Top Bar (52px) -->
+    <header class="h-[52px] min-h-[52px] max-h-[52px] shrink-0 w-full bg-white border-b border-slate-200 shadow-2xs z-40 flex justify-between items-center px-4 sticky top-0">
         <div class="flex items-center gap-3 w-80">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                <input id="map-search" class="w-full pl-8 pr-10 py-1 rounded border border-slate-300 bg-slate-50 text-xs text-slate-900 focus:bg-white focus:border-blue-600 outline-none placeholder:text-slate-400 font-sans" placeholder="Search state, district, or project ID..." type="search">
-                <kbd class="absolute right-2 top-1/2 -translate-y-1/2 px-1 py-0.2 rounded border border-slate-300 bg-white text-[9px] font-mono text-slate-400">⌘K</kbd>
+                <input id="map-search" class="w-full pl-8 pr-10 py-1.5 rounded-md border border-slate-300 bg-slate-50 text-xs text-slate-900 focus:bg-white focus:border-blue-600 outline-none placeholder:text-slate-400 font-sans transition-all" placeholder="Search state, district, or project ID..." type="search">
+                <kbd class="absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded border border-slate-300 bg-white text-[9px] font-mono text-slate-400 shadow-2xs">⌘K</kbd>
             </div>
         </div>
 
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-3">
+            <!-- MoSPI Live Status Badge -->
+            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-md text-emerald-800 text-[10.5px] font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Geospatial Engine Active • <span class="font-mono font-bold">171,890 Geocoded</span></span>
+            </div>
+
             <!-- Alert Bell -->
-            <button onclick="toggleVigilanceNotifications(event)" class="notification-bell-btn relative p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer" title="Live Vigilance Notifications">
-                <span class="material-symbols-outlined text-base">notifications</span>
-                <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-600 rounded-full ring-2 ring-white"></span>
+            <button onclick="toggleVigilanceNotifications(event)" class="notification-bell-btn relative p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors cursor-pointer" title="Live Vigilance Notifications">
+                <span class="material-symbols-outlined text-[18px]">notifications</span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full ring-2 ring-white"></span>
             </button>
 
-            <button onclick="showToast('Exporting geospatial audit vector dataset...', 'info');" class="flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white rounded text-xs font-semibold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer">
+            <button onclick="showToast('Exporting geospatial audit vector dataset...', 'info');" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-md text-xs font-semibold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer">
                 <span class="material-symbols-outlined text-sm">file_download</span>
                 <span>Export GeoData</span>
             </button>
 
-            <div class="h-4 w-px bg-slate-200 mx-0.5"></div>
+            <div class="h-5 w-px bg-slate-200"></div>
 
             <div class="flex items-center gap-2 pl-0.5">
-                <div class="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center font-mono font-bold text-[10px] shadow-2xs">AO</div>
+                <div class="w-7 h-7 rounded-md bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-[11px] shadow-2xs">AO</div>
                 <div class="flex flex-col text-left">
-                    <span class="text-xs font-bold text-slate-900 leading-none">AO #104</span>
-                    <span class="text-[9px] text-slate-500 font-medium">MoSPI Oversight</span>
+                    <span class="text-xs font-bold text-slate-900 leading-tight">AO #104</span>
+                    <span class="text-[9.5px] text-slate-500 font-medium">MoSPI Oversight</span>
                 </div>
             </div>
         </div>
@@ -259,7 +265,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             <span class="text-red-800 font-semibold flex items-center gap-1 text-[11px]">
                                 <span class="material-symbols-outlined text-xs">warning</span> Flagged Clusters
                             </span>
-                            <span class="font-mono font-bold text-red-900">23,912</span>
+                            <span class="font-mono font-bold text-red-900">23,329</span>
                         </div>
                     </div>
 
@@ -297,7 +303,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         </div>
 
         <!-- Bottom Right Floating Project Card -->
-        <div id="project-card" class="hidden absolute bottom-3 right-3 z-20 w-[340px] bg-white rounded-lg shadow-2xl border border-slate-200 overflow-hidden transition-all duration-300">
+        <div id="project-card" class="hidden absolute bottom-4 right-24 z-30 w-[350px] bg-white rounded-lg shadow-2xl border border-slate-200 overflow-hidden transition-all duration-300">
             <div id="card-risk-bar" class="h-1 w-full bg-red-600"></div>
             <div class="p-3">
                 <div class="flex justify-between items-start mb-1.5">

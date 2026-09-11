@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Rounded Rect Squircle with Blue Border -->
+  <rect x="3" y="3" width="94" height="94" rx="22" ry="22" fill="#0c1b3a" stroke="#2554a5" stroke-width="4.5" />
+  
+  <!-- Triangular Roof / Pediment -->
+  <polygon points="26,38 50,19 74,38" fill="#4d93f7" />
+  
+  <!-- 3 Pillars -->
+  <!-- Left Pillar -->
+  <rect x="33" y="44" width="8.5" height="19" rx="1.5" fill="#4d93f7" />
+  <!-- Center Pillar -->
+  <rect x="45.75" y="44" width="8.5" height="19" rx="1.5" fill="#4d93f7" />
+  <!-- Right Pillar -->
+  <rect x="58.5" y="44" width="8.5" height="19" rx="1.5" fill="#4d93f7" />
+  
+  <!-- Foundation Base Bar -->
+  <rect x="25" y="68" width="50" height="5.5" rx="1.5" fill="#4d93f7" />
+</svg>
