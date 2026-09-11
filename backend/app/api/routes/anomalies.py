@@ -70,6 +70,8 @@ def list_anomalies(
         query = query.filter(Work.flag_mp_drift == True).order_by(Work.mp_drift_zscore.desc())
     elif signal == "isolation_forest":
         query = query.filter(Work.flag_isolation_forest == True)
+    elif signal in ("dq", "data_quality"):
+        query = query.filter(Work.dq_flag == True)
     elif signal == "high_severity":
         query = query.filter(Work.is_high_severity == True)
     else:

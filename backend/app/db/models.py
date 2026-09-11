@@ -25,6 +25,11 @@ class Work(Base):
 
     explanation = Column(Text, nullable=True)
     flag_isolation_forest = Column(Boolean, default=False)
+    dq_flag = Column(Boolean, default=False)
+    dq_stale_status = Column(Boolean, default=False)
+    dq_implausible_amount = Column(Boolean, default=False)
+    dq_possible_miscategorization = Column(Boolean, default=False)
+    dq_reason = Column(Text, nullable=True)
 
     # Rich metadata fields to support all frontend views
     title = Column(Text, nullable=True)

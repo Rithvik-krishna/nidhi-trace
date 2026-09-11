@@ -206,12 +206,12 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             </div>
 
             <!-- State Filter -->
-            <select id="filter-state" onchange="filterCases()" class="bg-white border border-slate-300 rounded-md px-2.5 py-1 text-xs font-medium text-slate-700 outline-none focus:border-blue-600 cursor-pointer">
+            <select id="filter-state" onchange="filterCases()" class="bg-white border border-slate-300 rounded-md pl-2.5 pr-8 py-1 text-xs font-medium text-slate-700 outline-none focus:border-blue-600 cursor-pointer">
                 <option value="all">All States / UTs</option>
             </select>
 
             <!-- Anomaly Vector Filter -->
-            <select id="filter-anomaly" onchange="filterCases()" class="bg-white border border-slate-300 rounded-md px-2.5 py-1 text-xs font-medium text-slate-700 outline-none focus:border-blue-600 cursor-pointer">
+            <select id="filter-anomaly" onchange="filterCases()" class="bg-white border border-slate-300 rounded-md pl-2.5 pr-8 py-1 text-xs font-medium text-slate-700 outline-none focus:border-blue-600 cursor-pointer">
                 <option value="all">All Anomaly Types</option>
                 <option value="Delay">Completion Delay (>200% / z ≥ 3.5)</option>
                 <option value="Cost">Sanction Amount Outlier (z ≥ 3.5)</option>
@@ -574,24 +574,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (data && data.length) {
-        allCases = data.map(c => ({
-            id: c.work_id || c.id,
-            work_id: c.work_id || c.id,
-            title: c.title || c.work_category || 'MPLAD Scheme Work',
-            score: c.score || (c.n_flags ? Math.min(98, 45 + c.n_flags * 18) : 75),
-            severity: c.severity || (c.is_high_severity ? 'critical' : 'high'),
-            location: c.location || `${c.constituency || ''}, ${c.state || ''}`.replace(/^, /, '') || 'India',
-            sector: c.sector || c.work_category || 'Public Infrastructure',
-            mp: c.mp || c.mp_name || 'N/A',
-            sanctioned: c.sanctioned || (c.sanction_amount ? ('₹' + (c.sanction_amount >= 1e7 ? (c.sanction_amount/1e7).toFixed(2) + ' Cr' : (c.sanction_amount/1e5).toFixed(1) + ' L')) : '₹0'),
-            utilized: c.expended || c.utilized || '₹0',
-            anomaly: c.anomaly || c.explanation || (c.dq_flag ? 'Data Quality & Administrative Inconsistency' : 'Flagged Irregularity'),
-            anomalyType: c.anomalyType || (c.dq_flag ? 'Data Quality' : c.flag_delay ? 'Delay' : c.flag_amount ? 'Cost' : c.flag_mp_drift ? 'MP Drift' : 'Risk Outlier'),
-            dq_flag: Boolean(c.dq_flag || (c.flags && c.flags.dq_flag) || c.dq_stale_status || c.dq_implausible_amount || c.dq_possible_miscategorization || c.anomalyType === 'Data Quality'),
-            agency: c.agency || c.ida || 'District Authority',
-            status: c.progress || c.status || 'Under Review',
-            state: c.state || 'India'
-        }));
+        allCases = data.map(c => {
+            const isDQ = Boolean(
+                c.dq_flag || 
+                (c.flags && c.flags.dq_flag) || 
+                c.dq_stale_status || 
+                c.dq_implausible_amount || 
+                c.dq_possible_miscategorization || 
+                c.anomalyType === 'Data Quality' ||
+                (c.anomaly && (c.anomaly.toLowerCase().includes('data quality') || c.anomaly.toLowerCase().includes('stale')))
+            );
+            const aType = isDQ ? 'Data Quality' : (c.anomalyType || (c.flag_delay ? 'Delay' : c.flag_amount ? 'Cost' : c.flag_mp_drift ? 'MP Drift' : 'Spatial'));
+            return {
+                id: c.work_id || c.id,
+                work_id: c.work_id || c.id,
+                title: c.title || c.work_category || 'MPLAD Scheme Work',
+                score: c.score || (c.n_flags ? Math.min(98, 45 + c.n_flags * 18) : 75),
+                severity: c.severity || (c.is_high_severity ? 'critical' : 'high'),
+                location: c.location || `${c.constituency || ''}, ${c.state || ''}`.replace(/^, /, '') || 'India',
+                sector: c.sector || c.work_category || 'Public Infrastructure',
+                mp: c.mp || c.mp_name || 'N/A',
+                sanctioned: c.sanctioned || (c.sanction_amount ? ('₹' + (c.sanction_amount >= 1e7 ? (c.sanction_amount/1e7).toFixed(2) + ' Cr' : (c.sanction_amount/1e5).toFixed(1) + ' L')) : '₹0'),
+                utilized: c.expended || c.utilized || '₹0',
+                anomaly: c.anomaly || c.explanation || (isDQ ? 'Data Quality: Stale work progress reporting discrepancy' : 'Flagged Irregularity'),
+                anomalyType: aType,
+                dq_flag: isDQ,
+                agency: c.agency || c.ida || 'District Authority',
+                status: c.progress || c.status || 'Under Review',
+                state: c.state || 'India'
+            };
+        });
         filteredCases = [...allCases];
 
         // Dynamically populate state filter

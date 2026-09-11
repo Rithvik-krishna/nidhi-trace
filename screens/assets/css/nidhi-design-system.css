@@ -370,3 +370,37 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 }
+
+
+/* =========================================================================
+   Universal GovTech Institutional Dropdown Styling (Global Fix)
+   Ensures text NEVER overlaps with dropdown chevron arrow
+   ========================================================================= */
+select, .nt-select, #filter-anomaly, #filter-state, #filter-sector, #filter-status, #page-size-select, #state-select, #anomaly-select, #timespan-select, #review-disposition {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-color: #ffffff !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 13px 13px !important;
+    padding-left: 10px !important;
+    padding-right: 32px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    font-family: var(--nt-font) !important;
+    font-size: var(--nt-text-sm) !important;
+    color: #1e293b !important;
+    cursor: pointer !important;
+    line-height: 1.4 !important;
+    outline: none !important;
+    transition: border-color 150ms ease, box-shadow 150ms ease !important;
+}
+
+select:focus, .nt-select:focus, #filter-anomaly:focus, #filter-state:focus, #filter-sector:focus, #filter-status:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15) !important;
+}
