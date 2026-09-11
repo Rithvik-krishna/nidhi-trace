@@ -9,8 +9,14 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.4+-F7931E?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4+-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?style=flat&logo=vercel&logoColor=white)](https://mplad-insight.vercel.app)
+[![Vercel](https://img.shields.io/badge/Live_Demo-Vercel-black?style=flat&logo=vercel&logoColor=white)](https://nidhi-trace.vercel.app/)
 [![Render](https://img.shields.io/badge/Backend-Render-46E3B7?style=flat&logo=render&logoColor=white)](https://nidhitrace-api.onrender.com)
+
+</div>
+
+<div align="center">
+
+### 🌐 Live Platform: [https://nidhi-trace.vercel.app/](https://nidhi-trace.vercel.app/)
 
 </div>
 
@@ -269,7 +275,7 @@ graph LR
     RenderApp --> SQLite[(MPLADS SQLite / Parquet Dataset<br/>198,116 Works Seed)]
 ```
 
-- **Frontend Hosting**: Deployed on **Vercel** (`mplad-insight.vercel.app`) using clean URL rewrites, edge caching headers, and lightweight serverless fallbacks in `api/`.
+- **Frontend Hosting**: Deployed on **Vercel** ([https://nidhi-trace.vercel.app/](https://nidhi-trace.vercel.app/)) using clean URL rewrites, edge caching headers, and lightweight serverless fallbacks in `api/`.
 - **Backend Service**: Deployed on **Render** (`https://nidhitrace-api.onrender.com/`) running FastAPI with Uvicorn workers and full-text index querying.
 
 ---
