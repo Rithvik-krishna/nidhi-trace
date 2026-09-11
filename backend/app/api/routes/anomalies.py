@@ -71,7 +71,11 @@ def list_anomalies(
     elif signal == "isolation_forest":
         query = query.filter(Work.flag_isolation_forest == True)
     elif signal in ("dq", "data_quality"):
-        query = query.filter(Work.dq_flag == True)
+        query = query.filter((Work.dq_flag == True) | (Work.anomalyType == "Data Quality"))
+    elif signal == "agency":
+        query = query.filter((Work.anomalyType == "Agency") | (Work.flag_agency == True) | (Work.anomaly.ilike("%agency%")))
+    elif signal == "spatial":
+        query = query.filter((Work.anomalyType == "Spatial") | (Work.flag_isolation_forest == True))
     elif signal == "high_severity":
         query = query.filter(Work.is_high_severity == True)
     else:

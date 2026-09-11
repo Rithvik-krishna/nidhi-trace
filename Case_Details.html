@@ -308,49 +308,49 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <!-- Card A: Cost Outlier -->
-                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-orange-500">
+                        <div id="card-cost-container" class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-orange-500">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Cost Outlier</span>
                                 <span id="card-cost-z" class="nt-badge nt-badge-high">z = 4.23</span>
                             </div>
                             <div class="font-mono text-base font-black text-slate-900" id="card-cost-val">₹73.80 L</div>
-                            <p class="text-[10.5px] text-slate-600 leading-snug">
-                                Sanctioned amount is an econometric outlier exceeding the median expenditure distribution for <span id="card-cost-category" class="font-semibold text-slate-800">Public Infrastructure</span> in <span id="card-cost-loc" class="font-semibold text-slate-800">Vizianagaram</span>.
+                            <p id="card-cost-desc" class="text-[10.5px] text-slate-600 leading-snug">
+                                Sanctioned amount is an econometric outlier exceeding the median expenditure distribution for <span id="card-cost-category" class="font-semibold text-slate-800">Public Infrastructure</span> in <span id="card-cost-loc" class="font-semibold text-slate-800">District</span>.
                             </p>
                         </div>
 
                         <!-- Card B: MP Category Baseline -->
-                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-amber-500">
+                        <div id="card-mp-container" class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-amber-500">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">MP Category Drift</span>
                                 <span id="card-mp-sigma" class="nt-badge nt-badge-medium">+14.4σ</span>
                             </div>
                             <div class="font-mono text-base font-black text-slate-900" id="card-mp-current">₹73.80 L</div>
-                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                            <p id="card-mp-desc" class="text-[10.5px] text-slate-600 leading-snug">
                                 Significant divergence from this MP's historical category average of <strong id="card-mp-mean" class="font-mono text-slate-800">₹3.34 L</strong> across <span id="card-mp-n">247</span> prior works.
                             </p>
                         </div>
 
                         <!-- Card C: Multivariate Outlier (Isolation Forest) -->
-                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-purple-500">
+                        <div id="card-iso-container" class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-purple-500">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Multivariate Cluster</span>
                                 <span id="card-iso-tag" class="nt-badge nt-badge-neutral">Isolation Forest</span>
                             </div>
                             <div class="font-mono text-sm font-bold text-purple-900" id="card-iso-status">Anomalous Feature Cluster</div>
-                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                            <p id="card-iso-desc" class="text-[10.5px] text-slate-600 leading-snug">
                                 Unsupervised spatial and feature clustering identifies atypical combination of high allocation, vendor density, and quick approval.
                             </p>
                         </div>
 
                         <!-- Card D: Project Timeline SLA -->
-                        <div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-blue-500">
+                        <div id="card-timeline-container" class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 border-l-blue-500">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Timeline Gap SLA</span>
                                 <span id="card-timeline-tag" class="nt-badge nt-badge-blue">38 Days</span>
                             </div>
                             <div class="font-mono text-sm font-bold text-slate-900" id="card-timeline-gap">38 days elapsed</div>
-                            <p class="text-[10.5px] text-slate-600 leading-snug">
+                            <p id="card-timeline-desc" class="text-[10.5px] text-slate-600 leading-snug">
                                 Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.
                             </p>
                         </div>
@@ -375,7 +375,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         <div class="space-y-1">
                             <div class="flex justify-between items-center text-[10.5px]">
                                 <span class="text-slate-600 font-sans font-medium">MP Historical Category Average:</span>
-                                <span class="font-bold text-slate-800">₹3.34 L</span>
+                                <span id="card-mp-bar-mean-val" class="font-bold text-slate-800">₹3.34 L</span>
                             </div>
                             <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
                                 <div id="card-mp-bar-mean" class="bg-slate-500 h-full rounded-full transition-all" style="width: 8%;"></div>
@@ -385,7 +385,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         <div class="space-y-1">
                             <div class="flex justify-between items-center text-[10.5px]">
                                 <span class="text-amber-800 font-sans font-bold">Current Sanctioned Project:</span>
-                                <span class="font-bold text-amber-900">₹73.80 L (+14.4σ deviation)</span>
+                                <span id="card-mp-bar-current-val" class="font-bold text-amber-900">₹73.80 L (+14.4σ deviation)</span>
                             </div>
                             <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
                                 <div id="card-mp-bar-current" class="bg-amber-600 h-full rounded-full transition-all" style="width: 100%;"></div>
@@ -393,8 +393,8 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         </div>
                     </div>
 
-                    <p class="text-[11px] text-slate-600 leading-relaxed">
-                        <strong>Auditor Interpretation:</strong> Across 247 historical community works recommended by this MP in the same category, the mean sanction value was ₹3.34 L. The current allocation of ₹73.80 L represents an unprecedented 22× surge (+14.4σ deviation), establishing prima facie grounds for physical BoQ verification.
+                    <p id="card-mp-interpretation" class="text-[11px] text-slate-600 leading-relaxed">
+                        <strong>Auditor Interpretation:</strong> Loading empirical baseline comparison...
                     </p>
                 </div>
 
@@ -986,7 +986,7 @@ function populateDossier(c) {
     if (utilEl) utilEl.innerText = c.utilized_amount_formatted;
 
     const unspentEl = document.getElementById('dossier-unspent-amount');
-    if (unspentEl) unspentEl.innerText = `(${c.unspent_amount_formatted} balance)`;
+    if (unspentEl) unspentEl.innerText = c.unspent_amount_formatted;
 
     const utilPctEl = document.getElementById('dossier-util-pct');
     if (utilPctEl) utilPctEl.innerText = `${c.util_pct}%`;
@@ -1006,54 +1006,162 @@ function populateDossier(c) {
         gapZEl.className = c.gap_robust_z >= 3.5 ? 'text-[11px] font-bold text-red-600' : 'text-[11px] font-medium text-slate-500';
     }
 
-    // 2. "Why This Case Was Flagged" Cards
-    const costZEl = document.getElementById('card-cost-z');
-    if (costZEl) costZEl.innerText = `z = ${c.amount_robust_z.toFixed(2)}`;
+    // Calculate actual active flagged signals
+    let activeFlagsCount = 0;
+    const isCostOutlier = Boolean(c.flag_amount || c.amount_robust_z >= 3.5);
+    const isMpDrift = Boolean(c.flag_mp_drift || c.mp_drift_robust_z >= 3.5);
+    const isIsoOutlier = Boolean(c.flag_isolation_forest);
+    const isTimelineBreach = Boolean(c.flag_delay || c.gap_days > 45 || c.gap_robust_z >= 3.5);
+    const isDataQuality = Boolean(c.dq_flag);
 
+    if (isCostOutlier) activeFlagsCount++;
+    if (isMpDrift) activeFlagsCount++;
+    if (isIsoOutlier) activeFlagsCount++;
+    if (isTimelineBreach) activeFlagsCount++;
+    if (isDataQuality) activeFlagsCount++;
+
+    const flagBadgeEl = document.getElementById('dossier-flag-count-badge');
+    if (flagBadgeEl) {
+        flagBadgeEl.innerText = `${activeFlagsCount} SIGNAL${activeFlagsCount !== 1 ? 'S' : ''} FLAGGED`;
+        flagBadgeEl.className = activeFlagsCount >= 3 ? 'nt-badge nt-badge-critical' : (activeFlagsCount === 2 ? 'nt-badge nt-badge-high' : 'nt-badge nt-badge-medium');
+    }
+
+    // 2. "Why This Case Was Flagged" Cards (100% Dynamic)
+    // Card A: Cost Outlier
+    const costZEl = document.getElementById('card-cost-z');
+    if (costZEl) {
+        costZEl.innerText = `z = ${c.amount_robust_z.toFixed(2)}`;
+        costZEl.className = isCostOutlier ? 'nt-badge nt-badge-critical' : 'nt-badge nt-badge-neutral';
+    }
     const costValEl = document.getElementById('card-cost-val');
     if (costValEl) costValEl.innerText = c.sanction_amount_formatted;
-
     const costCatEl = document.getElementById('card-cost-category');
     if (costCatEl) costCatEl.innerText = c.work_category;
-
     const costLocEl = document.getElementById('card-cost-loc');
     if (costLocEl) costLocEl.innerText = c.constituency;
+    const costDescEl = document.getElementById('card-cost-desc');
+    if (costDescEl) {
+        if (isCostOutlier) {
+            costDescEl.innerHTML = `Sanctioned amount is an econometric outlier exceeding the median expenditure distribution for <span class="font-semibold text-slate-800">${c.work_category}</span> in <span class="font-semibold text-slate-800">${c.constituency}</span> (robust z = ${c.amount_robust_z.toFixed(2)}).`;
+        } else {
+            costDescEl.innerHTML = `Sanctioned amount conforms to median expenditure distribution for <span class="font-semibold text-slate-800">${c.work_category}</span> in <span class="font-semibold text-slate-800">${c.constituency}</span>.`;
+        }
+    }
+    const costContainer = document.getElementById('card-cost-container');
+    if (costContainer) {
+        costContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${isCostOutlier ? 'border-l-orange-500' : 'border-l-slate-300'}`;
+    }
 
+    // Card B: MP Category Drift
     const mpSigmaEl = document.getElementById('card-mp-sigma');
-    if (mpSigmaEl) mpSigmaEl.innerText = `+${c.mp_drift_robust_z.toFixed(1)}σ`;
-
-    const mpMeanEl = document.getElementById('card-mp-mean');
-    if (mpMeanEl) mpMeanEl.innerText = c.mp_cat_mean_formatted;
-
+    if (mpSigmaEl) {
+        const sign = c.mp_drift_robust_z >= 0 ? '+' : '';
+        mpSigmaEl.innerText = `${sign}${c.mp_drift_robust_z.toFixed(1)}σ`;
+        mpSigmaEl.className = isMpDrift ? 'nt-badge nt-badge-high' : 'nt-badge nt-badge-neutral';
+    }
     const mpCurEl = document.getElementById('card-mp-current');
     if (mpCurEl) mpCurEl.innerText = c.sanction_amount_formatted;
-
+    const mpMeanEl = document.getElementById('card-mp-mean');
+    if (mpMeanEl) mpMeanEl.innerText = c.mp_cat_mean_formatted;
     const mpNEl = document.getElementById('card-mp-n');
     if (mpNEl) mpNEl.innerText = c.mp_cat_n;
+    const mpDescEl = document.getElementById('card-mp-desc');
+    if (mpDescEl) {
+        if (isMpDrift) {
+            mpDescEl.innerHTML = `Significant divergence from this MP's historical category average of <strong class="font-mono text-slate-800">${c.mp_cat_mean_formatted}</strong> across <span class="font-semibold">${c.mp_cat_n}</span> prior works.`;
+        } else {
+            mpDescEl.innerHTML = `Conforms to this MP's historical category average of <strong class="font-mono text-slate-800">${c.mp_cat_mean_formatted}</strong> across <span class="font-semibold">${c.mp_cat_n}</span> prior works.`;
+        }
+    }
+    const mpContainer = document.getElementById('card-mp-container');
+    if (mpContainer) {
+        mpContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${isMpDrift ? 'border-l-amber-500' : 'border-l-slate-300'}`;
+    }
 
+    // Card C: Multivariate Cluster (Isolation Forest)
+    const isoTagEl = document.getElementById('card-iso-tag');
+    if (isoTagEl) {
+        isoTagEl.innerText = isIsoOutlier ? 'ISOLATION FOREST (OUTLIER)' : 'CONFORMING VECTOR';
+        isoTagEl.className = isIsoOutlier ? 'nt-badge nt-badge-critical' : 'nt-badge nt-badge-neutral';
+    }
+    const isoStatusEl = document.getElementById('card-iso-status');
+    if (isoStatusEl) {
+        isoStatusEl.innerText = isIsoOutlier ? 'Anomalous Feature Cluster' : 'Standard Cluster Profile';
+        isoStatusEl.className = isIsoOutlier ? 'font-mono text-sm font-bold text-purple-900' : 'font-mono text-sm font-bold text-slate-700';
+    }
+    const isoDescEl = document.getElementById('card-iso-desc');
+    if (isoDescEl) {
+        isoDescEl.innerText = isIsoOutlier ? 
+            'Unsupervised spatial and feature clustering identifies atypical combination of high allocation, vendor density, and quick approval.' : 
+            'Multi-feature vector projection conforms to expected operational cluster profiles in this jurisdiction.';
+    }
+    const isoContainer = document.getElementById('card-iso-container');
+    if (isoContainer) {
+        isoContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${isIsoOutlier ? 'border-l-purple-500' : 'border-l-slate-300'}`;
+    }
+
+    // Card D: Project Timeline SLA (DYNMICALLY REFLECTS ACTUAL GAP DAYS)
+    const timeGapEl = document.getElementById('card-timeline-gap');
+    if (timeGapEl) timeGapEl.innerText = `${c.gap_days} days elapsed`;
+
+    const timeTagEl = document.getElementById('card-timeline-tag');
+    if (timeTagEl) {
+        if (c.gap_days > 45) {
+            timeTagEl.innerText = `+${c.gap_days - 45}d BREACH`;
+            timeTagEl.className = 'nt-badge nt-badge-critical';
+        } else {
+            timeTagEl.innerText = `${c.gap_days} DAYS`;
+            timeTagEl.className = 'nt-badge nt-badge-blue';
+        }
+    }
+
+    const timeDescEl = document.getElementById('card-timeline-desc');
+    if (timeDescEl) {
+        if (c.gap_days > 45) {
+            timeDescEl.innerHTML = `<span class="text-red-700 font-semibold">Exceeds statutory 45-day SLA guideline by ${c.gap_days - 45} days</span> between recommendation and district sanction order (robust z = ${c.gap_robust_z.toFixed(2)}).`;
+        } else {
+            timeDescEl.innerText = `Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.`;
+        }
+    }
+
+    const timeContainer = document.getElementById('card-timeline-container');
+    if (timeContainer) {
+        timeContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${c.gap_days > 45 ? 'border-l-red-500' : 'border-l-blue-500'}`;
+    }
+
+    // 3. Section 3: MP Historical Category Baseline Comparison
     const mpNBarEl = document.getElementById('card-mp-n-bar');
     if (mpNBarEl) mpNBarEl.innerText = c.mp_cat_n;
 
-    // Visual comparison bars for MP Baseline
+    const mpBarMeanVal = document.getElementById('card-mp-bar-mean-val');
+    if (mpBarMeanVal) mpBarMeanVal.innerText = c.mp_cat_mean_formatted;
+
+    const mpBarCurVal = document.getElementById('card-mp-bar-current-val');
+    if (mpBarCurVal) {
+        const sign = c.mp_drift_robust_z >= 0 ? '+' : '';
+        mpBarCurVal.innerText = `${c.sanction_amount_formatted} (${sign}${c.mp_drift_robust_z.toFixed(1)}σ deviation)`;
+    }
+
     const barMeanEl = document.getElementById('card-mp-bar-mean');
     if (barMeanEl && c.sanction_amount > 0) {
         const ratio = Math.max(5, Math.min(100, Math.round((c.mp_cat_mean / c.sanction_amount) * 100)));
         barMeanEl.style.width = `${ratio}%`;
     }
 
-    // Isolation forest card
-    const isoStatusEl = document.getElementById('card-iso-status');
-    if (isoStatusEl) {
-        isoStatusEl.innerText = c.flag_isolation_forest ? 'Anomalous Feature Cluster' : 'Conforming Vector';
-        isoStatusEl.className = c.flag_isolation_forest ? 'font-mono text-sm font-bold text-purple-900' : 'font-mono text-sm font-bold text-emerald-800';
+    const mpInterpEl = document.getElementById('card-mp-interpretation');
+    if (mpInterpEl) {
+        const surgeRatio = c.mp_cat_mean > 0 ? (c.sanction_amount / c.mp_cat_mean).toFixed(1) : '1.0';
+        const sign = c.mp_drift_robust_z >= 0 ? '+' : '';
+        if (c.mp_drift_robust_z >= 3.5) {
+            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} represents a ${surgeRatio}× surge (${sign}${c.mp_drift_robust_z.toFixed(1)}σ deviation), establishing prima facie grounds for physical BoQ verification.`;
+        } else {
+            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} conforms within typical variance (${sign}${c.mp_drift_robust_z.toFixed(1)}σ).`;
+        }
     }
 
-    // Timeline card
+    // 4. Section 4: Administrative Timeline
     const timeRecEl = document.getElementById('card-timeline-rec');
     if (timeRecEl) timeRecEl.innerText = c.recommended_date;
-
-    const timeGapEl = document.getElementById('card-timeline-gap');
-    if (timeGapEl) timeGapEl.innerText = `${c.gap_days} days elapsed`;
 
     const timeSancEl = document.getElementById('card-timeline-sanc');
     if (timeSancEl) timeSancEl.innerText = c.sanction_date;
@@ -1061,13 +1169,43 @@ function populateDossier(c) {
     const timeStatEl = document.getElementById('card-timeline-status');
     if (timeStatEl) timeStatEl.innerText = c.work_status;
 
-    // 3. Attribution Bars & Forensic Diagnostics
+    // 5. Section 5: Model Signal Attribution (Computed dynamically per case)
+    const wCost = Math.max(0.2, Math.min(10, Math.abs(c.amount_robust_z || 0)));
+    const wMp = Math.max(0.2, Math.min(10, Math.abs(c.mp_drift_robust_z || 0)));
+    const wIso = c.flag_isolation_forest ? 3.5 : 0.5;
+    const wTime = Math.max(0.2, Math.min(10, Math.abs(c.gap_robust_z || 0)));
+    const totalW = wCost + wMp + wIso + wTime;
+
+    const pCost = Math.round((wCost / totalW) * 100);
+    const pMp = Math.round((wMp / totalW) * 100);
+    const pIso = Math.round((wIso / totalW) * 100);
+    const pTime = Math.max(0, 100 - (pCost + pMp + pIso));
+
     const attrCostZEl = document.getElementById('attr-cost-z');
     if (attrCostZEl) attrCostZEl.innerText = `z = ${c.amount_robust_z.toFixed(2)}`;
+    const attrCostPct = document.getElementById('attr-cost-pct');
+    if (attrCostPct) attrCostPct.innerText = `${pCost}%`;
+    const barAttrCost = document.getElementById('bar-attr-cost');
+    if (barAttrCost) barAttrCost.style.width = `${pCost}%`;
 
     const attrMpSigEl = document.getElementById('attr-mp-sigma');
-    if (attrMpSigEl) attrMpSigEl.innerText = `+${c.mp_drift_robust_z.toFixed(1)}σ`;
+    if (attrMpSigEl) attrMpSigEl.innerText = `${c.mp_drift_robust_z >= 0 ? '+' : ''}${c.mp_drift_robust_z.toFixed(1)}σ`;
+    const attrMpPct = document.getElementById('attr-mp-pct');
+    if (attrMpPct) attrMpPct.innerText = `${pMp}%`;
+    const barAttrMp = document.getElementById('bar-attr-mp');
+    if (barAttrMp) barAttrMp.style.width = `${pMp}%`;
 
+    const attrIsoPct = document.getElementById('attr-iso-pct');
+    if (attrIsoPct) attrIsoPct.innerText = `${pIso}%`;
+    const barAttrIso = document.getElementById('bar-attr-iso');
+    if (barAttrIso) barAttrIso.style.width = `${pIso}%`;
+
+    const attrTimePct = document.getElementById('attr-time-pct');
+    if (attrTimePct) attrTimePct.innerText = `${pTime}%`;
+    const barAttrTime = document.getElementById('bar-attr-time');
+    if (barAttrTime) barAttrTime.style.width = `${pTime}%`;
+
+    // 6. Right Column: Detector Matrix
     const fdCostEl = document.getElementById('fd-cost');
     if (fdCostEl) fdCostEl.innerText = `z = ${c.amount_robust_z.toFixed(2)}`;
 

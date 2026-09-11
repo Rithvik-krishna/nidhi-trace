@@ -492,25 +492,68 @@ function filterCases() {
     const anomaly = document.getElementById("filter-anomaly").value;
 
     filteredCases = allCases.filter(item => {
-        if (selectedSeverity !== "all" && item.severity !== selectedSeverity) return false;
-        if (state !== "all" && item.state !== state && !item.location.includes(state)) return false;
-        if (anomaly !== "all") {
-            if (anomaly === "Data Quality") {
-                if (!item.dq_flag && item.anomalyType !== "Data Quality" && !item.anomaly.toLowerCase().includes("data quality") && !item.anomaly.toLowerCase().includes("stale")) return false;
-            } else if (item.anomalyType !== anomaly && !item.anomaly.toLowerCase().includes(anomaly.toLowerCase())) {
-                return false;
-            }
+        // Severity Filter
+        if (selectedSeverity !== "all") {
+            const itemSev = (item.severity || "").toLowerCase();
+            const targetSev = selectedSeverity.toLowerCase();
+            if (targetSev === "med" && !itemSev.includes("med")) return false;
+            if (targetSev !== "med" && !itemSev.includes(targetSev)) return false;
         }
+
+        // State Filter
+        if (state !== "all") {
+            const itemLoc = (item.location || "").toLowerCase();
+            const itemState = (item.state || "").toLowerCase();
+            const targetState = state.toLowerCase();
+            if (!itemLoc.includes(targetState) && !itemState.includes(targetState)) return false;
+        }
+
+        // Anomaly Vector Filter (Robust Multi-Signal Matching)
+        if (anomaly !== "all") {
+            const anomType = (item.anomalyType || "").toLowerCase();
+            const anomText = (item.anomaly || "").toLowerCase();
+            let matches = false;
+
+            if (anomaly === "Agency") {
+                matches = anomType === "agency" || anomText.includes("agency") || anomText.includes("concentration") || Boolean(item.flag_agency);
+            } else if (anomaly === "Delay") {
+                matches = anomType === "delay" || anomText.includes("delay") || anomText.includes("days") || Boolean(item.flag_delay) || (item.gap_days > 180);
+            } else if (anomaly === "Cost") {
+                matches = anomType === "cost" || anomText.includes("cost") || anomText.includes("amount") || anomText.includes("outlier (z=") || Boolean(item.flag_amount);
+            } else if (anomaly === "Spatial") {
+                matches = anomType === "spatial" || anomText.includes("spatial") || anomText.includes("isolation") || Boolean(item.flag_isolation_forest);
+            } else if (anomaly === "MP Drift") {
+                matches = anomType.includes("drift") || anomText.includes("drift") || anomText.includes("baseline") || Boolean(item.flag_mp_drift);
+            } else if (anomaly === "Data Quality") {
+                matches = anomType.includes("quality") || anomText.includes("data quality") || anomText.includes("stale") || anomText.includes("implausible") || anomText.includes("miscategorization") || Boolean(item.dq_flag);
+            } else {
+                matches = anomType === anomaly.toLowerCase() || anomText.includes(anomaly.toLowerCase());
+            }
+
+            if (!matches) return false;
+        }
+
+        // Keyword Search Filter
         if (q) {
-            const match = item.id.toLowerCase().includes(q) ||
-                          item.title.toLowerCase().includes(q) ||
-                          item.location.toLowerCase().includes(q) ||
-                          item.mp.toLowerCase().includes(q) ||
-                          item.agency.toLowerCase().includes(q) ||
-                          item.anomaly.toLowerCase().includes(q);
+            const match = (item.id || "").toLowerCase().includes(q) ||
+                          (item.title || "").toLowerCase().includes(q) ||
+                          (item.location || "").toLowerCase().includes(q) ||
+                          (item.mp || "").toLowerCase().includes(q) ||
+                          (item.agency || "").toLowerCase().includes(q) ||
+                          (item.anomaly || "").toLowerCase().includes(q);
             if (!match) return false;
         }
+
         return true;
+    });
+
+    // Priority Sort: Critical Outliers First -> High -> Medium -> Low, then by Score descending
+    const severityRanks = { critical: 1, high: 2, med: 3, medium: 3, low: 4 };
+    filteredCases.sort((a, b) => {
+        const rankA = severityRanks[(a.severity || "").toLowerCase()] || 5;
+        const rankB = severityRanks[(b.severity || "").toLowerCase()] || 5;
+        if (rankA !== rankB) return rankA - rankB;
+        return (b.score || 0) - (a.score || 0);
     });
 
     currentPage = 1;
@@ -584,11 +627,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 c.anomalyType === 'Data Quality' ||
                 (c.anomaly && (c.anomaly.toLowerCase().includes('data quality') || c.anomaly.toLowerCase().includes('stale')))
             );
-            const aType = isDQ ? 'Data Quality' : (c.anomalyType || (c.flag_delay ? 'Delay' : c.flag_amount ? 'Cost' : c.flag_mp_drift ? 'MP Drift' : 'Spatial'));
+
+            // Determine accurate primary anomaly type
+            let aType = c.anomalyType;
+            if (!aType) {
+                const anomLower = (c.anomaly || '').toLowerCase();
+                if (anomLower.includes('agency')) aType = 'Agency';
+                else if (isDQ) aType = 'Data Quality';
+                else if (anomLower.includes('delay') || c.flag_delay) aType = 'Delay';
+                else if (anomLower.includes('amount') || anomLower.includes('cost') || c.flag_amount) aType = 'Cost';
+                else if (anomLower.includes('drift') || c.flag_mp_drift) aType = 'MP Drift';
+                else if (anomLower.includes('spatial') || c.flag_isolation_forest) aType = 'Spatial';
+                else aType = 'Agency';
+            }
+
             return {
                 id: c.work_id || c.id,
                 work_id: c.work_id || c.id,
-                title: c.title || c.work_category || 'MPLAD Scheme Work',
+                title: c.title || c.work_description || c.work_category || 'MPLAD Scheme Work',
                 score: c.score || (c.n_flags ? Math.min(98, 45 + c.n_flags * 18) : 75),
                 severity: c.severity || (c.is_high_severity ? 'critical' : 'high'),
                 location: c.location || `${c.constituency || ''}, ${c.state || ''}`.replace(/^, /, '') || 'India',
@@ -596,12 +652,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 mp: c.mp || c.mp_name || 'N/A',
                 sanctioned: c.sanctioned || (c.sanction_amount ? ('₹' + (c.sanction_amount >= 1e7 ? (c.sanction_amount/1e7).toFixed(2) + ' Cr' : (c.sanction_amount/1e5).toFixed(1) + ' L')) : '₹0'),
                 utilized: c.expended || c.utilized || '₹0',
-                anomaly: c.anomaly || c.explanation || (isDQ ? 'Data Quality: Stale work progress reporting discrepancy' : 'Flagged Irregularity'),
+                anomaly: c.anomaly || c.explanation || (isDQ ? 'Data Quality: Stale work progress reporting discrepancy' : 'Implementing Agency Risk Concentration'),
                 anomalyType: aType,
-                dq_flag: isDQ,
                 agency: c.agency || c.ida || 'District Authority',
                 status: c.progress || c.status || 'Under Review',
-                state: c.state || 'India'
+                state: c.state || 'India',
+                gap_days: c.gap_days || c.gapDays || 0,
+                flag_delay: Boolean(c.flag_delay || (c.flags && c.flags.flag_delay)),
+                flag_amount: Boolean(c.flag_amount || (c.flags && c.flags.flag_amount)),
+                flag_mp_drift: Boolean(c.flag_mp_drift || (c.flags && c.flags.flag_mp_drift)),
+                flag_isolation_forest: Boolean(c.flag_isolation_forest || (c.flags && c.flags.iso_flag)),
+                flag_agency: Boolean(c.flag_agency || (c.agency && c.agency.toLowerCase().includes('collector')) || aType === 'Agency'),
+                dq_flag: isDQ
             };
         });
         filteredCases = [...allCases];

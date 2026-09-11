@@ -43,3 +43,5 @@ class Work(Base):
     score = Column(Integer, nullable=True)
     severity = Column(String, nullable=True)
     anomaly = Column(String, nullable=True)
+    anomalyType = Column(String, nullable=True)
+    flag_agency = Column(Boolean, default=False)

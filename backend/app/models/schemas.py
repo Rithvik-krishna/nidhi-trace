@@ -32,6 +32,8 @@ class WorkOut(BaseModel):
     progress: Optional[str] = None
     severity: Optional[str] = None
     anomaly: Optional[str] = None
+    anomalyType: Optional[str] = None
+    flag_agency: Optional[bool] = False
 
     class Config:
         from_attributes = True
