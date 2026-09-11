@@ -218,6 +218,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 <option value="Agency">Implementing Agency Risk</option>
                 <option value="Spatial">Spatial ML Outlier (Isolation Forest)</option>
                 <option value="MP Drift">MP Spending Habit Drift</option>
+                <option value="Data Quality">Data Quality Alert (Reporting / Stale Status)</option>
             </select>
 
             <!-- Severity Pills -->
@@ -493,7 +494,13 @@ function filterCases() {
     filteredCases = allCases.filter(item => {
         if (selectedSeverity !== "all" && item.severity !== selectedSeverity) return false;
         if (state !== "all" && item.state !== state && !item.location.includes(state)) return false;
-        if (anomaly !== "all" && item.anomalyType !== anomaly) return false;
+        if (anomaly !== "all") {
+            if (anomaly === "Data Quality") {
+                if (!item.dq_flag && item.anomalyType !== "Data Quality" && !item.anomaly.toLowerCase().includes("data quality") && !item.anomaly.toLowerCase().includes("stale")) return false;
+            } else if (item.anomalyType !== anomaly && !item.anomaly.toLowerCase().includes(anomaly.toLowerCase())) {
+                return false;
+            }
+        }
         if (q) {
             const match = item.id.toLowerCase().includes(q) ||
                           item.title.toLowerCase().includes(q) ||
@@ -578,8 +585,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             mp: c.mp || c.mp_name || 'N/A',
             sanctioned: c.sanctioned || (c.sanction_amount ? ('₹' + (c.sanction_amount >= 1e7 ? (c.sanction_amount/1e7).toFixed(2) + ' Cr' : (c.sanction_amount/1e5).toFixed(1) + ' L')) : '₹0'),
             utilized: c.expended || c.utilized || '₹0',
-            anomaly: c.anomaly || c.explanation || 'Flagged Irregularity',
-            anomalyType: c.anomalyType || (c.flag_delay ? 'Delay' : c.flag_amount ? 'Cost Outlier' : c.flag_mp_drift ? 'MP Drift' : 'Risk Outlier'),
+            anomaly: c.anomaly || c.explanation || (c.dq_flag ? 'Data Quality & Administrative Inconsistency' : 'Flagged Irregularity'),
+            anomalyType: c.anomalyType || (c.dq_flag ? 'Data Quality' : c.flag_delay ? 'Delay' : c.flag_amount ? 'Cost' : c.flag_mp_drift ? 'MP Drift' : 'Risk Outlier'),
+            dq_flag: Boolean(c.dq_flag || (c.flags && c.flags.dq_flag) || c.dq_stale_status || c.dq_implausible_amount || c.dq_possible_miscategorization || c.anomalyType === 'Data Quality'),
             agency: c.agency || c.ida || 'District Authority',
             status: c.progress || c.status || 'Under Review',
             state: c.state || 'India'
