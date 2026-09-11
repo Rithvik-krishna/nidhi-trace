@@ -225,7 +225,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             
             <!-- 1. LIVE DATA TABLE -->
             <div id="view-live" class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
-                <table class="w-full table-fixed border-collapse text-xs">
+                <table id="cases-table" class="w-full table-fixed border-collapse text-xs min-h-full">
                     <colgroup>
                         <col style="width: 7%;">    <!-- Severity -->
                         <col style="width: 8.5%;">  <!-- Work ID -->
@@ -307,11 +307,12 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <span class="text-xs">Showing <strong id="visible-count" class="text-slate-900 font-mono font-bold">1 – 9</strong> of <strong id="total-flagged-count" class="text-slate-900 font-mono font-bold">2,763</strong> records</span>
                     <div class="flex items-center gap-1 text-[11px] text-slate-500">
                         <span>Rows per view:</span>
-                        <select id="select-page-size" onchange="changePageSize(this.value)" class="bg-white border border-slate-300 rounded px-1.5 py-0.5 text-[11px] font-bold text-slate-800 outline-none">
-                            <option value="8">8 (Fit Screen)</option>
-                            <option value="9" selected>9 (Standard)</option>
-                            <option value="12">12</option>
-                            <option value="20">20</option>
+                        <select id="select-page-size" onchange="changePageSize(this.value)" class="bg-white border border-slate-300 rounded px-1.5 py-0.5 text-[11px] font-bold text-slate-800 outline-none cursor-pointer">
+                            <option value="auto" selected>Auto (Fit Screen)</option>
+                            <option value="10">10</option>
+                            <option value="14">14</option>
+                            <option value="18">18</option>
+                            <option value="25">25</option>
                         </select>
                     </div>
                 </div>
@@ -336,10 +337,35 @@ let allCases = [];
 let filteredCases = [];
 let selectedSeverity = "all";
 let currentPage = 1;
-let PAGE_SIZE = 9;
+let pageSize = 14;
+let isAutoPageSize = true;
+
+function getOptimalPageSize() {
+    const container = document.getElementById("view-live");
+    if (!container || !container.clientHeight) return 14;
+    const available = container.clientHeight - 34; // Subtracting the table header
+    const rowHeight = 38;
+    const calculated = Math.floor(available / rowHeight);
+    return Math.max(7, Math.min(calculated, 40));
+}
+
+function updateAutoPageSize() {
+    if (!isAutoPageSize) return;
+    const optimal = getOptimalPageSize();
+    if (optimal !== pageSize) {
+        pageSize = optimal;
+        renderTable();
+    }
+}
 
 function changePageSize(val) {
-    PAGE_SIZE = parseInt(val, 10) || 9;
+    if (val === 'auto') {
+        isAutoPageSize = true;
+        pageSize = getOptimalPageSize();
+    } else {
+        isAutoPageSize = false;
+        pageSize = parseInt(val, 10) || 14;
+    }
     currentPage = 1;
     renderTable();
 }
@@ -380,16 +406,25 @@ function renderTable() {
     }
     setTableView("live");
 
-    const totalPages = Math.ceil(filteredCases.length / PAGE_SIZE);
+    const totalPages = Math.ceil(filteredCases.length / pageSize);
     if (currentPage > totalPages) currentPage = totalPages;
     if (currentPage < 1) currentPage = 1;
 
-    const startIdx = (currentPage - 1) * PAGE_SIZE;
-    const endIdx = Math.min(startIdx + PAGE_SIZE, filteredCases.length);
+    const startIdx = (currentPage - 1) * pageSize;
+    const endIdx = Math.min(startIdx + pageSize, filteredCases.length);
     const pageItems = filteredCases.slice(startIdx, endIdx);
 
+    const tableEl = document.getElementById("cases-table");
+    if (tableEl) {
+        if (pageItems.length >= pageSize - 2) {
+            tableEl.classList.add("min-h-full");
+        } else {
+            tableEl.classList.remove("min-h-full");
+        }
+    }
+
     tbody.innerHTML = pageItems.map(row => `
-        <tr class="hover:bg-slate-50/80 transition-colors border-b border-borderline/60 h-[40px]">
+        <tr class="hover:bg-slate-50/80 transition-colors border-b border-borderline/60">
             <td class="py-1 px-1.5 text-center truncate">${getSeverityBadge(row)}</td>
             <td class="py-1 px-1.5 font-mono font-bold truncate">
                 <a href="Case_Details.html?id=${encodeURIComponent(row.id)}" class="text-blue-700 hover:text-blue-900 hover:underline" title="View Dossier for #${row.id}">#${row.id}</a>
@@ -432,7 +467,7 @@ function prevPage() {
 }
 
 function nextPage() {
-    const totalPages = Math.ceil(filteredCases.length / PAGE_SIZE);
+    const totalPages = Math.ceil(filteredCases.length / pageSize);
     if (currentPage < totalPages) {
         currentPage++;
         renderTable();
@@ -548,10 +583,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 states.map(s => `<option value="${s}">${s}</option>`).join('');
         }
 
+        if (isAutoPageSize) {
+            pageSize = getOptimalPageSize();
+        }
         renderTable();
     } else {
         setTableView("empty");
     }
+});
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+    if (!isAutoPageSize) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        updateAutoPageSize();
+    }, 120);
 });
 </script>
 </body>

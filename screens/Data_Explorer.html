@@ -248,7 +248,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             
             <!-- 1. LIVE DATA TABLE -->
             <div id="view-live" class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
-                <table class="w-full table-fixed border-collapse text-xs">
+                <table id="ledger-table" class="w-full table-fixed border-collapse text-xs min-h-full">
                     <colgroup>
                         <col style="width: 8%;">
                         <col style="width: 20%;">
@@ -535,8 +535,16 @@ function renderLedger() {
     }
 
     setExplorerView('live');
+    const tableEl = document.getElementById("ledger-table");
+    if (tableEl) {
+        if (pageItems.length >= pageSize - 2) {
+            tableEl.classList.add("min-h-full");
+        } else {
+            tableEl.classList.remove("min-h-full");
+        }
+    }
     tbody.innerHTML = pageItems.map(row => `
-        <tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100 h-[38px] text-[10.5px]">
+        <tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100 text-[10.5px]">
             <td class="py-1 px-2.5 font-mono font-bold text-slate-900 text-[10px] truncate" title="${row.id}">
                 ${row.id}
             </td>
