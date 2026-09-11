@@ -281,23 +281,23 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 
         <!-- Top Right Risk Legend -->
         <div class="absolute top-3 right-3 z-20 bg-white/95 backdrop-blur-md px-3 py-2 rounded-lg shadow-md border border-slate-200 select-none">
-            <h4 class="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-1">Risk Severity Index</h4>
-            <div class="flex items-center gap-2.5 font-mono text-[10.5px]">
+            <h4 class="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-1">Risk Severity Tiers</h4>
+            <div class="flex items-center gap-3 font-mono text-[10.5px]">
                 <div class="flex items-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-red-600"></span>
-                    <span class="text-slate-700 font-semibold">Critical (&gt;90)</span>
+                    <span class="text-slate-700 font-semibold">Critical (z ≥ 3.5)</span>
                 </div>
                 <div class="flex items-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-orange-600"></span>
-                    <span class="text-slate-700 font-semibold">High (70-89)</span>
+                    <span class="text-slate-700 font-semibold">High (≥ 2 Signals)</span>
                 </div>
                 <div class="flex items-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span class="text-slate-700 font-semibold">Med (40-69)</span>
+                    <span class="text-slate-700 font-semibold">Med (Single Signal)</span>
                 </div>
                 <div class="flex items-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                    <span class="text-slate-700 font-semibold">Low (&lt;40)</span>
+                    <span class="text-slate-700 font-semibold">Compliant</span>
                 </div>
             </div>
         </div>
@@ -313,10 +313,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         <p id="card-id" class="text-[10px] text-slate-500 font-mono mt-0.5 truncate">MoSPI Scrutiny Engine</p>
                     </div>
                     <div class="flex flex-col items-end shrink-0">
-                        <div id="card-score" class="flex items-center justify-center w-8 h-8 rounded bg-red-600 text-white font-mono font-black text-xs shadow-2xs">
-                            91
+                        <div id="card-score" class="flex items-center justify-center px-2 py-1 rounded bg-red-600 text-white font-mono font-bold text-[10px] shadow-2xs tracking-wider">
+                            CRITICAL
                         </div>
-                        <span class="text-[8.5px] text-slate-400 uppercase font-mono font-bold mt-0.5">Score</span>
+                        <span class="text-[8.5px] text-slate-400 uppercase font-mono font-bold mt-0.5">Triage Tier</span>
                     </div>
                 </div>
 
@@ -481,7 +481,7 @@ function renderMapMarkers() {
             <div class="relative flex items-center justify-center custom-pin" style="width:${size}px; height:${size}px;">
                 ${isUrgent ? `<div class="pulse-ring" style="background:${style.pulse};"></div>` : ''}
                 <div style="background:${style.bg}; width:${size}px; height:${size}px; border:2px solid ${style.border}; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center;">
-                    <span style="color:#ffffff; font-family:'JetBrains Mono', monospace; font-size:9.5px; font-weight:800;">${p.riskScore}</span>
+                    <span style="color:#ffffff; font-family:'Inter', sans-serif; font-size:11px; font-weight:900; line-height:1;">!</span>
                 </div>
             </div>
         `;
@@ -514,10 +514,10 @@ function selectMapProject(p) {
     if (!card) return;
 
     const riskConfigs = {
-        critical: { bar: 'bg-red-600', badge: 'bg-red-100 text-red-900 border-red-300', badgeText: 'CRITICAL SEVERITY', scoreBg: 'bg-red-600', text: 'text-red-700' },
-        high: { bar: 'bg-orange-600', badge: 'bg-orange-100 text-orange-900 border-orange-300', badgeText: 'HIGH SEVERITY', scoreBg: 'bg-orange-600', text: 'text-orange-700' },
-        med: { bar: 'bg-amber-500', badge: 'bg-amber-100 text-amber-900 border-amber-300', badgeText: 'MEDIUM SEVERITY', scoreBg: 'bg-amber-600', text: 'text-amber-700' },
-        low: { bar: 'bg-emerald-600', badge: 'bg-emerald-100 text-emerald-900 border-emerald-300', badgeText: 'LOW RISK / COMPLIANT', scoreBg: 'bg-emerald-600', text: 'text-emerald-700' }
+        critical: { bar: 'bg-red-600', badge: 'bg-red-100 text-red-900 border-red-300', badgeText: 'CRITICAL SEVERITY (z ≥ 3.5)', scoreBg: 'bg-red-600', text: 'text-red-700', tierText: 'CRITICAL' },
+        high: { bar: 'bg-orange-600', badge: 'bg-orange-100 text-orange-900 border-orange-300', badgeText: 'HIGH SEVERITY (MULTI-FLAG)', scoreBg: 'bg-orange-600', text: 'text-orange-700', tierText: 'HIGH' },
+        med: { bar: 'bg-amber-500', badge: 'bg-amber-100 text-amber-900 border-amber-300', badgeText: 'MEDIUM SEVERITY (SINGLE)', scoreBg: 'bg-amber-600', text: 'text-amber-700', tierText: 'MEDIUM' },
+        low: { bar: 'bg-emerald-600', badge: 'bg-emerald-100 text-emerald-900 border-emerald-300', badgeText: 'LOW RISK / COMPLIANT', scoreBg: 'bg-emerald-600', text: 'text-emerald-700', tierText: 'COMPLIANT' }
     };
 
     const c = riskConfigs[p.risk] || riskConfigs.critical;
@@ -527,7 +527,7 @@ function selectMapProject(p) {
     document.getElementById('card-title').innerText = p.title || 'Untitled Work';
     document.getElementById('card-id').innerText = `Project #${p.id} • ${p.city || ''}, ${p.state || ''}`;
     document.getElementById('card-score').className = `flex items-center justify-center w-8 h-8 rounded text-white font-mono font-black text-xs shadow-2xs ${c.scoreBg}`;
-    document.getElementById('card-score').innerText = p.riskScore;
+    document.getElementById('card-score').innerText = (c.tierText || 'CRITICAL');
     document.getElementById('card-sanctioned').innerText = p.sanctioned || '₹0';
     document.getElementById('card-anomaly').className = `font-semibold truncate text-xs ${c.text}`;
     document.getElementById('card-anomaly').innerText = p.anomaly || 'Algorithmic Anomaly';
