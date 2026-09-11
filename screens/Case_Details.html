@@ -80,10 +80,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 }
 </style>
 </head>
-<body class="bg-canvas text-slate-800 antialiased text-xs min-h-screen w-full overflow-x-hidden relative flex">
+<body class="bg-canvas text-slate-800 antialiased text-xs h-screen max-h-screen w-full overflow-hidden relative flex">
 
 <!-- UNIFIED SHELL: Side Navigation (230px, Deep Navy Institutional) -->
-<aside class="w-[230px] h-screen shrink-0 flex flex-col bg-brand-900 border-r border-slate-800 z-50 text-slate-300 select-none overflow-hidden sticky top-0">
+<aside class="w-[230px] h-screen shrink-0 flex flex-col bg-brand-900 border-r border-slate-800 z-50 text-slate-300 select-none overflow-hidden">
     <!-- Brand Header -->
     <div class="px-4 py-3.5 border-b border-slate-800/80 flex items-center gap-2.5 shrink-0">
         <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
@@ -143,10 +143,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 </aside>
 
 <!-- Main Wrapper -->
-<div class="main-container flex-1 min-w-0 min-h-screen flex flex-col bg-canvas overflow-x-hidden">
+<div class="main-container flex-1 min-w-0 h-screen max-h-screen flex flex-col bg-canvas overflow-hidden">
     
     <!-- UNIFIED SHELL: Compact Top Bar (52px) -->
-    <header class="h-[52px] min-h-[52px] max-h-[52px] shrink-0 w-full sticky top-0 bg-white border-b border-slate-200 shadow-2xs z-40 flex justify-between items-center px-4">
+    <header class="h-[52px] min-h-[52px] max-h-[52px] shrink-0 w-full bg-white border-b border-slate-200 shadow-2xs z-40 flex justify-between items-center px-4">
         <div class="flex items-center gap-2.5">
             <a href="Flagged_Cases.html" class="flex items-center gap-1 text-slate-600 hover:text-slate-900 text-xs font-semibold py-1 px-2 rounded-md hover:bg-slate-100 transition-colors">
                 <span class="material-symbols-outlined text-sm">arrow_back</span>
@@ -196,7 +196,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     </div>
 
     <!-- Main Dossier Content -->
-    <main class="flex-1 p-4 md:p-5 space-y-4 max-w-[1600px] w-full mx-auto">
+    <main class="flex-1 min-h-0 overflow-y-auto p-4 md:p-5 space-y-4 max-w-[1600px] w-full mx-auto">
         
         <!-- Case Header & Triage Status Workspace -->
         <div id="case-header-card" class="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs relative overflow-hidden">
