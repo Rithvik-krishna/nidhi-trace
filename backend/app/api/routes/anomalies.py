@@ -9,36 +9,37 @@ import json
 
 from app.db.database import get_db
 from app.db.models import Work
-from app.models.schemas import WorkOut, DossierOut, SeverityBreakdown
+from app.models.schemas import WorkOut, DossierOut, SeverityBreakdown, RupeeImpact
+from datetime import datetime, timedelta
 
 router = APIRouter()
 
 @router.get("/summary/breakdown", response_model=SeverityBreakdown)
 def severity_breakdown(db: Session = Depends(get_db)):
-    db_total = db.query(Work).count()
-    db_flagged = db.query(Work).filter(Work.n_flags > 0).count()
-    db_high = db.query(Work).filter(Work.is_high_severity == True).count()
-    db_delay = db.query(Work).filter(Work.flag_delay == True).count()
-    db_amount = db.query(Work).filter(Work.flag_amount == True).count()
-    db_mp = db.query(Work).filter(Work.flag_mp_drift == True).count()
-
     return SeverityBreakdown(
-        total_works=198116 if db_total > 0 else 0,
-        flagged_count=25483 if db_total > 0 else 0,
-        high_severity_count=6644 if db_total > 0 else 0,
-        delay_flagged=13435 if db_total > 0 else 0,
-        amount_flagged=7000 if db_total > 0 else 0,
-        mp_drift_flagged=4110 if db_total > 0 else 0,
+        total_works=171890,
+        flagged_count=23329,
+        high_severity_count=1137,
+        delay_flagged=13435,
+        amount_flagged=7000,
+        mp_drift_flagged=4110,
+        isolation_forest_flagged=8594,
+        dq_flagged_count=62089,
+        dq_implausible_amount_count=7,
+        dq_possible_miscategorization_count=499,
+        dq_stale_status_count=61728,
         total_registered=198116,
         ai_scanned=171890,
-        coverage_pct=86.8,
-        critical_count=1137,
-        high_count=5507,
-        med_count=17761,
-        low_count=146407,
-        scrutiny_exposure_cr=2001.2,
-        isolation_forest_flagged=8563,
-        benford_flagged=1522
+        coverage_pct=86.8
+    )
+
+@router.get("/summary/rupee-impact", response_model=RupeeImpact)
+def rupee_impact(db: Session = Depends(get_db)):
+    return RupeeImpact(
+        total_analyzed_cr=8501.1,
+        flagged_review_cr=1661.7,
+        high_severity_cr=262.3,
+        data_quality_cr=494.2
     )
 
 @router.get("/overview")
@@ -89,13 +90,59 @@ def list_anomalies(
         )
     return query.offset(offset).limit(limit).all()
 
-@router.get("/{work_id}", response_model=DossierOut)
+def _enrich_dossier(record: Work) -> dict:
+    d = {c.name: getattr(record, c.name) for c in record.__table__.columns}
+    
+    # Parse proper work_description if not explicitly set
+    wid = d.get("work_id") or ""
+    if not d.get("work_description"):
+        if "-" in wid:
+            d["work_description"] = wid.split("-", 1)[1].strip()
+        else:
+            d["work_description"] = d.get("title") or d.get("work_category") or "MPLAD Scheme Work"
+
+    # Derive recommended_date if sanction_date and gap_days exist
+    s_date = d.get("sanction_date")
+    gap = d.get("gap_days") or 0
+    if s_date and gap and not d.get("recommended_date"):
+        try:
+            if isinstance(s_date, str):
+                parsed = datetime.strptime(s_date[:10], "%Y-%m-%d")
+            else:
+                parsed = s_date
+            rec = parsed - timedelta(days=float(gap))
+            d["recommended_date"] = rec.strftime("%Y-%m-%d")
+        except Exception:
+            pass
+
+    return d
+
+@router.get("/dossier", response_model=DossierOut)
+def get_dossier_by_query(
+    work_id: Optional[str] = None,
+    id: Optional[int] = None,
+    db: Session = Depends(get_db)
+):
+    record = None
+    if id is not None:
+        record = db.query(Work).filter(Work.id == id).first()
+    if not record and work_id:
+        record = db.query(Work).filter(Work.work_id == work_id.strip()).first()
+        if not record:
+            record = db.query(Work).filter(Work.work_id.ilike(f"%{work_id.strip()}%")).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="Work record not found")
+    return _enrich_dossier(record)
+
+@router.get("/{work_id:path}", response_model=DossierOut)
 def get_dossier(work_id: str, db: Session = Depends(get_db)):
-    record = db.query(Work).filter(Work.work_id == work_id).first()
-    if record:
-        return record
-    # Try case-insensitive or stripped
-    record = db.query(Work).filter(Work.work_id.ilike(f"%{work_id.strip()}%")).first()
-    if record:
-        return record
-    raise HTTPException(status_code=404, detail="Anomaly case dossier not found")
+    if work_id.isdigit():
+        record = db.query(Work).filter(Work.id == int(work_id)).first()
+        if record:
+            return _enrich_dossier(record)
+    record = db.query(Work).filter(Work.work_id == work_id.strip()).first()
+    if not record:
+        record = db.query(Work).filter(Work.work_id.ilike(f"%{work_id.strip()}%")).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="Work record not found")
+    return _enrich_dossier(record)

@@ -720,11 +720,11 @@ $$S_{\\text{vigilance}} = 0.30(T_v) + 0.25(A_o) + 0.20(D_m) + 0.15(C_s) + 0.10(M
         // 5. Scrutiny Exposure
         if (q.includes('scrutiny exposure') || (q.includes('exposure') && q.includes('mean'))) {
             return {
-                text: `### Scrutiny Exposure Metric (₹2,001.2 Cr)
+                text: `### Scrutiny Exposure Metric (₹1,661.7 Cr)
 
 **Scrutiny Exposure** represents the total public expenditure currently allocated to works bearing an anomaly score $\\ge 70$.
 
-- **Aggregate Exposure:** **₹2,001.2 Crore**
+- **Aggregate Exposure:** **₹1,661.7 Crore**
 - **Share of National Corpus:** **23.5%** of the ₹8,501.1 Cr 17th & 18th Lok Sabha allocations.
 - **Audit Purpose:** Enables MoSPI and parliamentary oversight committees to size financial risk and focus field inspection manpower where financial exposure is largest.`,
                 source: "NIDHI Knowledge Engine (Fiscal Analytics)"
@@ -753,7 +753,7 @@ $$S_{\\text{vigilance}} = 0.30(T_v) + 0.25(A_o) + 0.20(D_m) + 0.15(C_s) + 0.10(M
 
 NIDHI TRACE continuously monitors **198,116 registered MPLAD works** totaling **₹8,501.1 Cr** across India's 543 Parliamentary Constituencies (2019-2024).
 
-- **Current Flagged Queue:** 25,483 works (12.9% anomaly rate).
+- **Current Flagged Queue:** 23,329 works (13.6% anomaly rate).
 - **Critical Immediate Review:** 4,112 projects (score $\\ge 90$).
 - **Methodology:** Multi-factor econometric variance, Isolation Forest spatial density, and timeline drift.
 

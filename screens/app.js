@@ -261,7 +261,7 @@ function ensureNotificationPopover() {
 
             <!-- Popover Footer -->
             <div class="p-2 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-                <span class="text-[10px] text-slate-500 font-mono">Total Flagged: 25,483</span>
+                <span class="text-[10px] text-slate-500 font-mono">Total Flagged: 23,329</span>
                 <a href="Flagged_Cases.html" class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 hover:text-blue-800">
                     <span>View All Flagged Cases</span>
                     <span class="material-symbols-outlined text-xs">arrow_forward</span>

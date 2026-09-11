@@ -87,7 +87,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Flagged_Cases.html">
             <span class="material-symbols-outlined text-base">report_problem</span>
             <span>Flagged Cases</span>
-            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">25,483</span>
+            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,329</span>
         </a>
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Geographic_Map.html">
             <span class="material-symbols-outlined text-base">map</span>
@@ -105,24 +105,18 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 
     <!-- Sidebar Footer Status -->
     <div class="p-3 border-t border-slate-800 bg-brand-950/60 text-[10.5px] space-y-1.5 shrink-0">
-        <div class="flex items-center justify-between">
-            <span class="text-slate-400 flex items-center gap-1.5">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                Live Audit Stream
-            </span>
-            <span class="font-mono text-slate-400 font-bold text-[9.5px]">ACTIVE</span>
+                <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
+            <span>Dataset Seed:</span>
+            <span class="font-mono text-slate-400 font-bold">198,116 Works</span>
         </div>
         <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
-            <span>Data Ingestion:</span>
-            <span class="font-mono text-slate-400">06:00 IST</span>
+            <span>Methodology:</span>
+            <span class="font-mono text-slate-400">Robust z ≥ 3.5</span>
         </div>
         <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
-            <span>Surveillance Model:</span>
-            <span class="text-emerald-400 font-semibold flex items-center gap-1">
-                <span class="material-symbols-outlined text-[12px]">check_circle</span> v2.6 Ready
+            <span>Review Queue:</span>
+            <span class="text-amber-400 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">flag</span> 23,329 Flagged
             </span>
         </div>
     </div>
@@ -238,8 +232,8 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
                 <div>
                     <div class="flex items-baseline gap-1.5">
-                        <span id="kpi-flagged-works" class="text-2xl font-black text-red-700 font-mono font-tabular">25,483</span>
-                        <span id="kpi-flagged-pct" class="text-[10.5px] font-bold text-red-800 font-mono">14.8%</span>
+                        <span id="kpi-flagged-works" class="text-2xl font-black text-red-700 font-mono font-tabular">23,329</span>
+                        <span id="kpi-flagged-pct" class="text-[10.5px] font-bold text-red-800 font-mono">13.6%</span>
                     </div>
                     <p class="text-[9.5px] text-red-700 font-medium flex items-center gap-0.5 group-hover:underline mt-0.5">
                         <span>Launch Triage Workbench</span>
@@ -271,10 +265,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
                 <div>
                     <div class="flex items-baseline gap-1.5">
-                        <span id="kpi-scrutiny-exposure" class="text-2xl font-black text-slate-900 font-mono font-tabular">₹2,001.2</span>
+                        <span id="kpi-scrutiny-exposure" class="text-2xl font-black text-slate-900 font-mono font-tabular">₹1,661.7</span>
                         <span class="text-[11px] font-extrabold text-slate-600 font-mono">Cr</span>
                     </div>
-                    <p class="text-[9.5px] text-slate-400 mt-0.5">23.5% of total sanctioned corpus</p>
+                    <p class="text-[9.5px] text-slate-400 mt-0.5">19.5% of analyzed corpus (₹8,501.1 Cr)</p>
                 </div>
             </div>
         </div>
@@ -374,7 +368,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <div class="border-b border-borderline pb-2 mb-2.5 flex items-center justify-between">
                         <div>
                             <h2 class="text-xs font-bold text-slate-900 tracking-tight uppercase">Risk Severity Classification</h2>
-                            <p class="text-[10px] text-slate-500">Breakdown of 25,483 flagged works</p>
+                            <p class="text-[10px] text-slate-500">Breakdown of 23,329 flagged works</p>
                         </div>
                     </div>
 
@@ -420,7 +414,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 
                 <a href="Flagged_Cases.html" class="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
-                    <span>Launch Triage Workbench (25,483 Cases)</span>
+                    <span>Launch Triage Workbench (23,329 Cases)</span>
                 </a>
             </div>
         </div>
@@ -434,7 +428,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <span class="text-[10px] text-slate-500 font-medium">— Top 5 priority works requiring immediate human review</span>
                 </div>
                 <a href="Flagged_Cases.html" class="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1">
-                    <span>View All 25,483 Flagged Works</span>
+                    <span>View All 23,329 Flagged Works</span>
                     <span class="material-symbols-outlined text-xs">arrow_forward</span>
                 </a>
             </div>

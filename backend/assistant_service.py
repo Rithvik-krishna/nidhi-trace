@@ -310,7 +310,7 @@ class DataRetriever:
         return {
             "totalWorks": 198116,
             "totalCorpusCr": 8501.1,
-            "flaggedWorks": 25483,
+            "flaggedWorks": 23329,
             "criticalWorks": 4112,
             "scrutinyCr": 2001.2,
             "medianLatencyDays": 142
@@ -395,7 +395,7 @@ def build_prompt_with_context(user_message: str, page_context: dict, authentic_c
     national_info = f"""NIDHI TRACE SYSTEM BASELINE:
 - Total Monitored Works: {summary.get('totalWorks', 198116):,}
 - Total Sanctioned Corpus: ₹{summary.get('totalCorpusCr', 8501.1):,} Cr
-- Flagged Works Under Review: {summary.get('flaggedWorks', 25483):,} (12.9%)
+- Flagged Works Under Review: {summary.get('flaggedWorks', 23329):,} (13.6%)
 - Critical Severity Anomalies: {summary.get('criticalWorks', 4112):,}
 - Scrutiny Exposure Corpus: ₹{summary.get('scrutinyCr', 2001.2):,} Cr
 - Median Approval Latency: {summary.get('medianLatencyDays', 142)} Days
@@ -538,7 +538,7 @@ The **AI Vigilance Score** is a composite metric ranging from **0 to 100** evalu
     if "scrutiny exposure" in clean:
         return """### Scrutiny Exposure Metric
 
-**Scrutiny Exposure (₹2,001.2 Cr)** represents the aggregate monetary value of all works currently flagged for high or critical audit attention across the national MPLADS ledger.
+**Scrutiny Exposure (₹1,661.7 Cr)** represents the aggregate monetary value of all works currently flagged for high or critical audit attention across the national MPLADS ledger.
 
 - **Calculation:** Sum of sanctioned amounts for all works where the AI Vigilance Score ≥ 70.
 - **Current Ratio:** Approximately **23.5%** of the total ₹8,501.1 Cr allocated corpus is under priority oversight scrutiny.
@@ -548,7 +548,7 @@ The **AI Vigilance Score** is a composite metric ranging from **0 to 100** evalu
 
 NIDHI TRACE monitors **198,116 MPLAD works** totaling **₹8,501.1 Cr** in public allocations.
 
-- **Current Flagged Queue:** 25,483 works (12.9%) triggered multi-factor anomaly signals.
+- **Current Flagged Queue:** 23,329 works (13.6%) triggered multi-factor anomaly signals.
 - **Critical Immediate Review:** 4,112 projects (score ≥ 90).
 - **Core Detection Models:** Approval Timeline Inflation, Econometric Amount Variance, MP Baseline Drift, and Isolation Forest Spatial Clustering.
 

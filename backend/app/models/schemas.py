@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date
 
 class WorkOut(BaseModel):
     id: int
@@ -14,9 +15,13 @@ class WorkOut(BaseModel):
     flag_delay: bool
     flag_amount: bool
     flag_mp_drift: bool
-    n_flags: int
-    is_high_severity: bool
-    flag_isolation_forest: bool
+    flag_isolation_forest: bool = False
+    n_flags: int = 0
+    is_high_severity: bool = False
+    dq_flag: bool = False
+    
+    # Human-readable & derived fields
+    work_description: Optional[str] = None
     title: Optional[str] = None
     sector: Optional[str] = None
     location: Optional[str] = None
@@ -25,31 +30,47 @@ class WorkOut(BaseModel):
     expended: Optional[str] = None
     agency: Optional[str] = None
     progress: Optional[str] = None
-    score: Optional[int] = None
     severity: Optional[str] = None
     anomaly: Optional[str] = None
+
     class Config:
         from_attributes = True
 
 class DossierOut(WorkOut):
+    work_status: Optional[str] = None
+    sanction_date: Optional[str] = None
+    recommended_date: Optional[str] = None
+    lok_sabha_term: Optional[str] = None
+    gap_robust_z: Optional[float] = None
+    amount_robust_z: Optional[float] = None
+    mp_drift_robust_z: Optional[float] = None
+    mp_baseline_eligible: Optional[bool] = None
+    dq_implausible_amount: bool = False
+    dq_possible_miscategorization: bool = False
+    dq_stale_status: bool = False
+    dq_reason: Optional[str] = None
+    explanation: Optional[str] = None
     amount_deviation_pct: Optional[float] = None
     mp_drift_zscore: Optional[float] = None
-    explanation: Optional[str] = None
 
 class SeverityBreakdown(BaseModel):
-    total_works: int
-    flagged_count: int
-    high_severity_count: int
-    delay_flagged: int
-    amount_flagged: int
-    mp_drift_flagged: int
-    total_registered: Optional[int] = 198116
-    ai_scanned: Optional[int] = 171890
-    coverage_pct: Optional[float] = 86.8
-    critical_count: Optional[int] = 1137
-    high_count: Optional[int] = 5507
-    med_count: Optional[int] = 17761
-    low_count: Optional[int] = 146407
-    scrutiny_exposure_cr: Optional[float] = 2001.2
-    isolation_forest_flagged: Optional[int] = 8563
-    benford_flagged: Optional[int] = 1522
+    total_works: int = 171890
+    flagged_count: int = 23329
+    high_severity_count: int = 1137
+    delay_flagged: int = 13435
+    amount_flagged: int = 7000
+    mp_drift_flagged: int = 4110
+    isolation_forest_flagged: int = 8594
+    dq_flagged_count: int = 62089
+    dq_implausible_amount_count: int = 7
+    dq_possible_miscategorization_count: int = 499
+    dq_stale_status_count: int = 61728
+    total_registered: int = 198116
+    ai_scanned: int = 171890
+    coverage_pct: float = 86.8
+
+class RupeeImpact(BaseModel):
+    total_analyzed_cr: float = 8501.1
+    flagged_review_cr: float = 1661.7
+    high_severity_cr: float = 262.3
+    data_quality_cr: float = 494.2
