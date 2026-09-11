@@ -338,7 +338,7 @@ async function initAnalytics() {
             }
         } catch (err) {}
 
-        const res = await fetch('assets/data/analytics_data.json);
+        const res = await fetch('assets/data/analytics_data.json');
         if (!res.ok) throw new Error('Failed to load analytics data');
         globalAnalyticsData = await res.json();
         
