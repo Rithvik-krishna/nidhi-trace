@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.className = `flex items-center gap-3 px-4 py-3 rounded-lg shadow-xl text-xs font-semibold tracking-wide transition-all transform translate-y-2 opacity-0 pointer-events-auto ${bgColors[type] || bgColors.info}`;
         toast.innerHTML = `<span class="material-symbols-outlined text-lg">${iconNames[type] || 'info'}</span><span>${message}</span>`;
         container.appendChild(toast);
-        
+
         requestAnimationFrame(() => {
             toast.classList.remove('translate-y-2', 'opacity-0');
         });
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('button, a').forEach(btn => {
         const text = (btn.textContent || '').trim().toLowerCase();
         const href = btn.getAttribute('href');
-        
+
         // Skip notification bells and custom modal triggers
         if (btn.matches('button[title*="Notification"], button[title*="notification"], .notification-bell-btn, [data-notification-trigger]') ||
             (btn.querySelector('.material-symbols-outlined') && btn.querySelector('.material-symbols-outlined').textContent.trim() === 'notifications')) {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (btn.classList.contains('no-toast-intercept') || btn.closest('[data-custom-handler]')) return;
                 if (text.includes('dossier') || text.includes('print') || text.includes('pdf')) return;
                 e.preventDefault();
-                
+
                 if (text.includes('export') || text.includes('download')) {
                     showToast('Generating official GovTech audit export...', 'info');
                     setTimeout(() => {
@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-init notification listeners
     initNotificationListeners();
+    initMobileNavigation();
 });
 
 // =========================================================================
@@ -314,7 +315,7 @@ function ensureNotificationPopover() {
 
             <!-- Popover Footer -->
             <div class="p-2 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-                <span class="text-[10px] text-slate-500 font-mono">Total Flagged: 23,329</span>
+                <span class="text-[10px] text-slate-500 font-mono">Total Flagged: 23,907</span>
                 <a href="Flagged_Cases.html" class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 hover:text-blue-800">
                     <span>View All Flagged Cases</span>
                     <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -455,3 +456,143 @@ window.toggleVigilanceNotifications = toggleVigilanceNotifications;
 window.closeVigilanceNotifications = closeVigilanceNotifications;
 window.markAllNotificationsRead = markAllNotificationsRead;
 
+
+
+// =========================================================================
+// Universal Mobile Responsive Navigation Engine
+// =========================================================================
+
+function initMobileNavigation() {
+    const aside = document.querySelector('aside');
+    if (!aside) return;
+
+    // Ensure aside has proper responsive classes
+    aside.classList.add('fixed', 'md:static', 'inset-y-0', 'left-0', 'z-50', 'transition-transform', 'duration-300', 'ease-in-out');
+    if (!aside.classList.contains('translate-x-0') && !aside.classList.contains('-translate-x-full')) {
+        aside.classList.add('-translate-x-full', 'md:translate-x-0');
+    }
+
+    // 1. Ensure Backdrop Exists
+    let backdrop = document.getElementById('sidebar-backdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.id = 'sidebar-backdrop';
+        backdrop.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-300 md:hidden';
+        document.body.appendChild(backdrop);
+    }
+    backdrop.onclick = closeMobileSidebar;
+
+    // 2. Ensure Mobile Hamburger Menu Button in Header
+    const header = document.querySelector('header');
+    if (header) {
+        let menuBtn = document.getElementById('mobile-menu-btn');
+        if (!menuBtn) {
+            menuBtn = document.createElement('button');
+            menuBtn.id = 'mobile-menu-btn';
+            menuBtn.type = 'button';
+            menuBtn.className = 'md:hidden flex items-center justify-center p-1.5 -ml-1 mr-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors shrink-0 cursor-pointer';
+            menuBtn.setAttribute('title', 'Open navigation menu');
+            menuBtn.setAttribute('aria-label', 'Open navigation menu');
+            menuBtn.innerHTML = '<span class="material-symbols-outlined text-xl">menu</span>';
+
+            const firstChild = header.firstElementChild;
+            if (firstChild && firstChild.classList.contains('flex')) {
+                firstChild.insertBefore(menuBtn, firstChild.firstChild);
+            } else {
+                header.insertBefore(menuBtn, header.firstChild);
+            }
+        }
+        menuBtn.onclick = toggleMobileSidebar;
+    }
+
+    // 3. Ensure Mobile Close Button in Sidebar Brand Header
+    const brandHeader = aside.querySelector('div:first-child');
+    if (brandHeader) {
+        let closeBtn = document.getElementById('mobile-sidebar-close');
+        if (!closeBtn) {
+            closeBtn = document.createElement('button');
+            closeBtn.id = 'mobile-sidebar-close';
+            closeBtn.type = 'button';
+            closeBtn.className = 'md:hidden ml-auto p-1 text-slate-400 hover:text-white rounded-md transition-colors cursor-pointer flex items-center justify-center';
+            closeBtn.setAttribute('title', 'Close navigation menu');
+            closeBtn.setAttribute('aria-label', 'Close navigation menu');
+            closeBtn.innerHTML = '<span class="material-symbols-outlined text-lg">close</span>';
+            brandHeader.appendChild(closeBtn);
+        }
+        closeBtn.onclick = closeMobileSidebar;
+    }
+
+    // 4. Auto-close sidebar on mobile navigation link click
+    aside.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                closeMobileSidebar();
+            }
+        });
+    });
+
+    // 5. Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && window.innerWidth < 768) {
+            closeMobileSidebar();
+        }
+    });
+
+    // 6. Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+            closeMobileSidebar();
+        }
+    });
+}
+
+function openMobileSidebar() {
+    const aside = document.querySelector('aside');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (!aside) return;
+
+    aside.classList.remove('-translate-x-full');
+    aside.classList.add('translate-x-0', 'shadow-2xl');
+
+    if (backdrop) {
+        backdrop.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            backdrop.classList.remove('opacity-0');
+            backdrop.classList.add('opacity-100');
+        });
+    }
+}
+
+function closeMobileSidebar() {
+    const aside = document.querySelector('aside');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (!aside) return;
+
+    aside.classList.remove('translate-x-0', 'shadow-2xl');
+    aside.classList.add('-translate-x-full');
+
+    if (backdrop) {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => {
+            if (backdrop.classList.contains('opacity-0')) {
+                backdrop.classList.add('hidden');
+            }
+        }, 300);
+    }
+}
+
+function toggleMobileSidebar() {
+    const aside = document.querySelector('aside');
+    if (!aside) return;
+    if (aside.classList.contains('translate-x-0')) {
+        closeMobileSidebar();
+    } else {
+        openMobileSidebar();
+    }
+}
+
+window.openMobileSidebar = openMobileSidebar;
+window.closeMobileSidebar = closeMobileSidebar;
+window.toggleMobileSidebar = toggleMobileSidebar;
+window.initMobileNavigation = initMobileNavigation;

@@ -92,7 +92,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Flagged_Cases.html">
             <span class="material-symbols-outlined text-base">report_problem</span>
             <span>Flagged Cases</span>
-            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,329</span>
+            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,907</span>
         </a>
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Geographic_Map.html">
             <span class="material-symbols-outlined text-base">map</span>
@@ -121,7 +121,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
             <span>Review Queue:</span>
             <span class="text-amber-400 font-semibold flex items-center gap-1">
-                <span class="material-symbols-outlined text-[12px]">flag</span> 23,329 Flagged
+                <span class="material-symbols-outlined text-[12px]">flag</span> 23,907 Flagged
             </span>
         </div>
     </div>
@@ -201,7 +201,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <div class="flex items-center gap-2 shrink-0">
                 <a href="Flagged_Cases.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded-md text-xs font-bold transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
-                    <span>Triage Queue (23,329)</span>
+                    <span>Triage Queue (23,907)</span>
                 </a>
                 <a href="Data_Explorer.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-md text-xs font-bold transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">database</span>
@@ -252,7 +252,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
                 <div>
                     <div class="flex items-baseline gap-1.5">
-                        <span id="kpi-flagged-works" class="text-2xl font-black text-red-700 font-mono font-tabular">23,329</span>
+                        <span id="kpi-flagged-works" class="text-2xl font-black text-red-700 font-mono font-tabular">23,907</span>
                         <span id="kpi-flagged-pct" class="text-[10px] text-slate-500 font-medium">13.6% of scanned</span>
                     </div>
                     <p class="text-[10px] text-red-700 font-medium flex items-center gap-1 group-hover:underline mt-0.5">
@@ -398,13 +398,13 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
             </div>
 
-            <!-- Right: Risk Severity Classification (38% ~ 4.5 Cols) -->
+            <!-- Right: Review Priority Tiers (38% ~ 4.5 Cols) -->
             <div class="lg:col-span-5 flex flex-col justify-between space-y-3">
                 <div>
                     <div class="border-b border-slate-200 pb-2 mb-3 flex items-center justify-between">
                         <div>
-                            <h2 class="text-xs font-bold text-slate-900 tracking-tight uppercase">Risk Severity Classification</h2>
-                            <p class="text-[10px] text-slate-500">Triaged by robust z-score threshold and multi-signal concurrence</p>
+                            <h2 class="text-xs font-bold text-slate-900 tracking-tight uppercase">Review Priority Tiers</h2>
+                            <p class="text-[10px] text-slate-500">Critical + High + Medium = anomaly queue; tiers do not overlap. DQ is separate.</p>
                         </div>
                     </div>
 
@@ -413,44 +413,44 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                         <div class="p-2.5 rounded-lg bg-red-50/70 border border-red-200">
                             <div class="flex items-center justify-between">
                                 <span class="font-bold text-red-900 text-[10px] tracking-wider uppercase">CRITICAL</span>
-                                <span class="font-mono text-[9px] font-bold text-red-800 bg-red-100/80 px-1.5 py-0.2 rounded">z ≥ 3.5</span>
+                                <span class="font-mono text-[9px] font-bold text-red-800 bg-red-100/80 px-1.5 py-0.2 rounded">Pipeline high severity</span>
                             </div>
                             <p id="sev-critical-count" class="text-xl font-black font-mono text-red-700 leading-tight mt-1">1,137</p>
-                            <p id="sev-critical-pct" class="text-[9.5px] text-red-800 mt-0.5">4.9% of flagged works</p>
+                            <p id="sev-critical-pct" class="text-[9.5px] text-red-800 mt-0.5">4.8% of flagged records</p>
                         </div>
 
                         <div class="p-2.5 rounded-lg bg-orange-50/70 border border-orange-200">
                             <div class="flex items-center justify-between">
                                 <span class="font-bold text-orange-900 text-[10px] tracking-wider uppercase">HIGH</span>
-                                <span class="font-mono text-[9px] font-bold text-orange-800 bg-orange-100/80 px-1.5 py-0.2 rounded">≥ 2 Signals</span>
+                                <span class="font-mono text-[9px] font-bold text-orange-800 bg-orange-100/80 px-1.5 py-0.2 rounded">Score ≥ 70</span>
                             </div>
-                            <p id="sev-high-count" class="text-xl font-black font-mono text-orange-700 leading-tight mt-1">5,507</p>
-                            <p id="sev-high-pct" class="text-[9.5px] text-orange-800 mt-0.5">23.6% of flagged works</p>
+                            <p id="sev-high-count" class="text-xl font-black font-mono text-orange-700 leading-tight mt-1">6,844</p>
+                            <p id="sev-high-pct" class="text-[9.5px] text-orange-800 mt-0.5">28.6% of flagged records</p>
                         </div>
 
                         <div class="p-2.5 rounded-lg bg-amber-50/70 border border-amber-200">
                             <div class="flex items-center justify-between">
                                 <span class="font-bold text-amber-900 text-[10px] tracking-wider uppercase">MEDIUM</span>
-                                <span class="font-mono text-[9px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.2 rounded">Single Signal</span>
+                                <span class="font-mono text-[9px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.2 rounded">Other flagged</span>
                             </div>
-                            <p id="sev-med-count" class="text-xl font-black font-mono text-amber-700 leading-tight mt-1">17,761</p>
-                            <p id="sev-med-pct" class="text-[9.5px] text-amber-800 mt-0.5">76.1% of flagged works</p>
+                            <p id="sev-med-count" class="text-xl font-black font-mono text-amber-700 leading-tight mt-1">15,926</p>
+                            <p id="sev-med-pct" class="text-[9.5px] text-amber-800 mt-0.5">66.6% of flagged records</p>
                         </div>
 
                         <div class="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200">
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-emerald-900 text-[10px] tracking-wider uppercase">LOW RISK</span>
-                                <span class="font-mono text-[9px] font-bold text-emerald-800 bg-emerald-100/80 px-1.5 py-0.2 rounded">Conforming</span>
+                                <span class="font-bold text-emerald-900 text-[10px] tracking-wider uppercase">NO ANOMALY FLAG</span>
+                                <span class="font-mono text-[9px] font-bold text-emerald-800 bg-emerald-100/80 px-1.5 py-0.2 rounded">DQ separate</span>
                             </div>
-                            <p id="sev-low-count" class="text-xl font-black font-mono text-emerald-700 leading-tight mt-1">148,561</p>
-                            <p id="sev-low-pct" class="text-[9.5px] text-emerald-800 mt-0.5">86.4% of scanned</p>
+                            <p id="sev-low-count" class="text-xl font-black font-mono text-emerald-700 leading-tight mt-1">147,983</p>
+                            <p id="sev-low-pct" class="text-[9.5px] text-emerald-800 mt-0.5">86.1% of scanned</p>
                         </div>
                     </div>
                 </div>
 
                 <a href="Flagged_Cases.html" class="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
-                    <span id="btn-launch-triage-text">Launch Triage Workbench (23,329 Cases)</span>
+                    <span id="btn-launch-triage-text">Launch Triage Workbench (23,907 Cases)</span>
                 </a>
             </div>
         </div>
@@ -464,7 +464,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <span class="text-[10px] text-slate-500 font-medium">— Top 5 priority works requiring immediate human review</span>
                 </div>
                 <a href="Flagged_Cases.html" class="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1">
-                    <span>View All 23,329 Flagged Works</span>
+                    <span>View All 23,907 Flagged Works</span>
                     <span class="material-symbols-outlined text-xs">arrow_forward</span>
                 </a>
                     </div>
@@ -620,15 +620,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!data) return;
 
     // 1. KPI Top Row
-    if (data.totalRegisteredWorks) {
+    if (data.totalRegisteredWorks !== undefined) {
         const el = document.getElementById('kpi-total-works');
         if (el) el.innerText = data.totalRegisteredWorks.toLocaleString();
     }
-    if (data.totalScannedWorks) {
+    if (data.totalScannedWorks !== undefined) {
         const el = document.getElementById('kpi-scanned-works');
         if (el) el.innerText = data.totalScannedWorks.toLocaleString();
     }
-    if (data.coveragePct) {
+    if (data.coveragePct !== undefined) {
         const pctEl = document.getElementById('kpi-scanned-pct');
         if (pctEl) pctEl.innerText = data.coveragePct + '%';
         const barEl = document.getElementById('kpi-scanned-bar');
@@ -636,7 +636,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const pillEl = document.getElementById('overview-coverage-pill');
         if (pillEl) pillEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> ${data.coveragePct}% AUDIT COVERAGE`;
     }
-    if (data.flaggedCount) {
+    if (data.flaggedCount !== undefined) {
         const el = document.getElementById('kpi-flagged-works');
         if (el) el.innerText = data.flaggedCount.toLocaleString();
         const sbEl = document.getElementById('sidebar-flagged-count');
@@ -644,48 +644,48 @@ document.addEventListener("DOMContentLoaded", async () => {
         const btnText = document.getElementById('btn-launch-triage-text');
         if (btnText) btnText.innerText = `Launch Triage Workbench (${data.flaggedCount.toLocaleString()} Cases)`;
     }
-    if (data.flaggedPct) {
+    if (data.flaggedPct !== undefined) {
         const el = document.getElementById('kpi-flagged-pct');
         if (el) el.innerText = data.flaggedPct + '% of scanned';
     }
-    if (data.criticalCount) {
+    if (data.criticalCount !== undefined) {
         const el = document.getElementById('kpi-critical-works');
         if (el) el.innerText = data.criticalCount.toLocaleString();
         const sevCritEl = document.getElementById('sev-critical-count');
         if (sevCritEl) sevCritEl.innerText = data.criticalCount.toLocaleString();
     }
-    if (data.highCount) {
+    if (data.highCount !== undefined) {
         const el = document.getElementById('sev-high-count');
         if (el) el.innerText = data.highCount.toLocaleString();
     }
-    if (data.medCount) {
+    if (data.medCount !== undefined) {
         const el = document.getElementById('sev-med-count');
         if (el) el.innerText = data.medCount.toLocaleString();
     }
-    if (data.lowCount) {
+    if (data.lowCount !== undefined) {
         const el = document.getElementById('sev-low-count');
         if (el) el.innerText = data.lowCount.toLocaleString();
     }
-    if (data.scrutinyExposureCr) {
+    if (data.scrutinyExposureCr !== undefined) {
         const el = document.getElementById('kpi-scrutiny-exposure');
         if (el) el.innerText = '₹' + data.scrutinyExposureCr.toLocaleString();
     }
 
     // 2. Severity Breakdown Percentages
     if (data.severityBreakdown) {
-        if (data.severityBreakdown.critical?.pct) {
+        if (data.severityBreakdown.critical?.pct !== undefined) {
             const el = document.getElementById('sev-critical-pct');
             if (el) el.innerText = `${data.severityBreakdown.critical.pct}% of flagged works`;
         }
-        if (data.severityBreakdown.high?.pct) {
+        if (data.severityBreakdown.high?.pct !== undefined) {
             const el = document.getElementById('sev-high-pct');
             if (el) el.innerText = `${data.severityBreakdown.high.pct}% of flagged works`;
         }
-        if (data.severityBreakdown.med?.pct) {
+        if (data.severityBreakdown.med?.pct !== undefined) {
             const el = document.getElementById('sev-med-pct');
             if (el) el.innerText = `${data.severityBreakdown.med.pct}% of flagged works`;
         }
-        if (data.severityBreakdown.low?.pct) {
+        if (data.severityBreakdown.low?.pct !== undefined) {
             const el = document.getElementById('sev-low-pct');
             if (el) el.innerText = `${data.severityBreakdown.low.pct}% of scanned`;
         }

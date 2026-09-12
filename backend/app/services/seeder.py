@@ -122,7 +122,7 @@ def seed_database_if_empty(db: Session, force: bool = False):
                 flag_mp_drift = bool(flags.get("flag_mp_drift", "drift" in str(item.get("anomaly", "")).lower()))
                 flag_iso = bool(flags.get("iso_flag", False))
                 is_high_sev = bool(item.get("severity") in ("critical", "high"))
-                n_flags = max(1, sum([flag_delay, flag_amount, flag_mp_drift, flag_iso]))
+                n_flags = sum([flag_delay, flag_amount, flag_mp_drift, flag_iso])
 
                 sanc_val = item.get("sanctioned_raw")
                 if sanc_val is None:

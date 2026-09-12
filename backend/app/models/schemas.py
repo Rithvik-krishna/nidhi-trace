@@ -56,23 +56,28 @@ class DossierOut(WorkOut):
     mp_drift_zscore: Optional[float] = None
 
 class SeverityBreakdown(BaseModel):
-    total_works: int = 171890
-    flagged_count: int = 23329
-    high_severity_count: int = 1137
-    delay_flagged: int = 13435
-    amount_flagged: int = 7000
-    mp_drift_flagged: int = 4110
-    isolation_forest_flagged: int = 8594
-    dq_flagged_count: int = 62089
-    dq_implausible_amount_count: int = 7
-    dq_possible_miscategorization_count: int = 499
-    dq_stale_status_count: int = 61728
-    total_registered: int = 198116
-    ai_scanned: int = 171890
-    coverage_pct: float = 86.8
+    critical_count: int
+    high_count: int
+    med_count: int
+    low_count: int
+    rule_flagged_count: int
+    total_works: int
+    flagged_count: int
+    high_severity_count: int
+    delay_flagged: int
+    amount_flagged: int
+    mp_drift_flagged: int
+    isolation_forest_flagged: int
+    dq_flagged_count: int
+    dq_implausible_amount_count: int
+    dq_possible_miscategorization_count: int
+    dq_stale_status_count: int
+    total_registered: int
+    ai_scanned: int
+    coverage_pct: float
 
 class RupeeImpact(BaseModel):
-    total_analyzed_cr: float = 8501.1
-    flagged_review_cr: float = 1661.7
-    high_severity_cr: float = 262.3
-    data_quality_cr: float = 494.2
+    total_analyzed_cr: float
+    flagged_review_cr: float
+    high_severity_cr: float
+    data_quality_cr: float

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.className = `flex items-center gap-3 px-4 py-3 rounded-lg shadow-xl text-xs font-semibold tracking-wide transition-all transform translate-y-2 opacity-0 pointer-events-auto ${bgColors[type] || bgColors.info}`;
         toast.innerHTML = `<span class="material-symbols-outlined text-lg">${iconNames[type] || 'info'}</span><span>${message}</span>`;
         container.appendChild(toast);
-        
+
         requestAnimationFrame(() => {
             toast.classList.remove('translate-y-2', 'opacity-0');
         });
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('button, a').forEach(btn => {
         const text = (btn.textContent || '').trim().toLowerCase();
         const href = btn.getAttribute('href');
-        
+
         // Skip notification bells and custom modal triggers
         if (btn.matches('button[title*="Notification"], button[title*="notification"], .notification-bell-btn, [data-notification-trigger]') ||
             (btn.querySelector('.material-symbols-outlined') && btn.querySelector('.material-symbols-outlined').textContent.trim() === 'notifications')) {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (btn.classList.contains('no-toast-intercept') || btn.closest('[data-custom-handler]')) return;
                 if (text.includes('dossier') || text.includes('print') || text.includes('pdf')) return;
                 e.preventDefault();
-                
+
                 if (text.includes('export') || text.includes('download')) {
                     showToast('Generating official GovTech audit export...', 'info');
                     setTimeout(() => {
@@ -315,7 +315,7 @@ function ensureNotificationPopover() {
 
             <!-- Popover Footer -->
             <div class="p-2 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-                <span class="text-[10px] text-slate-500 font-mono">Total Flagged: 23,329</span>
+                <span class="text-[10px] text-slate-500 font-mono">Total Flagged: 23,907</span>
                 <a href="Flagged_Cases.html" class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 hover:text-blue-800">
                     <span>View All Flagged Cases</span>
                     <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -494,7 +494,7 @@ function initMobileNavigation() {
             menuBtn.setAttribute('title', 'Open navigation menu');
             menuBtn.setAttribute('aria-label', 'Open navigation menu');
             menuBtn.innerHTML = '<span class="material-symbols-outlined text-xl">menu</span>';
-            
+
             const firstChild = header.firstElementChild;
             if (firstChild && firstChild.classList.contains('flex')) {
                 firstChild.insertBefore(menuBtn, firstChild.firstChild);
