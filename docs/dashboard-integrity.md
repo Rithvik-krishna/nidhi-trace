@@ -64,3 +64,28 @@ Quick verification for fixes 6–7: JavaScript syntax checks, root/screens equal
 explicit delay flag versus elapsed-day checks, disabled button checks and direct
 prototype-handler checks (no storage/API calls). Full browser layout and backend
 integration tests remain pending.
+
+## 3. Dossier signal count badge and authoritative normalization
+
+Fixed the counter mismatch where "0 SIGNALS TRIGGERED" showed alongside "4 SIGNALS FLAGGED":
+- Loaded and integrated `assets/js/dossier-signals.js` across root and `screens/`.
+- Both `dossier-signal-count-badge` and `dossier-flag-count-badge` now update from the same authoritative boolean counts via `DossierSignals.count(c)`.
+- Updates occur independently of optional cards or accordion markup.
+- Removed fuzzy suffix ID matching (`endsWith(numOnly)`) and fabricated fallback mock records (e.g. ₹50L fake works), replacing them with an explicit `renderMissingCase` notice.
+- Preserved Data Quality booleans (`dq_flag`, `dq_stale_status`, etc.) in `backend/app/services/seeder.py` and API serialization.
+
+## 4. Reconciled percentage denominators
+
+Resolved inconsistent percentages in Overview and Analytics:
+- In Overview, separated the anomaly review queue (23,907 flagged works) from the full scanned corpus (171,890 works).
+- Stated explicit denominators: Completion Delay is 56.2% of the 23,907 flagged queue (13,435/23,907), Spatial ML Outlier is 35.8% (8,549/23,907), Amount Outlier is 29.3% (7,000/23,907), and MP Drift is 17.2% (4,110/23,907). Works may trigger multiple signals.
+- Clarified that Data Quality (62,089 works, 36.1% of 171,890 scanned works) is a separate administrative review list, not mixed silently into the anomaly queue.
+- Reconciled initial static fallback HTML across `Overview_Dashboard.html` and `index.html`.
+- In `Analytics.html`, labeled donut percentages as shares of signal occurrences (33,094 occurrences across 23,907 cases).
+
+## 5. Chart provenance and transparent labeling
+
+Resolved unverified pipeline claims in Analytics:
+- **Fund Allocation vs Release vs Estimated Expenditure**: Retained with prominent `ILLUSTRATIVE MODEL — NOT RECORDED PFMS DATA` warning badge. Subtitle and tooltips explicitly note that releases are modeled at 92% and expenditure is estimated from reporting status rather than live bank/treasury transactions.
+- **Flagged Works by Sanction Month**: Relabeled from "Monthly Flagged Cases Trend / 2025 SURGES" to "Flagged Works by Sanction Month" with `SANCTION COHORTS (CRIT + HIGH)` badge. Explicitly documented that works are grouped by administrative sanction date, not real-time anomaly detection.
+- Updated `loomscript.md` narration to maintain complete parity with this transparent framing.
