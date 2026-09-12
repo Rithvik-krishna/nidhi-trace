@@ -221,7 +221,7 @@ def calculate_expenditure_and_progress(work_status, is_high_sev, amt, seed_idx):
     rel_amount = amt * (rel_pct / 100.0)
     return exp_pct, progress, exp_amount, rel_amount
 
-def calculate_risk_score(val_row, benford_row=None, mp_row=None):
+def calculate_risk_score(val_row, mp_row=None):
     """
     Calculate an intelligent composite risk score (0-100) based on algorithmic indicators.
     """
@@ -260,11 +260,6 @@ def calculate_risk_score(val_row, benford_row=None, mp_row=None):
         flags_triggered += 1
         score += 20.0
 
-    # 6. Round number flag
-    if benford_row and benford_row.get('flag_round_number') == 'True':
-        flags_triggered += 1
-        score += 14.0
-
     if flags_triggered >= 2:
         score += 8.0
 
@@ -279,7 +274,7 @@ def calculate_risk_score(val_row, benford_row=None, mp_row=None):
         
     return score, severity
 
-def get_anomaly_breakdown(val_row, benford_row=None, mp_row=None):
+def get_anomaly_breakdown(val_row, mp_row=None):
     """Determine primary anomaly label and type."""
     reasons = []
     anomaly_type = "Verified"
@@ -310,11 +305,6 @@ def get_anomaly_breakdown(val_row, benford_row=None, mp_row=None):
         if anomaly_type == "Verified":
             anomaly_type = "Spatial"
             
-    if benford_row and benford_row.get('flag_round_number') == 'True':
-        reasons.append("Round Number Anomaly")
-        if anomaly_type == "Verified":
-            anomaly_type = "Cost"
-            
     share = safe_float(val_row.get('agency_constituency_share'))
     total_w = safe_float(val_row.get('agency_total_works'))
     if share > 0.85 and total_w > 20:
@@ -337,25 +327,9 @@ def main():
     print("MPLAD Insight AI - Processing Real Forensic Data")
     print("=" * 60)
     
-    # 1. Load Benford & Round Number Category Results
-    benford_categories = []
-    with open(os.path.join(PROCESSED_DIR, 'benford_category_results.csv'), 'r', encoding='utf-8') as f:
-        r = csv.DictReader(f)
-        for row in r:
-            benford_categories.append(row)
-            
-    round_categories = []
-    with open(os.path.join(PROCESSED_DIR, 'round_number_category_results.csv'), 'r', encoding='utf-8') as f:
-        r = csv.DictReader(f)
-        for row in r:
-            round_categories.append(row)
-
-    print(f"Loaded category results: {len(benford_categories)} Benford, {len(round_categories)} Round Number.")
-
-    # 2. Stream & Correlate merged_works.csv, validation_results.csv, benford_roundnumber_flags.csv, and mp_baseline_flags.csv
+    # Load active pipeline outputs only. Retired amount-digit diagnostics are excluded.
     val_file = os.path.join(PROCESSED_DIR, 'validation_results.csv')
     mrg_file = os.path.join(PROCESSED_DIR, 'merged_works.csv')
-    bnf_file = os.path.join(PROCESSED_DIR, 'benford_roundnumber_flags.csv')
     mpf_file = os.path.join(PROCESSED_DIR, 'mp_baseline_flags.csv')
 
     print("Correlating datasets across 171,890 works...")
@@ -402,12 +376,10 @@ def main():
 
     with open(mrg_file, 'r', encoding='utf-8', errors='ignore') as fm, \
          open(val_file, 'r', encoding='utf-8', errors='ignore') as fv, \
-         open(bnf_file, 'r', encoding='utf-8', errors='ignore') as fb, \
          open(mpf_file, 'r', encoding='utf-8', errors='ignore') as fmp:
 
         rm = csv.DictReader(fm)
         rv = csv.DictReader(fv)
-        rb = csv.DictReader(fb)
         rmp = csv.DictReader(fmp)
 
         # Count total registered works in merged_works.csv
@@ -443,7 +415,6 @@ def main():
                 continue
 
             row_v = next(rv)
-            row_b = next(rb)
             row_mp = next(rmp)
             total_scanned_works += 1
 
@@ -471,8 +442,8 @@ def main():
             is_mp_drift = (row_mp.get('flag_mp_drift') == 'True') or (row_v.get('flag_mp_drift') == 'True')
             is_flagged = is_combined_flag or is_rule_flag or is_high_sev or is_mp_drift
 
-            score, severity = calculate_risk_score(row_v, row_b, row_mp)
-            anomaly_label, anomaly_type = get_anomaly_breakdown(row_v, row_b, row_mp)
+            score, severity = calculate_risk_score(row_v, row_mp)
+            anomaly_label, anomaly_type = get_anomaly_breakdown(row_v, row_mp)
 
             if row_v.get('flag_delay') == 'True':
                 anomaly_counts['delay'] += 1
@@ -482,8 +453,6 @@ def main():
                 anomaly_counts['mp_drift'] += 1
             if row_v.get('iso_flag') == 'True':
                 anomaly_counts['spatial'] += 1
-            if row_b.get('flag_round_number') == 'True':
-                anomaly_counts['round_number'] += 1
 
             if is_flagged:
                 flagged_works_count += 1
@@ -522,9 +491,7 @@ def main():
                     h_anomalies[h]['mp_drift'] += 1
                 if row_v.get('iso_flag') == 'True':
                     h_anomalies[h]['spatial'] += 1
-                if row_b.get('flag_round_number') == 'True':
-                    h_anomalies[h]['round_number'] += 1
-
+    
                 if is_flagged:
                     h_totals[h]['flagged'] += 1
                     h_totals[h]['scrutiny'] += amt
@@ -637,7 +604,6 @@ def main():
                     "mp_cat_std": round(safe_float(row_mp.get('mp_cat_std')), 2),
                     "mp_cat_n": safe_int(row_mp.get('mp_cat_n')),
                     "iso_flag": row_v.get('iso_flag') == 'True',
-                    "flag_round_number": row_b.get('flag_round_number') == 'True',
                     "amount_zscore": round(safe_float(row_v.get('amount_robust_z')), 2),
                     "gap_zscore": round(safe_float(row_v.get('gap_robust_z')), 2),
                     "mp_drift_zscore": round(safe_float(row_mp.get('mp_drift_zscore') if row_mp.get('mp_drift_zscore') else row_v.get('mp_drift_robust_z')), 2)
@@ -755,13 +721,6 @@ def main():
                 "count": anomaly_counts['mp_drift'],
                 "pct": round((anomaly_counts['mp_drift'] / flagged_works_count) * 100, 1) if flagged_works_count else 0,
                 "color": "#2563eb"
-            },
-            {
-                "name": "Round Number Heuristic Anomaly",
-                "type": "Round Number",
-                "count": anomaly_counts['round_number'],
-                "pct": round((anomaly_counts['round_number'] / flagged_works_count) * 100, 1) if flagged_works_count else 0,
-                "color": "#475569"
             }
         ],
         "severityBreakdown": {
@@ -882,13 +841,12 @@ def main():
                 "criticalRates": cr_rates
             },
             "anomalyDonut": {
-                "labels": ["Completion Delay", "Amount Outlier", "Spatial / Cluster ML", "MP Drift", "Round Number"],
+                "labels": ["Completion Delay", "Amount Outlier", "Spatial / Cluster ML", "MP Drift"],
                 "data": [
                     h_anom['delay'],
                     h_anom['amount'],
                     h_anom['spatial'],
-                    h_anom['mp_drift'],
-                    h_anom['round_number']
+                    h_anom['mp_drift']
                 ]
             },
             "agencyMatrix": ag_matrix
@@ -903,8 +861,6 @@ def main():
     analytics_data = {
         **horizons_data["all"],
         "horizons": horizons_data,
-        "benfordResults": benford_categories,
-        "roundNumberResults": round_categories
     }
 
     with open(os.path.join(OUTPUT_DIR, 'analytics_data.json'), 'w', encoding='utf-8') as f:

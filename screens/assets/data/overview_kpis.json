@@ -40,13 +40,6 @@
       "color": "#2563eb"
     },
     {
-      "name": "Round Number Benford Law Anomaly",
-      "type": "Round Number",
-      "count": 1522,
-      "pct": 6.0,
-      "color": "#475569"
-    },
-    {
       "name": "Data Quality & Stale Status (MoSPI Reporting Discrepancy)",
       "type": "Data Quality",
       "count": 62089,
@@ -104,7 +97,6 @@
         "mp_cat_std": 489179.59,
         "mp_cat_n": 247,
         "iso_flag": true,
-        "flag_round_number": false,
         "amount_zscore": 4.23,
         "gap_zscore": -0.54,
         "mp_drift_zscore": 14.4
@@ -141,7 +133,6 @@
         "mp_cat_std": 1482669.1,
         "mp_cat_n": 72,
         "iso_flag": true,
-        "flag_round_number": false,
         "amount_zscore": 4.6,
         "gap_zscore": 0.64,
         "mp_drift_zscore": 5.9
@@ -178,7 +169,6 @@
         "mp_cat_std": 4346043.63,
         "mp_cat_n": 15,
         "iso_flag": true,
-        "flag_round_number": false,
         "amount_zscore": 5.03,
         "gap_zscore": -0.49,
         "mp_drift_zscore": 2.35
@@ -215,7 +205,6 @@
         "mp_cat_std": 1482669.1,
         "mp_cat_n": 72,
         "iso_flag": true,
-        "flag_round_number": false,
         "amount_zscore": 4.07,
         "gap_zscore": 2.13,
         "mp_drift_zscore": 3.72
@@ -252,7 +241,6 @@
         "mp_cat_std": 154662.8,
         "mp_cat_n": 612,
         "iso_flag": true,
-        "flag_round_number": false,
         "amount_zscore": 1.59,
         "gap_zscore": 4.01,
         "mp_drift_zscore": 4.41

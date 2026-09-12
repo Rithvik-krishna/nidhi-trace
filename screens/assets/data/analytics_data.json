@@ -146,15 +146,13 @@
       "Completion Delay",
       "Amount Outlier",
       "Spatial / Cluster ML",
-      "MP Drift",
-      "Round Number"
+      "MP Drift"
     ],
     "data": [
       13435,
       7000,
       8563,
-      6223,
-      1522
+      6223
     ]
   },
   "agencyMatrix": [
@@ -398,15 +396,13 @@
           "Completion Delay",
           "Amount Outlier",
           "Spatial / Cluster ML",
-          "MP Drift",
-          "Round Number"
+          "MP Drift"
         ],
         "data": [
           13435,
           7000,
           8563,
-          6223,
-          1522
+          6223
         ]
       },
       "agencyMatrix": [
@@ -687,15 +683,13 @@
           "Completion Delay",
           "Amount Outlier",
           "Spatial / Cluster ML",
-          "MP Drift",
-          "Round Number"
+          "MP Drift"
         ],
         "data": [
           13435,
           4084,
           7013,
-          4110,
-          1250
+          4110
         ]
       },
       "agencyMatrix": [
@@ -904,15 +898,13 @@
           "Completion Delay",
           "Amount Outlier",
           "Spatial / Cluster ML",
-          "MP Drift",
-          "Round Number"
+          "MP Drift"
         ],
         "data": [
           0,
           2916,
           1550,
-          2113,
-          272
+          2113
         ]
       },
       "agencyMatrix": [
@@ -1008,54 +1000,5 @@
         }
       ]
     }
-  },
-  "benfordResults": [
-    {
-      "Work category": "Trust and Society",
-      "n_records": "822",
-      "mad": "0.058462553408010286",
-      "conformity": "nonconformity",
-      "benford_flag": "True"
-    },
-    {
-      "Work category": "Repair and Renovation",
-      "n_records": "1703",
-      "mad": "0.02821598116478759",
-      "conformity": "nonconformity",
-      "benford_flag": "True"
-    },
-    {
-      "Work category": "Normal/Others",
-      "n_records": "169306",
-      "mad": "0.02658614040294168",
-      "conformity": "nonconformity",
-      "benford_flag": "True"
-    }
-  ],
-  "roundNumberResults": [
-    {
-      "Work category": "Trust and Society",
-      "n_records": "822",
-      "round_rate": "0.7141119221411192",
-      "overall_round_rate": "0.32122287509453723",
-      "round_zscore": "24.123426714467676",
-      "round_flag": "True"
-    },
-    {
-      "Work category": "Repair and Renovation",
-      "n_records": "1703",
-      "round_rate": "0.5490311215502055",
-      "overall_round_rate": "0.32122287509453723",
-      "round_zscore": "20.13306676024081",
-      "round_flag": "True"
-    },
-    {
-      "Work category": "Normal/Others",
-      "n_records": "169306",
-      "round_rate": "0.31704133344358737",
-      "overall_round_rate": "0.32122287509453723",
-      "round_zscore": "-3.684730847763642",
-      "round_flag": "False"
-    }
-  ]
+  }
 }

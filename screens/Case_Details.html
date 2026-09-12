@@ -541,10 +541,6 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             <span class="font-sans text-slate-600">Isolation Forest:</span>
                             <strong class="text-purple-800" id="fd-iso">Outlier</strong>
                         </div>
-                        <div class="py-1.5 flex justify-between items-center">
-                            <span class="font-sans text-slate-600">Round-Number BoQ:</span>
-                            <strong class="text-emerald-800" id="fd-boq">Not Detected</strong>
-                        </div>
                     </div>
                 </div>
 
@@ -851,7 +847,6 @@ function normalizeDossierData(d) {
     const mpCatMean = d.flags && d.flags.mp_cat_mean !== undefined ? d.flags.mp_cat_mean : (d.mp_cat_mean || 334041.32);
     const mpCatStd = d.flags && d.flags.mp_cat_std !== undefined ? d.flags.mp_cat_std : (d.mp_cat_std || 489179.59);
     const mpCatN = d.flags && d.flags.mp_cat_n !== undefined ? d.flags.mp_cat_n : (d.mp_cat_n || 247);
-    const flagRoundNumber = Boolean(d.flags && d.flags.flag_round_number);
     const isoFlag = Boolean(d.flag_isolation_forest || (d.flags && d.flags.iso_flag));
 
     const sDate = d.sanction_date || d.sanctionDate || '2023-08-16';
@@ -913,7 +908,6 @@ function normalizeDossierData(d) {
         mp_cat_mean_formatted: formatCurrency(mpCatMean),
         mp_cat_std: mpCatStd,
         mp_cat_n: mpCatN,
-        flag_round_number: flagRoundNumber,
         work_status: d.workStatus || d.work_status || d.progress || d.status || 'Work Completed',
         flag_delay: Boolean(d.flag_delay || gapDays > 180 || gapRobustZ >= 3.5),
         flag_amount: Boolean(d.flag_amount || amountRobustZ >= 3.5),
@@ -1215,8 +1209,6 @@ function populateDossier(c) {
     const fdIsoEl = document.getElementById('fd-iso');
     if (fdIsoEl) fdIsoEl.innerText = c.flag_isolation_forest ? 'Outlier' : 'Conforming';
 
-    const fdBoqEl = document.getElementById('fd-boq');
-    if (fdBoqEl) fdBoqEl.innerText = c.flag_round_number ? 'Detected (Round)' : 'Not Detected (Clean)';
 
     // Explanation Box
     const expText = document.getElementById('dossier-explanation-text');

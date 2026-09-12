@@ -158,7 +158,7 @@ class LocalDomainGuard:
         'implementing agency', 'contractor', 'vendor', 'mospi', 'pfms',
         'cvc', 'district magistrate', ' dm ', 'collector', 'cag',
         'measurement book', ' mb ', 'rule 12', 'rule 14', 'gfr',
-        'isolation forest', 'benford', 'z-score', 'zscore', 'drift',
+        'isolation forest', 'z-score', 'zscore', 'drift',
         'spending habit', 'split tender', 'completion delay', 'delay', 'timeline',
         'outlier', 'cluster', 'clustering', 'flagged', 'flag', 'risk score',
         'risk severity', 'critical severity', 'high severity', 'watchlist',
@@ -328,7 +328,7 @@ Your role is to help auditors and oversight officers understand:
 - MPLADS data and project records
 - Dashboard metrics and anomaly indicators
 - Individual project dossiers and risk scores
-- Statistical and ML anomaly signals (Isolation Forest, Benford Law, z-scores, MP Baseline Drift)
+- Statistical and ML anomaly signals (Isolation Forest, z-scores, MP Baseline Drift)
 - Project timelines, approval latencies, and executing-agency patterns
 - Audit prioritization and statutory vigilance workflows
 
@@ -372,8 +372,6 @@ def build_prompt_with_context(user_message: str, page_context: dict, authentic_c
             flags_desc.append(f"MP Baseline Category Drift: z-score {z:.2f} relative to historical spending habits")
         if f.get("iso_flag"):
             flags_desc.append("Spatial / Isolation Forest ML Outlier: atypical geographic cluster density")
-        if f.get("flag_round_number"):
-            flags_desc.append("Round Number Sanction: Benford Law first-digit anomaly")
 
         case_info = f"""VERIFIED CASE RECORD (AUTHENTIC SERVER DATA):
 - Work ID: {authentic_case.get('id')}

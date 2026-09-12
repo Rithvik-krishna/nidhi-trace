@@ -83,7 +83,7 @@
 > 1. **Fund Allocation vs. Release vs. Actual Expenditure**: Tracks the quarterly capital deployment velocity across 2023 to 2026, pinpointing where pipeline bottlenecks occur.
 > 2. **Monthly Flagged Cases Trend**: An anomaly surge detector. Notice the prominent spike in early 2025, which immediately alerts vigilance leadership to concentrated year-end sanctioning rushes.
 > 3. **Inter-State Anomaly Exposure**: A comparative breakdown of top states by flagged rate percentage versus priority scrutiny share—showing Maharashtra, Uttar Pradesh, and West Bengal leading in scrutiny exposure.
-> 4. **Anomaly Vector Donut**: Breaks down composition across Completion Delays, Cost Outliers, Isolation Forest spatial outliers, and Benford's Law round-number violations."*
+> 4. **Anomaly Vector Donut**: Breaks down composition across Completion Delays, Cost Outliers, Isolation Forest spatial outliers, and MP spending drift."*
 
 **On-Screen Actions**:
 - **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `UTILIZATION: 66.5%`, `SCRUTINY: ₹1,661.7 Cr`.
