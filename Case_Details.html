@@ -351,7 +351,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             </div>
                             <div class="font-mono text-sm font-bold text-slate-900" id="card-timeline-gap">38 days elapsed</div>
                             <p id="card-timeline-desc" class="text-[10.5px] text-slate-600 leading-snug">
-                                Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.
+                                Recommendation-to-sanction duration; no statutory SLA benchmark is configured.
                             </p>
                         </div>
                     </div>
@@ -405,7 +405,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             <span class="material-symbols-outlined text-blue-600 text-sm">timeline</span>
                             <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Administrative Lifecycle Timeline</h3>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-500">Statutory 45-Day SLA Benchmark</span>
+                        <span class="text-[10px] font-mono text-slate-500">Recorded Recommendation-to-Sanction Duration</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -872,7 +872,7 @@ function normalizeDossierData(d) {
         if (isoFlag) {
             parts.push(`Unsupervised Isolation Forest algorithm flagged multivariate feature clustering anomaly across timeline, budget, and implementing agency distribution.`);
         }
-        if (gapDays > 180 || gapRobustZ >= 3.5) {
+        if ([true, 'True', 'true', 1].includes(d.flag_delay ?? d.flags?.flag_delay)) {
             parts.push(`Recommendation-to-sanction timeline of ${gapDays} days deviates from regional norms (robust z = ${gapRobustZ.toFixed(2)}).`);
         }
         if (dqFlag) {
@@ -909,7 +909,7 @@ function normalizeDossierData(d) {
         mp_cat_std: mpCatStd,
         mp_cat_n: mpCatN,
         work_status: d.workStatus || d.work_status || d.progress || d.status || 'Work Completed',
-        flag_delay: Boolean(d.flag_delay || gapDays > 180 || gapRobustZ >= 3.5),
+        flag_delay: [true, 'True', 'true', 1].includes(d.flag_delay ?? d.flags?.flag_delay),
         flag_amount: Boolean(d.flag_amount || amountRobustZ >= 3.5),
         flag_mp_drift: Boolean(d.flag_mp_drift || mpDriftRobustZ >= 3.5),
         flag_isolation_forest: isoFlag,
@@ -1005,7 +1005,7 @@ function populateDossier(c) {
     const isCostOutlier = Boolean(c.flag_amount || c.amount_robust_z >= 3.5);
     const isMpDrift = Boolean(c.flag_mp_drift || c.mp_drift_robust_z >= 3.5);
     const isIsoOutlier = Boolean(c.flag_isolation_forest);
-    const isTimelineBreach = Boolean(c.flag_delay || c.gap_days > 45 || c.gap_robust_z >= 3.5);
+    const isTimelineBreach = Boolean(c.flag_delay);
     const isDataQuality = Boolean(c.dq_flag);
 
     if (isCostOutlier) activeFlagsCount++;
@@ -1094,14 +1094,14 @@ function populateDossier(c) {
         isoContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${isIsoOutlier ? 'border-l-purple-500' : 'border-l-slate-300'}`;
     }
 
-    // Card D: Project Timeline SLA (DYNMICALLY REFLECTS ACTUAL GAP DAYS)
+    // Card D: Recorded Timeline and Pipeline Delay Flag
     const timeGapEl = document.getElementById('card-timeline-gap');
     if (timeGapEl) timeGapEl.innerText = `${c.gap_days} days elapsed`;
 
     const timeTagEl = document.getElementById('card-timeline-tag');
     if (timeTagEl) {
-        if (c.gap_days > 45) {
-            timeTagEl.innerText = `+${c.gap_days - 45}d BREACH`;
+        if (c.flag_delay) {
+            timeTagEl.innerText = `PIPELINE DELAY FLAG`;
             timeTagEl.className = 'nt-badge nt-badge-critical';
         } else {
             timeTagEl.innerText = `${c.gap_days} DAYS`;
@@ -1111,16 +1111,16 @@ function populateDossier(c) {
 
     const timeDescEl = document.getElementById('card-timeline-desc');
     if (timeDescEl) {
-        if (c.gap_days > 45) {
-            timeDescEl.innerHTML = `<span class="text-red-700 font-semibold">Exceeds statutory 45-day SLA guideline by ${c.gap_days - 45} days</span> between recommendation and district sanction order (robust z = ${c.gap_robust_z.toFixed(2)}).`;
+        if (c.flag_delay) {
+            timeDescEl.innerText = `The pipeline flagged this recommendation-to-sanction duration for review (${c.gap_days} days). This is not a statutory SLA finding.`;
         } else {
-            timeDescEl.innerText = `Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.`;
+            timeDescEl.innerText = `No delay flag is reported for this record. Elapsed duration: ${c.gap_days} days. No statutory SLA benchmark is configured.`;
         }
     }
 
     const timeContainer = document.getElementById('card-timeline-container');
     if (timeContainer) {
-        timeContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${c.gap_days > 45 ? 'border-l-red-500' : 'border-l-blue-500'}`;
+        timeContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${c.flag_delay ? 'border-l-red-500' : 'border-l-blue-500'}`;
     }
 
     // 3. Section 3: MP Historical Category Baseline Comparison
@@ -1231,7 +1231,7 @@ function renderFlagsList(c) {
     const flags = [];
 
     // 1. Recommendation-to-Sanction Latency Flag
-    if (c.flag_delay || c.gap_days > 180 || c.gap_robust_z >= 3.5) {
+    if (c.flag_delay) {
         flags.push({
             color: 'red',
             icon: 'timer_off',
@@ -1695,7 +1695,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <tr>
                                 <td class="p-2 font-sans font-medium text-slate-900">Timeline Latency</td>
                                 <td class="p-2 text-right" id="tech-gap-val">38 Days</td>
-                                <td class="p-2 text-right text-slate-500">45 Days (Statutory SLA)</td>
+                                <td class="p-2 text-right text-slate-500">Pipeline delay flag; no SLA configured</td>
                                 <td class="p-2 text-right font-bold text-emerald-700" id="tech-gap-z">z = -0.54 (OK)</td>
                             </tr>
                             <tr>

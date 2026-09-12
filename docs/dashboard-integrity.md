@@ -40,3 +40,11 @@ Reproduce with NIDHI_PROCESSED_DIR pointing at the processed CSV folder, then ru
 The supplied files were read from E:/nidhitrace/data/processed without modification.
 The GitHub detector source differs from that backend's validated pipeline;
 no detector or validation code was changed or re-run to manufacture agreement.
+
+## 6. Remove unsupported SLA
+
+Repository-wide searches of UI, backend, scripts, API and documentation found
+no rule/config source for a 45-day SLA. Removed the claim from initial and dynamic
+dossier text and the technical modal. Delay-card state now uses the explicit
+top-level or nested pipeline flag instead of a UI-invented day cutoff. This does
+not complete the separate multi-signal badge fix (#3).
