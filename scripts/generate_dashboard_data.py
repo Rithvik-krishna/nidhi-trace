@@ -9,13 +9,15 @@ import os
 import sys
 import csv
 import json
+import hashlib
+from pathlib import Path
 from collections import Counter, defaultdict
 from datetime import datetime
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-PROCESSED_DIR = 'processed'
-OUTPUT_DIR = 'assets/data'
+PROCESSED_DIR = os.environ.get('NIDHI_PROCESSED_DIR', 'processed')
+OUTPUT_DIR = os.environ.get('NIDHI_OUTPUT_DIR', 'assets/data')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Geocoordinates for Indian States and Major Parliamentary Constituencies
@@ -221,7 +223,7 @@ def calculate_expenditure_and_progress(work_status, is_high_sev, amt, seed_idx):
     rel_amount = amt * (rel_pct / 100.0)
     return exp_pct, progress, exp_amount, rel_amount
 
-def calculate_risk_score(val_row, benford_row=None, mp_row=None):
+def calculate_risk_score(val_row, mp_row=None):
     """
     Calculate an intelligent composite risk score (0-100) based on algorithmic indicators.
     """
@@ -229,10 +231,10 @@ def calculate_risk_score(val_row, benford_row=None, mp_row=None):
     if val_row.get('rule_high_severity') == 'True':
         amt_z = safe_float(val_row.get('amount_robust_z'))
         gap_z = safe_float(val_row.get('gap_robust_z'))
-        mp_z = safe_float(mp_row.get('mp_drift_zscore') if mp_row else val_row.get('mp_drift_robust_z'))
+        mp_z = safe_float(val_row.get('mp_drift_robust_z'))
         bonus = min(8, int(max(amt_z, gap_z, abs(mp_z))))
         return 90 + bonus, 'critical'
-        
+
     score = 15.0
     flags_triggered = 0
 
@@ -249,10 +251,10 @@ def calculate_risk_score(val_row, benford_row=None, mp_row=None):
         score += 28.0 + min(12.0, max(0.0, amt_z - 2.0) * 3)
 
     # 4. MP spending baseline drift (from mp_baseline_flags or validation_results)
-    is_mp_drift = (mp_row and mp_row.get('flag_mp_drift') == 'True') or (val_row.get('flag_mp_drift') == 'True')
+    is_mp_drift = val_row.get('flag_mp_drift') == 'True'
     if is_mp_drift:
         flags_triggered += 1
-        mp_z = safe_float(mp_row.get('mp_drift_zscore') if mp_row and mp_row.get('mp_drift_zscore') else val_row.get('mp_drift_robust_z'))
+        mp_z = safe_float(val_row.get('mp_drift_robust_z'))
         score += 24.0 + min(10.0, max(0.0, abs(mp_z) - 2.0) * 2.5)
 
     # 5. Isolation forest ML flag
@@ -260,61 +262,51 @@ def calculate_risk_score(val_row, benford_row=None, mp_row=None):
         flags_triggered += 1
         score += 20.0
 
-    # 6. Round number flag
-    if benford_row and benford_row.get('flag_round_number') == 'True':
-        flags_triggered += 1
-        score += 14.0
-
     if flags_triggered >= 2:
         score += 8.0
 
     score = min(89, max(15, round(score)))
-    
+
     if score >= 70:
         severity = 'high'
     elif score >= 40:
         severity = 'med'
     else:
         severity = 'low'
-        
+
     return score, severity
 
-def get_anomaly_breakdown(val_row, benford_row=None, mp_row=None):
+def get_anomaly_breakdown(val_row, mp_row=None):
     """Determine primary anomaly label and type."""
     reasons = []
     anomaly_type = "Verified"
-    
+
     if val_row.get('flag_delay') == 'True':
         gap = safe_float(val_row.get('gap_days'))
         reasons.append(f"Sanction Delay ({int(gap)} days)")
         anomaly_type = "Delay"
-        
+
     if val_row.get('flag_amount') == 'True':
         amt_z = safe_float(val_row.get('amount_robust_z'))
         reasons.append(f"Amount Outlier (z={amt_z:.1f})")
         if anomaly_type == "Verified":
             anomaly_type = "Cost"
-            
-    is_mp_drift = (mp_row and mp_row.get('flag_mp_drift') == 'True') or (val_row.get('flag_mp_drift') == 'True')
+
+    is_mp_drift = val_row.get('flag_mp_drift') == 'True'
     if is_mp_drift:
         z_str = ""
-        if mp_row and mp_row.get('mp_drift_zscore'):
-            z_val = safe_float(mp_row.get('mp_drift_zscore'))
+        if val_row.get('mp_drift_robust_z'):
+            z_val = safe_float(val_row.get('mp_drift_robust_z'))
             z_str = f" (z={z_val:.1f})"
         reasons.append(f"MP Baseline Drift{z_str}")
         if anomaly_type == "Verified":
             anomaly_type = "MP Drift"
-            
+
     if val_row.get('iso_flag') == 'True':
         reasons.append("ML Cluster Outlier")
         if anomaly_type == "Verified":
             anomaly_type = "Spatial"
-            
-    if benford_row and benford_row.get('flag_round_number') == 'True':
-        reasons.append("Round Number Anomaly")
-        if anomaly_type == "Verified":
-            anomaly_type = "Cost"
-            
+
     share = safe_float(val_row.get('agency_constituency_share'))
     total_w = safe_float(val_row.get('agency_total_works'))
     if share > 0.85 and total_w > 20:
@@ -328,7 +320,7 @@ def get_anomaly_breakdown(val_row, benford_row=None, mp_row=None):
         else:
             reasons.append("Standard Baseline")
             anomaly_type = "Verified"
-            
+
     primary = " & ".join(reasons[:2])
     return primary, anomaly_type
 
@@ -336,26 +328,10 @@ def main():
     print("=" * 60)
     print("MPLAD Insight AI - Processing Real Forensic Data")
     print("=" * 60)
-    
-    # 1. Load Benford & Round Number Category Results
-    benford_categories = []
-    with open(os.path.join(PROCESSED_DIR, 'benford_category_results.csv'), 'r', encoding='utf-8') as f:
-        r = csv.DictReader(f)
-        for row in r:
-            benford_categories.append(row)
-            
-    round_categories = []
-    with open(os.path.join(PROCESSED_DIR, 'round_number_category_results.csv'), 'r', encoding='utf-8') as f:
-        r = csv.DictReader(f)
-        for row in r:
-            round_categories.append(row)
 
-    print(f"Loaded category results: {len(benford_categories)} Benford, {len(round_categories)} Round Number.")
-
-    # 2. Stream & Correlate merged_works.csv, validation_results.csv, benford_roundnumber_flags.csv, and mp_baseline_flags.csv
+    # Load active pipeline outputs only. Retired amount-digit diagnostics are excluded.
     val_file = os.path.join(PROCESSED_DIR, 'validation_results.csv')
     mrg_file = os.path.join(PROCESSED_DIR, 'merged_works.csv')
-    bnf_file = os.path.join(PROCESSED_DIR, 'benford_roundnumber_flags.csv')
     mpf_file = os.path.join(PROCESSED_DIR, 'mp_baseline_flags.csv')
 
     print("Correlating datasets across 171,890 works...")
@@ -372,6 +348,9 @@ def main():
     low_count = 0
 
     anomaly_counts = Counter()
+    rule_flagged_count = 0
+    high_exposure = 0.0
+    dq_exposure = 0.0
     state_works = Counter()
     state_flagged = Counter()
     state_critical = Counter()
@@ -402,25 +381,23 @@ def main():
 
     with open(mrg_file, 'r', encoding='utf-8', errors='ignore') as fm, \
          open(val_file, 'r', encoding='utf-8', errors='ignore') as fv, \
-         open(bnf_file, 'r', encoding='utf-8', errors='ignore') as fb, \
          open(mpf_file, 'r', encoding='utf-8', errors='ignore') as fmp:
 
         rm = csv.DictReader(fm)
-        rv = csv.DictReader(fv)
-        rb = csv.DictReader(fb)
+        rv = (r for r in csv.DictReader(fv) if r.get('is_synthetic', '0') == '0')
         rmp = csv.DictReader(fmp)
 
         # Count total registered works in merged_works.csv
         for row_m in rm:
             total_registered_works += 1
             amt_str = row_m.get('Sanction Amount ( ₹ )', '').strip()
-            
+
             # If this row is in validation_results
             if not amt_str:
                 # Also collect some registered works without sanction for diverse ledger
                 if len(ledger_works) < 250 and total_registered_works % 70 == 0:
                     sr_no = row_m.get('Sr. No._rec') or str(total_registered_works)
-                    work_id = f"MPLAD-{sr_no.zfill(5)}"
+                    work_id = f"MPLAD-REC-{total_registered_works:06d}"
                     work_col = row_m.get('WORK') or ''
                     raw_cat = row_m.get('Work category_rec') or ''
                     clean_t = clean_project_title(row_m.get('Work description_rec'), work_col, raw_cat)
@@ -443,8 +420,11 @@ def main():
                 continue
 
             row_v = next(rv)
-            row_b = next(rb)
             row_mp = next(rmp)
+            # These files have no shared record ID: fail closed if row alignment changes.
+            for field in ['Sanction Amount ( ₹ )', 'gap_days']:
+                if safe_float(row_m.get(field)) != safe_float(row_v.get(field)):
+                    raise ValueError(f"Source alignment mismatch at record {total_scanned_works + 1}: {field}")
             total_scanned_works += 1
 
             amt = float(amt_str)
@@ -468,11 +448,25 @@ def main():
             is_combined_flag = row_v.get('combined_flag') == 'True'
             is_rule_flag = row_v.get('rule_any_flag') == 'True'
             is_high_sev = row_v.get('rule_high_severity') == 'True'
-            is_mp_drift = (row_mp.get('flag_mp_drift') == 'True') or (row_v.get('flag_mp_drift') == 'True')
-            is_flagged = is_combined_flag or is_rule_flag or is_high_sev or is_mp_drift
+            is_mp_drift = row_v.get('flag_mp_drift') == 'True'
+            is_flagged = any(row_v.get(k) == 'True' for k in ['flag_delay', 'flag_amount', 'flag_mp_drift', 'iso_flag'])
+            assert is_flagged == is_combined_flag, 'Combined flag does not match active signal union'
+            rule_flagged_count += int(is_rule_flag)
+            if is_high_sev:
+                high_exposure += amt
+            if row_v.get('dq_flag') == 'True':
+                anomaly_counts['dq'] += 1
+                dq_exposure += amt
+            for dq_key in ['dq_implausible_amount', 'dq_possible_miscategorization', 'dq_stale_status']:
+                anomaly_counts[dq_key] += int(row_v.get(dq_key) == 'True')
 
-            score, severity = calculate_risk_score(row_v, row_b, row_mp)
-            anomaly_label, anomaly_type = get_anomaly_breakdown(row_v, row_b, row_mp)
+            score, severity = calculate_risk_score(row_v, row_mp)
+            # Three disjoint review tiers; an IF-only flag still requires review.
+            if is_flagged and severity == 'low':
+                severity = 'med'
+            if not is_flagged:
+                severity = 'low'
+            anomaly_label, anomaly_type = get_anomaly_breakdown(row_v, row_mp)
 
             if row_v.get('flag_delay') == 'True':
                 anomaly_counts['delay'] += 1
@@ -482,8 +476,6 @@ def main():
                 anomaly_counts['mp_drift'] += 1
             if row_v.get('iso_flag') == 'True':
                 anomaly_counts['spatial'] += 1
-            if row_b.get('flag_round_number') == 'True':
-                anomaly_counts['round_number'] += 1
 
             if is_flagged:
                 flagged_works_count += 1
@@ -522,8 +514,6 @@ def main():
                     h_anomalies[h]['mp_drift'] += 1
                 if row_v.get('iso_flag') == 'True':
                     h_anomalies[h]['spatial'] += 1
-                if row_b.get('flag_round_number') == 'True':
-                    h_anomalies[h]['round_number'] += 1
 
                 if is_flagged:
                     h_totals[h]['flagged'] += 1
@@ -595,8 +585,8 @@ def main():
 
             # Format case entity
             sr_no = row_m.get('Sr. No._san') or row_m.get('Sr. No._rec') or str(total_scanned_works)
-            work_id = f"MPLAD-{sr_no.zfill(5)}"
-            
+            work_id = f"MPLAD-{total_scanned_works:06d}"
+
             # Format clean title & sector
             work_col = row_m.get('WORK') or row_m.get('WORK_rec') or row_m.get('WORK_san') or ''
             raw_cat = row_v.get('Work category') or row_m.get('Work category_rec') or ''
@@ -608,6 +598,14 @@ def main():
             # Create rich case object
             case_obj = {
                 "id": work_id,
+                "originalWorkId": row_m.get('WORK') or row_m.get('WORK_san') or row_m.get('WORK_rec') or None,
+                "sourceRow": total_scanned_works,
+                "isFlagged": is_flagged,
+                "dq_flag": row_v.get('dq_flag') == 'True',
+                "dq_implausible_amount": row_v.get('dq_implausible_amount') == 'True',
+                "dq_possible_miscategorization": row_v.get('dq_possible_miscategorization') == 'True',
+                "dq_stale_status": row_v.get('dq_stale_status') == 'True',
+                "dq_reason": row_v.get('dq_reason') or '',
                 "score": score,
                 "severity": severity,
                 "title": clean_title[:110],
@@ -632,15 +630,14 @@ def main():
                     "flag_delay": row_v.get('flag_delay') == 'True',
                     "flag_amount": row_v.get('flag_amount') == 'True',
                     "flag_mp_drift": is_mp_drift,
-                    "mp_baseline_eligible": row_mp.get('mp_baseline_eligible') == 'True',
+                    "mp_baseline_eligible": row_v.get('mp_baseline_eligible') == 'True',
                     "mp_cat_mean": round(safe_float(row_mp.get('mp_cat_mean')), 2),
                     "mp_cat_std": round(safe_float(row_mp.get('mp_cat_std')), 2),
                     "mp_cat_n": safe_int(row_mp.get('mp_cat_n')),
                     "iso_flag": row_v.get('iso_flag') == 'True',
-                    "flag_round_number": row_b.get('flag_round_number') == 'True',
                     "amount_zscore": round(safe_float(row_v.get('amount_robust_z')), 2),
                     "gap_zscore": round(safe_float(row_v.get('gap_robust_z')), 2),
-                    "mp_drift_zscore": round(safe_float(row_mp.get('mp_drift_zscore') if row_mp.get('mp_drift_zscore') else row_v.get('mp_drift_robust_z')), 2)
+                    "mp_drift_zscore": round(safe_float(row_v.get('mp_drift_robust_z')), 2)
                 }
             }
 
@@ -648,9 +645,7 @@ def main():
 
             # Collect for Flagged Cases (All Critical + High + Representative Sample, capped at ~2,800 for instant UI load)
             if is_flagged:
-                if severity in ['critical', 'high'] or len(flagged_cases) < 2800:
-                    if len(flagged_cases) < 2800 or severity == 'critical':
-                        flagged_cases.append(case_obj)
+                flagged_cases.append(case_obj)
 
                 # Collect for Immediate Vigilance Queue (top critical)
                 if severity == 'critical' and len(immediate_queue) < 10:
@@ -695,9 +690,16 @@ def main():
                         "agency": agency_key
                     })
 
+        assert next(rv, None) is None, 'Unconsumed real validation rows'
+        assert next(rmp, None) is None, 'Unconsumed MP metadata rows'
+
     # Sort immediate vigilance queue by risk score descending
     immediate_queue.sort(key=lambda x: x['score'], reverse=True)
     # Sort flagged cases by score descending
+    assert critical_count + high_count + med_count == flagged_works_count
+    assert flagged_works_count + low_count == total_scanned_works
+    assert len(flagged_cases) == flagged_works_count
+    assert len({c['id'] for c in flagged_cases}) == flagged_works_count
     flagged_cases.sort(key=lambda x: x['score'], reverse=True)
 
     print(f"\nProcessing Complete!")
@@ -720,6 +722,19 @@ def main():
         "totalScannedWorks": total_scanned_works,
         "coveragePct": coverage_pct,
         "flaggedCount": flagged_works_count,
+        "ruleFlaggedCount": rule_flagged_count,
+        "dataQualityCount": anomaly_counts['dq'],
+        "dqCounts": {k: anomaly_counts[k] for k in ['dq_implausible_amount', 'dq_possible_miscategorization', 'dq_stale_status']},
+        "highSeverityExposureCr": round(high_exposure / 10000000, 1),
+        "dataQualityExposureCr": round(dq_exposure / 10000000, 1),
+        "provenance": {
+            "source": "validation_results.csv, real records only (is_synthetic = 0)",
+            "sha256": hashlib.sha256(Path(val_file).read_bytes()).hexdigest(),
+            "mergedSha256": hashlib.sha256(Path(mrg_file).read_bytes()).hexdigest(),
+            "queueDefinition": "Union of flag_delay, flag_amount, flag_mp_drift and iso_flag; data quality is a separate review list",
+            "tierDefinition": "Critical: rule_high_severity; High: existing dashboard score >= 70; Medium: all remaining flagged records. Low: no anomaly signal. Tiers do not overlap.",
+            "idDefinition": "MPLAD plus six-digit real source row; unique within this versioned snapshot. originalWorkId preserves the source work reference."
+        },
         "flaggedPct": flagged_pct,
         "criticalCount": critical_count,
         "highCount": high_count,
@@ -755,19 +770,12 @@ def main():
                 "count": anomaly_counts['mp_drift'],
                 "pct": round((anomaly_counts['mp_drift'] / flagged_works_count) * 100, 1) if flagged_works_count else 0,
                 "color": "#2563eb"
-            },
-            {
-                "name": "Round Number Heuristic Anomaly",
-                "type": "Round Number",
-                "count": anomaly_counts['round_number'],
-                "pct": round((anomaly_counts['round_number'] / flagged_works_count) * 100, 1) if flagged_works_count else 0,
-                "color": "#475569"
             }
         ],
         "severityBreakdown": {
-            "critical": { "count": critical_count, "pct": round((critical_count / flagged_works_count) * 100, 1) },
-            "high": { "count": high_count, "pct": round((high_count / flagged_works_count) * 100, 1) },
-            "med": { "count": med_count, "pct": round((med_count / flagged_works_count) * 100, 1) },
+            "critical": { "count": critical_count, "pct": round((critical_count / max(1, flagged_works_count)) * 100, 1) },
+            "high": { "count": high_count, "pct": round((high_count / max(1, flagged_works_count)) * 100, 1) },
+            "med": { "count": med_count, "pct": round((med_count / max(1, flagged_works_count)) * 100, 1) },
             "low": { "count": low_count, "pct": round((low_count / max(1, total_scanned_works)) * 100, 1) }
         },
         "immediateQueue": immediate_queue[:5]
@@ -882,13 +890,12 @@ def main():
                 "criticalRates": cr_rates
             },
             "anomalyDonut": {
-                "labels": ["Completion Delay", "Amount Outlier", "Spatial / Cluster ML", "MP Drift", "Round Number"],
+                "labels": ["Completion Delay", "Amount Outlier", "Spatial / Cluster ML", "MP Drift"],
                 "data": [
                     h_anom['delay'],
                     h_anom['amount'],
                     h_anom['spatial'],
-                    h_anom['mp_drift'],
-                    h_anom['round_number']
+                    h_anom['mp_drift']
                 ]
             },
             "agencyMatrix": ag_matrix
@@ -903,8 +910,6 @@ def main():
     analytics_data = {
         **horizons_data["all"],
         "horizons": horizons_data,
-        "benfordResults": benford_categories,
-        "roundNumberResults": round_categories
     }
 
     with open(os.path.join(OUTPUT_DIR, 'analytics_data.json'), 'w', encoding='utf-8') as f:
@@ -925,7 +930,7 @@ def main():
     for c in immediate_queue:
         indexed_dossiers[c['id']] = c
     for k, v in cases_index.items():
-        if k not in indexed_dossiers and len(indexed_dossiers) < 5500:
+        if k not in indexed_dossiers and len(indexed_dossiers) < len(flagged_cases) + 2000:
             indexed_dossiers[k] = v
 
     with open(os.path.join(OUTPUT_DIR, 'cases_index.json'), 'w', encoding='utf-8') as f:

@@ -64,8 +64,9 @@ def seed_database_if_empty(db: Session, force: bool = False):
                 flag_amount = bool(flags.get("flag_amount", False))
                 flag_mp_drift = bool(flags.get("flag_mp_drift", False))
                 flag_iso = bool(flags.get("iso_flag", False))
+                dq_flag = bool(c.get("dq_flag", False) or c.get("dq_stale_status", False) or c.get("dq_implausible_amount", False) or c.get("dq_possible_miscategorization", False))
                 is_high_sev = bool(flags.get("rule_high_severity", c.get("severity") in ("critical", "high")))
-                n_flags = sum([flag_delay, flag_amount, flag_mp_drift, flag_iso])
+                n_flags = sum([flag_delay, flag_amount, flag_mp_drift, flag_iso, dq_flag])
 
                 sanc_val = c.get("sanctioned_raw")
                 if sanc_val is None:
@@ -88,6 +89,11 @@ def seed_database_if_empty(db: Session, force: bool = False):
                     "amount_deviation_pct": float(flags.get("amount_zscore", 0.0) or 0.0) * 25.0,
                     "mp_drift_zscore": float(flags.get("mp_drift_zscore", 0.0) or 0.0),
                     "flag_isolation_forest": flag_iso,
+                    "dq_flag": dq_flag,
+                    "dq_stale_status": bool(c.get("dq_stale_status", False)),
+                    "dq_implausible_amount": bool(c.get("dq_implausible_amount", False)),
+                    "dq_possible_miscategorization": bool(c.get("dq_possible_miscategorization", False)),
+                    "dq_reason": c.get("dq_reason"),
                     # Rich UI fields
                     "title": c.get("title") or f"MPLAD Scheme Work {cid}",
                     "sector": c.get("sector") or "Public Infrastructure",
@@ -121,8 +127,9 @@ def seed_database_if_empty(db: Session, force: bool = False):
                 flag_amount = bool(flags.get("flag_amount", "amount" in str(item.get("anomaly", "")).lower() or "cost" in str(item.get("anomaly", "")).lower()))
                 flag_mp_drift = bool(flags.get("flag_mp_drift", "drift" in str(item.get("anomaly", "")).lower()))
                 flag_iso = bool(flags.get("iso_flag", False))
+                dq_flag = bool(item.get("dq_flag", False) or item.get("dq_stale_status", False) or item.get("dq_implausible_amount", False) or item.get("dq_possible_miscategorization", False))
                 is_high_sev = bool(item.get("severity") in ("critical", "high"))
-                n_flags = max(1, sum([flag_delay, flag_amount, flag_mp_drift, flag_iso]))
+                n_flags = sum([flag_delay, flag_amount, flag_mp_drift, flag_iso, dq_flag])
 
                 sanc_val = item.get("sanctioned_raw")
                 if sanc_val is None:
@@ -145,6 +152,11 @@ def seed_database_if_empty(db: Session, force: bool = False):
                     "amount_deviation_pct": float(flags.get("amount_zscore", 0.0) or 25.0),
                     "mp_drift_zscore": float(flags.get("mp_drift_zscore", 0.0) or 2.1),
                     "flag_isolation_forest": flag_iso,
+                    "dq_flag": dq_flag,
+                    "dq_stale_status": bool(item.get("dq_stale_status", False)),
+                    "dq_implausible_amount": bool(item.get("dq_implausible_amount", False)),
+                    "dq_possible_miscategorization": bool(item.get("dq_possible_miscategorization", False)),
+                    "dq_reason": item.get("dq_reason"),
                     "explanation": item.get("anomaly") or "Flagged during algorithmic surveillance.",
                     "title": item.get("title") or f"MPLAD Scheme Work {wid}",
                     "sector": item.get("sector") or "Public Infrastructure",
@@ -177,6 +189,8 @@ def seed_database_if_empty(db: Session, force: bool = False):
                 dist = parts[0].strip()
                 st = parts[-1].strip() if len(parts) > 1 else dist
                 is_flagged = bool(item.get("isFlagged", False))
+                dq_flag = bool(item.get("dq_flag", False) or item.get("dq_stale_status", False) or item.get("dq_implausible_amount", False) or item.get("dq_possible_miscategorization", False))
+                n_flags = sum([is_flagged, False, False, False, dq_flag])
 
                 w_row = {
                     "work_id": wid,
@@ -190,11 +204,16 @@ def seed_database_if_empty(db: Session, force: bool = False):
                     "flag_delay": is_flagged,
                     "flag_amount": False,
                     "flag_mp_drift": False,
-                    "n_flags": 1 if is_flagged else 0,
+                    "n_flags": n_flags,
                     "is_high_severity": False,
                     "amount_deviation_pct": 12.0 if is_flagged else 0.0,
                     "mp_drift_zscore": 1.2 if is_flagged else 0.0,
                     "flag_isolation_forest": False,
+                    "dq_flag": dq_flag,
+                    "dq_stale_status": bool(item.get("dq_stale_status", False)),
+                    "dq_implausible_amount": bool(item.get("dq_implausible_amount", False)),
+                    "dq_possible_miscategorization": bool(item.get("dq_possible_miscategorization", False)),
+                    "dq_reason": item.get("dq_reason"),
                     "explanation": "Flagged during cross-constituency surveillance." if is_flagged else "Normal expenditure within compliance limits.",
                     "title": item.get("title") or f"MPLAD Scheme Work {wid}",
                     "sector": item.get("sector") or "General Infrastructure",

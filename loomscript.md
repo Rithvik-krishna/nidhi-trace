@@ -77,21 +77,21 @@
 
 > *"Next, we enter **Forensic Econometric Analytics**. This view reveals the macro-financial dynamics and temporal surges that file-by-file audits completely miss.
 > 
-> In the top badge strip, we monitor the total fund envelope: **₹8,501.1 Crores total corpus**, an overall **66.5% utilization rate**, and **₹1,661.7 Crores under active scrutiny**.
+> In the top badge strip, we monitor the total fund envelope: **₹8,501.1 Crores total corpus**, an **estimated 66.5% utilization rate (status model)**, and **₹1,769.8 Crores under active scrutiny**.
 > 
 > The dashboard presents four complementary models:
-> 1. **Fund Allocation vs. Release vs. Actual Expenditure**: Tracks the quarterly capital deployment velocity across 2023 to 2026, pinpointing where pipeline bottlenecks occur.
-> 2. **Monthly Flagged Cases Trend**: An anomaly surge detector. Notice the prominent spike in early 2025, which immediately alerts vigilance leadership to concentrated year-end sanctioning rushes.
+> 1. **Fund Allocation vs. Release vs. Estimated Expenditure**: An illustrative quarterly capital trajectory model with releases modeled at 92% and expenditure estimated from reported progress status.
+> 2. **Flagged Works by Sanction Month**: Cohort volume grouped by administrative sanction date, highlighting cyclical rushes in Critical (z ≥ 3.5) and High priority tiers.
 > 3. **Inter-State Anomaly Exposure**: A comparative breakdown of top states by flagged rate percentage versus priority scrutiny share—showing Maharashtra, Uttar Pradesh, and West Bengal leading in scrutiny exposure.
-> 4. **Anomaly Vector Donut**: Breaks down composition across Completion Delays, Cost Outliers, Isolation Forest spatial outliers, and Benford's Law round-number violations."*
+> 4. **Anomaly Vector Donut**: Breaks down the share of flagged signal occurrences across Completion Delays, Cost Outliers, Isolation Forest spatial outliers, and MP spending drift."*
 
 **On-Screen Actions**:
-- **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `UTILIZATION: 66.5%`, `SCRUTINY: ₹1,661.7 Cr`.
+- **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `EST. UTILIZATION: 66.5%*`, `SCRUTINY: ₹1,769.8 Cr`.
 - **Point to the cohort selector**: `17th & 18th Lok Sabha (2019–2024)`.
-- **Top-Left Line Chart**: Hover over the quarterly curve points (e.g., `2024 Q1`) to show the interactive Chart.js tooltip displaying Allocated, Released, and Utilized figures.
-- **Top-Right Area Chart**: Point out the red `2025 SURGES` badge and trace the spike curve in early 2025.
+- **Top-Left Line Chart**: Hover over the quarterly curve points (e.g., `2024 Q1`) to show the interactive Chart.js tooltip displaying Allocated, Modeled Release, and Estimated Expenditure figures.
+- **Top-Right Area Chart**: Point out the `SANCTION COHORTS (CRIT + HIGH)` badge and trace the spike curve in early 2025.
 - **Bottom-Left Bar Chart**: Hover over Maharashtra's tall orange bar showing flagged exposure rate.
-- **Bottom-Right Donut Chart**: Hover over the red "Completion Delay" segment to show percentage share.
+- **Bottom-Right Donut Chart**: Hover over the red "Completion Delay" segment to show its share of signal occurrences.
 - **Point to**: The **"Implementing Agency Risk Matrix"** tab at the top right to mention agency-level scrutiny.
 - **Click**: The **"Data Explorer"** tab in the sidebar.
 

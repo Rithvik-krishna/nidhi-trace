@@ -1,10 +1,10 @@
 {
   "summary": {
     "totalCorpusCr": 8501.1,
-    "scrutinyCr": 1661.7,
+    "scrutinyCr": 1769.8,
     "utilizationPct": 66.5,
     "totalWorks": 171890,
-    "flaggedWorks": 23329,
+    "flaggedWorks": 23907,
     "criticalCount": 1137
   },
   "quarterlyTrajectory": {
@@ -95,18 +95,18 @@
       23
     ],
     "high": [
-      213,
-      205,
-      218,
-      226,
-      320,
-      254,
-      180,
-      101,
-      159,
-      150,
-      222,
-      154
+      227,
+      230,
+      253,
+      258,
+      325,
+      306,
+      220,
+      112,
+      183,
+      172,
+      231,
+      151
     ]
   },
   "stateComparison": {
@@ -121,14 +121,14 @@
       "Maharashtra"
     ],
     "flaggedRates": [
-      21.2,
-      11.6,
-      11.5,
-      14.1,
-      5.9,
-      6.5,
-      12.7,
-      50.4
+      19.8,
+      10.7,
+      11.0,
+      13.5,
+      4.8,
+      5.8,
+      12.3,
+      49.9
     ],
     "criticalRates": [
       0.4,
@@ -146,15 +146,13 @@
       "Completion Delay",
       "Amount Outlier",
       "Spatial / Cluster ML",
-      "MP Drift",
-      "Round Number"
+      "MP Drift"
     ],
     "data": [
       13435,
       7000,
-      8563,
-      6223,
-      1522
+      8549,
+      4110
     ]
   },
   "agencyMatrix": [
@@ -163,8 +161,8 @@
       "totalWorks": 2473,
       "sanctionedCr": 30.6,
       "avgSizeLakhs": 1.2,
-      "flaggedCount": 1403,
-      "anomalyRate": 56.7,
+      "flaggedCount": 1394,
+      "anomalyRate": 56.4,
       "rating": "HIGH RISK VENDOR"
     },
     {
@@ -172,8 +170,8 @@
       "totalWorks": 1661,
       "sanctionedCr": 19.5,
       "avgSizeLakhs": 1.2,
-      "flaggedCount": 1457,
-      "anomalyRate": 87.7,
+      "flaggedCount": 1422,
+      "anomalyRate": 85.6,
       "rating": "HIGH RISK VENDOR"
     },
     {
@@ -181,8 +179,8 @@
       "totalWorks": 1509,
       "sanctionedCr": 57.9,
       "avgSizeLakhs": 3.8,
-      "flaggedCount": 79,
-      "anomalyRate": 5.2,
+      "flaggedCount": 62,
+      "anomalyRate": 4.1,
       "rating": "COMPLIANT / LOW RISK"
     },
     {
@@ -190,8 +188,8 @@
       "totalWorks": 1498,
       "sanctionedCr": 42.8,
       "avgSizeLakhs": 2.9,
-      "flaggedCount": 732,
-      "anomalyRate": 48.9,
+      "flaggedCount": 695,
+      "anomalyRate": 46.4,
       "rating": "HIGH RISK VENDOR"
     },
     {
@@ -199,8 +197,8 @@
       "totalWorks": 1423,
       "sanctionedCr": 18.6,
       "avgSizeLakhs": 1.3,
-      "flaggedCount": 1124,
-      "anomalyRate": 79.0,
+      "flaggedCount": 1118,
+      "anomalyRate": 78.6,
       "rating": "HIGH RISK VENDOR"
     },
     {
@@ -208,8 +206,8 @@
       "totalWorks": 1210,
       "sanctionedCr": 74.1,
       "avgSizeLakhs": 6.1,
-      "flaggedCount": 122,
-      "anomalyRate": 10.1,
+      "flaggedCount": 114,
+      "anomalyRate": 9.4,
       "rating": "MODERATE RISK"
     },
     {
@@ -217,8 +215,8 @@
       "totalWorks": 1201,
       "sanctionedCr": 29.6,
       "avgSizeLakhs": 2.5,
-      "flaggedCount": 179,
-      "anomalyRate": 14.9,
+      "flaggedCount": 171,
+      "anomalyRate": 14.2,
       "rating": "HIGH RISK VENDOR"
     },
     {
@@ -226,8 +224,8 @@
       "totalWorks": 1071,
       "sanctionedCr": 27.9,
       "avgSizeLakhs": 2.6,
-      "flaggedCount": 58,
-      "anomalyRate": 5.4,
+      "flaggedCount": 39,
+      "anomalyRate": 3.6,
       "rating": "COMPLIANT / LOW RISK"
     },
     {
@@ -235,8 +233,8 @@
       "totalWorks": 1006,
       "sanctionedCr": 7.9,
       "avgSizeLakhs": 0.8,
-      "flaggedCount": 9,
-      "anomalyRate": 0.9,
+      "flaggedCount": 1,
+      "anomalyRate": 0.1,
       "rating": "COMPLIANT / LOW RISK"
     },
     {
@@ -244,8 +242,8 @@
       "totalWorks": 987,
       "sanctionedCr": 12.6,
       "avgSizeLakhs": 1.3,
-      "flaggedCount": 78,
-      "anomalyRate": 7.9,
+      "flaggedCount": 71,
+      "anomalyRate": 7.2,
       "rating": "COMPLIANT / LOW RISK"
     }
   ],
@@ -253,10 +251,10 @@
     "all": {
       "summary": {
         "totalCorpusCr": 8501.1,
-        "scrutinyCr": 1661.7,
+        "scrutinyCr": 1769.8,
         "utilizationPct": 66.5,
         "totalWorks": 171890,
-        "flaggedWorks": 23329,
+        "flaggedWorks": 23907,
         "criticalCount": 1137
       },
       "quarterlyTrajectory": {
@@ -347,18 +345,18 @@
           23
         ],
         "high": [
-          213,
-          205,
-          218,
-          226,
-          320,
-          254,
-          180,
-          101,
-          159,
-          150,
-          222,
-          154
+          227,
+          230,
+          253,
+          258,
+          325,
+          306,
+          220,
+          112,
+          183,
+          172,
+          231,
+          151
         ]
       },
       "stateComparison": {
@@ -373,14 +371,14 @@
           "Maharashtra"
         ],
         "flaggedRates": [
-          21.2,
-          11.6,
-          11.5,
-          14.1,
-          5.9,
-          6.5,
-          12.7,
-          50.4
+          19.8,
+          10.7,
+          11.0,
+          13.5,
+          4.8,
+          5.8,
+          12.3,
+          49.9
         ],
         "criticalRates": [
           0.4,
@@ -398,15 +396,13 @@
           "Completion Delay",
           "Amount Outlier",
           "Spatial / Cluster ML",
-          "MP Drift",
-          "Round Number"
+          "MP Drift"
         ],
         "data": [
           13435,
           7000,
-          8563,
-          6223,
-          1522
+          8549,
+          4110
         ]
       },
       "agencyMatrix": [
@@ -415,8 +411,8 @@
           "totalWorks": 2473,
           "sanctionedCr": 30.6,
           "avgSizeLakhs": 1.2,
-          "flaggedCount": 1403,
-          "anomalyRate": 56.7,
+          "flaggedCount": 1394,
+          "anomalyRate": 56.4,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -424,8 +420,8 @@
           "totalWorks": 1661,
           "sanctionedCr": 19.5,
           "avgSizeLakhs": 1.2,
-          "flaggedCount": 1457,
-          "anomalyRate": 87.7,
+          "flaggedCount": 1422,
+          "anomalyRate": 85.6,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -433,8 +429,8 @@
           "totalWorks": 1509,
           "sanctionedCr": 57.9,
           "avgSizeLakhs": 3.8,
-          "flaggedCount": 79,
-          "anomalyRate": 5.2,
+          "flaggedCount": 62,
+          "anomalyRate": 4.1,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -442,8 +438,8 @@
           "totalWorks": 1498,
           "sanctionedCr": 42.8,
           "avgSizeLakhs": 2.9,
-          "flaggedCount": 732,
-          "anomalyRate": 48.9,
+          "flaggedCount": 695,
+          "anomalyRate": 46.4,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -451,8 +447,8 @@
           "totalWorks": 1423,
           "sanctionedCr": 18.6,
           "avgSizeLakhs": 1.3,
-          "flaggedCount": 1124,
-          "anomalyRate": 79.0,
+          "flaggedCount": 1118,
+          "anomalyRate": 78.6,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -460,8 +456,8 @@
           "totalWorks": 1210,
           "sanctionedCr": 74.1,
           "avgSizeLakhs": 6.1,
-          "flaggedCount": 122,
-          "anomalyRate": 10.1,
+          "flaggedCount": 114,
+          "anomalyRate": 9.4,
           "rating": "MODERATE RISK"
         },
         {
@@ -469,8 +465,8 @@
           "totalWorks": 1201,
           "sanctionedCr": 29.6,
           "avgSizeLakhs": 2.5,
-          "flaggedCount": 179,
-          "anomalyRate": 14.9,
+          "flaggedCount": 171,
+          "anomalyRate": 14.2,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -478,8 +474,8 @@
           "totalWorks": 1071,
           "sanctionedCr": 27.9,
           "avgSizeLakhs": 2.6,
-          "flaggedCount": 58,
-          "anomalyRate": 5.4,
+          "flaggedCount": 39,
+          "anomalyRate": 3.6,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -487,8 +483,8 @@
           "totalWorks": 1006,
           "sanctionedCr": 7.9,
           "avgSizeLakhs": 0.8,
-          "flaggedCount": 9,
-          "anomalyRate": 0.9,
+          "flaggedCount": 1,
+          "anomalyRate": 0.1,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -496,8 +492,8 @@
           "totalWorks": 987,
           "sanctionedCr": 12.6,
           "avgSizeLakhs": 1.3,
-          "flaggedCount": 78,
-          "anomalyRate": 7.9,
+          "flaggedCount": 71,
+          "anomalyRate": 7.2,
           "rating": "COMPLIANT / LOW RISK"
         }
       ]
@@ -505,10 +501,10 @@
     "18ls": {
       "summary": {
         "totalCorpusCr": 5782.6,
-        "scrutinyCr": 1590.7,
+        "scrutinyCr": 1447.9,
         "utilizationPct": 62.8,
         "totalWorks": 111935,
-        "flaggedWorks": 20630,
+        "flaggedWorks": 19695,
         "criticalCount": 913
       },
       "quarterlyTrajectory": {
@@ -621,33 +617,33 @@
           23
         ],
         "high": [
-          27,
-          39,
-          64,
-          41,
-          27,
-          55,
-          58,
-          115,
-          244,
+          61,
+          74,
+          100,
+          141,
+          45,
+          86,
+          99,
+          190,
+          295,
+          273,
+          161,
+          277,
+          301,
+          583,
+          333,
+          227,
+          230,
+          253,
+          258,
+          325,
+          306,
+          220,
+          112,
+          183,
+          172,
           231,
-          135,
-          272,
-          290,
-          575,
-          304,
-          213,
-          205,
-          218,
-          226,
-          320,
-          254,
-          180,
-          101,
-          159,
-          150,
-          222,
-          154
+          151
         ]
       },
       "stateComparison": {
@@ -662,14 +658,14 @@
           "Karnataka"
         ],
         "flaggedRates": [
-          23.3,
-          14.5,
-          53.0,
-          18.2,
-          15.3,
-          17.2,
+          22.0,
+          13.9,
+          52.6,
+          17.5,
           14.6,
-          23.8
+          16.4,
+          14.3,
+          22.7
         ],
         "criticalRates": [
           0.7,
@@ -687,15 +683,13 @@
           "Completion Delay",
           "Amount Outlier",
           "Spatial / Cluster ML",
-          "MP Drift",
-          "Round Number"
+          "MP Drift"
         ],
         "data": [
           13435,
           4084,
           7013,
-          4110,
-          1250
+          2745
         ]
       },
       "agencyMatrix": [
@@ -704,8 +698,8 @@
           "totalWorks": 1807,
           "sanctionedCr": 17.5,
           "avgSizeLakhs": 1.0,
-          "flaggedCount": 1389,
-          "anomalyRate": 76.9,
+          "flaggedCount": 1386,
+          "anomalyRate": 76.7,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -713,8 +707,8 @@
           "totalWorks": 1589,
           "sanctionedCr": 14.3,
           "avgSizeLakhs": 0.9,
-          "flaggedCount": 1426,
-          "anomalyRate": 89.7,
+          "flaggedCount": 1418,
+          "anomalyRate": 89.2,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -722,8 +716,8 @@
           "totalWorks": 1006,
           "sanctionedCr": 7.9,
           "avgSizeLakhs": 0.8,
-          "flaggedCount": 9,
-          "anomalyRate": 0.9,
+          "flaggedCount": 1,
+          "anomalyRate": 0.1,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -731,8 +725,8 @@
           "totalWorks": 861,
           "sanctionedCr": 31.5,
           "avgSizeLakhs": 3.7,
-          "flaggedCount": 34,
-          "anomalyRate": 3.9,
+          "flaggedCount": 18,
+          "anomalyRate": 2.1,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -740,8 +734,8 @@
           "totalWorks": 813,
           "sanctionedCr": 17.0,
           "avgSizeLakhs": 2.1,
-          "flaggedCount": 106,
-          "anomalyRate": 13.0,
+          "flaggedCount": 105,
+          "anomalyRate": 12.9,
           "rating": "MODERATE RISK"
         },
         {
@@ -758,8 +752,8 @@
           "totalWorks": 746,
           "sanctionedCr": 15.9,
           "avgSizeLakhs": 2.1,
-          "flaggedCount": 44,
-          "anomalyRate": 5.9,
+          "flaggedCount": 39,
+          "anomalyRate": 5.2,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -767,8 +761,8 @@
           "totalWorks": 709,
           "sanctionedCr": 14.7,
           "avgSizeLakhs": 2.1,
-          "flaggedCount": 79,
-          "anomalyRate": 11.1,
+          "flaggedCount": 75,
+          "anomalyRate": 10.6,
           "rating": "MODERATE RISK"
         },
         {
@@ -776,8 +770,8 @@
           "totalWorks": 704,
           "sanctionedCr": 16.1,
           "avgSizeLakhs": 2.3,
-          "flaggedCount": 100,
-          "anomalyRate": 14.2,
+          "flaggedCount": 99,
+          "anomalyRate": 14.1,
           "rating": "MODERATE RISK"
         },
         {
@@ -785,8 +779,8 @@
           "totalWorks": 703,
           "sanctionedCr": 28.4,
           "avgSizeLakhs": 4.0,
-          "flaggedCount": 50,
-          "anomalyRate": 7.1,
+          "flaggedCount": 49,
+          "anomalyRate": 7.0,
           "rating": "COMPLIANT / LOW RISK"
         }
       ]
@@ -794,10 +788,10 @@
     "17ls": {
       "summary": {
         "totalCorpusCr": 2718.6,
-        "scrutinyCr": 410.5,
+        "scrutinyCr": 322.0,
         "utilizationPct": 75.0,
         "totalWorks": 59955,
-        "flaggedWorks": 4853,
+        "flaggedWorks": 4212,
         "criticalCount": 224
       },
       "quarterlyTrajectory": {
@@ -828,7 +822,6 @@
       },
       "monthlyRiskTrend": {
         "labels": [
-          "May 23",
           "Jun 23",
           "Jul 23",
           "Aug 23",
@@ -843,7 +836,6 @@
         "critical": [
           0,
           0,
-          0,
           1,
           12,
           7,
@@ -854,17 +846,16 @@
           44
         ],
         "high": [
-          0,
           2,
           5,
-          9,
-          11,
-          18,
-          12,
-          46,
-          121,
-          149,
-          255
+          16,
+          16,
+          33,
+          25,
+          128,
+          232,
+          295,
+          405
         ]
       },
       "stateComparison": {
@@ -879,14 +870,14 @@
           "Gujarat"
         ],
         "flaggedRates": [
-          18.2,
-          7.7,
-          5.7,
-          4.8,
-          6.2,
+          16.6,
+          6.7,
+          4.6,
           3.9,
-          3.8,
-          2.1
+          6.0,
+          2.8,
+          2.6,
+          1.9
         ],
         "criticalRates": [
           0.1,
@@ -904,15 +895,13 @@
           "Completion Delay",
           "Amount Outlier",
           "Spatial / Cluster ML",
-          "MP Drift",
-          "Round Number"
+          "MP Drift"
         ],
         "data": [
           0,
           2916,
-          1550,
-          2113,
-          272
+          1536,
+          1365
         ]
       },
       "agencyMatrix": [
@@ -921,8 +910,8 @@
           "totalWorks": 1385,
           "sanctionedCr": 9.0,
           "avgSizeLakhs": 0.6,
-          "flaggedCount": 1111,
-          "anomalyRate": 80.2,
+          "flaggedCount": 1106,
+          "anomalyRate": 79.9,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -930,8 +919,8 @@
           "totalWorks": 1241,
           "sanctionedCr": 18.4,
           "avgSizeLakhs": 1.5,
-          "flaggedCount": 665,
-          "anomalyRate": 53.6,
+          "flaggedCount": 632,
+          "anomalyRate": 50.9,
           "rating": "HIGH RISK VENDOR"
         },
         {
@@ -939,8 +928,8 @@
           "totalWorks": 744,
           "sanctionedCr": 15.2,
           "avgSizeLakhs": 2.0,
-          "flaggedCount": 31,
-          "anomalyRate": 4.2,
+          "flaggedCount": 25,
+          "anomalyRate": 3.4,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -948,8 +937,8 @@
           "totalWorks": 666,
           "sanctionedCr": 13.2,
           "avgSizeLakhs": 2.0,
-          "flaggedCount": 14,
-          "anomalyRate": 2.1,
+          "flaggedCount": 8,
+          "anomalyRate": 1.2,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -957,8 +946,8 @@
           "totalWorks": 648,
           "sanctionedCr": 26.3,
           "avgSizeLakhs": 4.1,
-          "flaggedCount": 45,
-          "anomalyRate": 6.9,
+          "flaggedCount": 44,
+          "anomalyRate": 6.8,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -975,8 +964,8 @@
           "totalWorks": 604,
           "sanctionedCr": 7.9,
           "avgSizeLakhs": 1.3,
-          "flaggedCount": 10,
-          "anomalyRate": 1.7,
+          "flaggedCount": 0,
+          "anomalyRate": 0.0,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -984,8 +973,8 @@
           "totalWorks": 576,
           "sanctionedCr": 47.3,
           "avgSizeLakhs": 8.2,
-          "flaggedCount": 20,
-          "anomalyRate": 3.5,
+          "flaggedCount": 18,
+          "anomalyRate": 3.1,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -993,8 +982,8 @@
           "totalWorks": 568,
           "sanctionedCr": 21.5,
           "avgSizeLakhs": 3.8,
-          "flaggedCount": 8,
-          "anomalyRate": 1.4,
+          "flaggedCount": 6,
+          "anomalyRate": 1.1,
           "rating": "COMPLIANT / LOW RISK"
         },
         {
@@ -1002,60 +991,11 @@
           "totalWorks": 527,
           "sanctionedCr": 5.8,
           "avgSizeLakhs": 1.1,
-          "flaggedCount": 6,
-          "anomalyRate": 1.1,
+          "flaggedCount": 0,
+          "anomalyRate": 0.0,
           "rating": "COMPLIANT / LOW RISK"
         }
       ]
     }
-  },
-  "benfordResults": [
-    {
-      "Work category": "Trust and Society",
-      "n_records": "822",
-      "mad": "0.058462553408010286",
-      "conformity": "nonconformity",
-      "benford_flag": "True"
-    },
-    {
-      "Work category": "Repair and Renovation",
-      "n_records": "1703",
-      "mad": "0.02821598116478759",
-      "conformity": "nonconformity",
-      "benford_flag": "True"
-    },
-    {
-      "Work category": "Normal/Others",
-      "n_records": "169306",
-      "mad": "0.02658614040294168",
-      "conformity": "nonconformity",
-      "benford_flag": "True"
-    }
-  ],
-  "roundNumberResults": [
-    {
-      "Work category": "Trust and Society",
-      "n_records": "822",
-      "round_rate": "0.7141119221411192",
-      "overall_round_rate": "0.32122287509453723",
-      "round_zscore": "24.123426714467676",
-      "round_flag": "True"
-    },
-    {
-      "Work category": "Repair and Renovation",
-      "n_records": "1703",
-      "round_rate": "0.5490311215502055",
-      "overall_round_rate": "0.32122287509453723",
-      "round_zscore": "20.13306676024081",
-      "round_flag": "True"
-    },
-    {
-      "Work category": "Normal/Others",
-      "n_records": "169306",
-      "round_rate": "0.31704133344358737",
-      "overall_round_rate": "0.32122287509453723",
-      "round_zscore": "-3.684730847763642",
-      "round_flag": "False"
-    }
-  ]
+  }
 }

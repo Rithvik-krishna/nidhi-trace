@@ -11,45 +11,21 @@ from app.db.database import get_db
 from app.db.models import Work
 from app.models.schemas import WorkOut, DossierOut, SeverityBreakdown, RupeeImpact
 from datetime import datetime, timedelta
+from app.services import dashboard_summary
 
 router = APIRouter()
 
 @router.get("/summary/breakdown", response_model=SeverityBreakdown)
 def severity_breakdown(db: Session = Depends(get_db)):
-    return SeverityBreakdown(
-        total_works=171890,
-        flagged_count=23329,
-        high_severity_count=1137,
-        delay_flagged=13435,
-        amount_flagged=7000,
-        mp_drift_flagged=4110,
-        isolation_forest_flagged=8594,
-        dq_flagged_count=62089,
-        dq_implausible_amount_count=7,
-        dq_possible_miscategorization_count=499,
-        dq_stale_status_count=61728,
-        total_registered=198116,
-        ai_scanned=171890,
-        coverage_pct=86.8
-    )
+    return SeverityBreakdown(**dashboard_summary.breakdown())
 
 @router.get("/summary/rupee-impact", response_model=RupeeImpact)
 def rupee_impact(db: Session = Depends(get_db)):
-    return RupeeImpact(
-        total_analyzed_cr=8501.1,
-        flagged_review_cr=1661.7,
-        high_severity_cr=262.3,
-        data_quality_cr=494.2
-    )
+    return RupeeImpact(**dashboard_summary.rupee_impact())
 
 @router.get("/overview")
 def get_overview(db: Session = Depends(get_db)):
-    project_root = Path(__file__).resolve().parent.parent.parent.parent.parent
-    kpis_path = project_root / "assets" / "data" / "overview_kpis.json"
-    if kpis_path.exists():
-        with open(kpis_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return severity_breakdown(db).dict()
+    return dashboard_summary.overview()
 
 @router.get("/", response_model=list[WorkOut])
 def list_anomalies(

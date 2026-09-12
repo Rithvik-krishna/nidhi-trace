@@ -109,7 +109,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <a class="flex items-center gap-2.5 px-3 py-2 bg-blue-600 text-white rounded-md text-xs font-semibold shadow-2xs transition-all" href="Flagged_Cases.html">
             <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">report_problem</span>
             <span>Flagged Cases</span>
-            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,329</span>
+            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,907</span>
         </a>
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Geographic_Map.html">
             <span class="material-symbols-outlined text-base">map</span>
@@ -141,7 +141,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
             <span>Review Queue:</span>
             <span class="text-red-400 font-semibold flex items-center gap-1 font-mono">
-                23,329 Flagged
+                23,907 Flagged
             </span>
         </div>
     </div>
@@ -303,7 +303,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             </h2>
                             <p class="text-[10px] text-slate-500">Core anomaly vectors triggered by statistical &amp; econometric surveillance models</p>
                         </div>
-                        <span id="dossier-flag-count-badge" class="nt-badge nt-badge-critical">3 SIGNALS FLAGGED</span>
+                        <span id="dossier-flag-count-badge" class="nt-badge nt-badge-neutral">0 SIGNALS FLAGGED</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -351,7 +351,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             </div>
                             <div class="font-mono text-sm font-bold text-slate-900" id="card-timeline-gap">38 days elapsed</div>
                             <p id="card-timeline-desc" class="text-[10.5px] text-slate-600 leading-snug">
-                                Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.
+                                Recommendation-to-sanction duration; no statutory SLA benchmark is configured.
                             </p>
                         </div>
                     </div>
@@ -405,7 +405,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             <span class="material-symbols-outlined text-blue-600 text-sm">timeline</span>
                             <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Administrative Lifecycle Timeline</h3>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-500">Statutory 45-Day SLA Benchmark</span>
+                        <span class="text-[10px] font-mono text-slate-500">Recorded Recommendation-to-Sanction Duration</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -541,10 +541,6 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             <span class="font-sans text-slate-600">Isolation Forest:</span>
                             <strong class="text-purple-800" id="fd-iso">Outlier</strong>
                         </div>
-                        <div class="py-1.5 flex justify-between items-center">
-                            <span class="font-sans text-slate-600">Round-Number BoQ:</span>
-                            <strong class="text-emerald-800" id="fd-boq">Not Detected</strong>
-                        </div>
                     </div>
                 </div>
 
@@ -564,7 +560,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                             <select id="review-disposition" onchange="updateDisposition(this.value)" class="nt-select">
                                 <option value="pending">Pending Human Scrutiny</option>
                                 <option value="priority">Priority Field Corroboration Needed</option>
-                                <option value="verified">Verified Irregularity / Escalated</option>
+                                <option value="verified">Review Requested (Local Note)</option>
                                 <option value="benign">Justified / Conforming to Guidelines</option>
                             </select>
                         </div>
@@ -595,45 +591,46 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <div class="flex items-center justify-between border-b border-slate-200 pb-2">
                         <div class="flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-blue-700 text-sm">gavel</span>
-                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Administrative Governance</h3>
+                            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Review Actions (Prototype)</h3>
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono">Actions</span>
                     </div>
 
+                    <p class="text-xs font-semibold text-amber-800" id="prototype-action-notice">Prototype only — no agency, officer or treasury integration. Actions are disabled. Review notes are saved only in this browser.</p>
                     <!-- Routine Inspection Actions -->
                     <div class="space-y-1.5">
-                        <button onclick="handleRoutineAction('verify')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
+                        <button disabled aria-describedby="prototype-action-notice" title="Prototype only — no request will be sent" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
                             <span class="material-symbols-outlined text-xs text-blue-600">location_searching</span>
                             <span>Request Physical Site Verification</span>
                         </button>
 
-                        <button onclick="handleRoutineAction('boq')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
+                        <button disabled aria-describedby="prototype-action-notice" title="Prototype only — no request will be sent" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
                             <span class="material-symbols-outlined text-xs text-slate-600">description</span>
                             <span>Request Itemized BoQ &amp; Vouchers</span>
                         </button>
 
-                        <button onclick="handleRoutineAction('assign')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
+                        <button disabled aria-describedby="prototype-action-notice" title="Prototype only — no request will be sent" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-start">
                             <span class="material-symbols-outlined text-xs text-slate-600">person_add</span>
-                            <span>Assign to Senior Vigilance Officer</span>
+                            <span>Escalate to Vigilance Officer for Review</span>
                         </button>
                     </div>
 
                     <!-- High-Impact Consequential Actions (Confirmed via Modal) -->
                     <div class="pt-2 border-t border-slate-100 space-y-1.5">
-                        <span class="nt-label">Consequential Decisions (Requires Confirmation)</span>
+                        <span class="nt-label">Review suggestions — integration unavailable</span>
                         <div class="grid grid-cols-2 gap-1.5">
-                            <button onclick="openApprovalModal('escalate')" class="nt-btn nt-btn-danger-outline nt-btn-sm justify-center">
+                            <button disabled aria-describedby="prototype-action-notice" title="Prototype only — no request will be sent" class="nt-btn nt-btn-danger-outline nt-btn-sm justify-center">
                                 <span class="material-symbols-outlined text-xs">warning</span>
-                                <span>Escalate Case</span>
+                                <span>Flag for Senior Review</span>
                             </button>
-                            <button onclick="openApprovalModal('freeze')" class="nt-btn nt-btn-warning-outline nt-btn-sm justify-center">
+                            <button disabled aria-describedby="prototype-action-notice" title="Prototype only — no request will be sent" class="nt-btn nt-btn-warning-outline nt-btn-sm justify-center">
                                 <span class="material-symbols-outlined text-xs">lock</span>
-                                <span>Freeze Disbursal</span>
+                                <span>Flag for Disbursal Review</span>
                             </button>
                         </div>
-                        <button onclick="openApprovalModal('clear')" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-center text-emerald-800 border-emerald-300 hover:bg-emerald-50">
+                        <button disabled aria-describedby="prototype-action-notice" title="Prototype only — no request will be sent" class="w-full nt-btn nt-btn-outline nt-btn-sm justify-center text-emerald-800 border-emerald-300 hover:bg-emerald-50">
                             <span class="material-symbols-outlined text-xs text-emerald-600">check_circle</span>
-                            <span>Clear Anomaly / Log Justification</span>
+                            <span>Record Review Justification</span>
                         </button>
                     </div>
                 </div>
@@ -645,6 +642,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     </main>
 </div>
 
+<script src="assets/js/dossier-signals.js"></script>
 <script src="app.js"></script>
 <script src="assets/js/nidhi-assistant.js?v=3.1"></script>
 <script>
@@ -712,18 +710,7 @@ async function loadCaseDossier() {
     }
 
     if (casesIndexCache) {
-        let found = casesIndexCache[caseId] || casesIndexCache[cleanId] || casesIndexCache[cleanId.toUpperCase()];
-        if (!found && numOnly) {
-            const paddedId = `MPLAD-${numOnly.padStart(5, '0')}`;
-            found = casesIndexCache[paddedId];
-            if (!found) {
-                const foundKey = Object.keys(casesIndexCache).find(k => {
-                    const kNum = k.replace(/\D/g, '');
-                    return kNum === numOnly || (numOnly.length >= 4 && kNum.endsWith(numOnly));
-                });
-                if (foundKey) found = casesIndexCache[foundKey];
-            }
-        }
+        const found = findCaseInObject(casesIndexCache, caseId, cleanId, numOnly);
         if (found) {
             currentCase = normalizeDossierData(found);
             populateDossier(currentCase);
@@ -739,22 +726,10 @@ async function loadCaseDossier() {
             casesIndexCache = cases;
             window.__CASES_INDEX_CACHE = cases;
             try {
-                // Cache a subset or lightweight reference in session
                 sessionStorage.setItem('nidhi_cases_index_loaded', '1');
             } catch (e) {}
 
-            let found = cases[caseId] || cases[cleanId] || cases[cleanId.toUpperCase()];
-            if (!found && numOnly) {
-                const paddedId = `MPLAD-${numOnly.padStart(5, '0')}`;
-                found = cases[paddedId];
-                if (!found) {
-                    const foundKey = Object.keys(cases).find(k => {
-                        const kNum = k.replace(/\D/g, '');
-                        return kNum === numOnly || (numOnly.length >= 4 && kNum.endsWith(numOnly));
-                    });
-                    if (foundKey) found = cases[foundKey];
-                }
-            }
+            const found = findCaseInObject(cases, caseId, cleanId, numOnly);
             if (found) {
                 currentCase = normalizeDossierData(found);
                 populateDossier(currentCase);
@@ -770,11 +745,7 @@ async function loadCaseDossier() {
         const fcRes = await fetch('assets/data/flagged_cases.json');
         if (fcRes.ok) {
             const fcList = await fcRes.json();
-            const found = fcList.find(c => {
-                const cId = (c.id || c.work_id || '').replace(/^#/, '');
-                return cId === cleanId || cId.toUpperCase() === cleanId.toUpperCase() ||
-                       (numOnly && numOnly.length >= 4 && cId.replace(/\D/g, '').endsWith(numOnly));
-            });
+            const found = findCaseInList(fcList, caseId, cleanId, numOnly);
             if (found) {
                 currentCase = normalizeDossierData(found);
                 populateDossier(currentCase);
@@ -783,7 +754,7 @@ async function loadCaseDossier() {
         }
     } catch (e) {}
 
-    // 3. If running on local server, try local FastAPI route with fast 500ms timeout
+    // 3. If running on local server, try local FastAPI route with fast 600ms timeout
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocal) {
         try {
@@ -802,21 +773,84 @@ async function loadCaseDossier() {
         } catch (e) {}
     }
 
-    // 4. Default graceful fallback
-    currentCase = normalizeDossierData({
-        id: cleanId,
-        work_id: cleanId,
-        title: `MPLADS Scheme Work Docket #${cleanId}`,
-        state: 'National Jurisdiction',
-        constituency: 'Parliamentary Constituency',
-        sanction_amount: 5000000.0,
-        gap_days: 180,
-        ida: 'District Collectorate / Implementing Agency',
-        mp_name: 'Member of Parliament',
-        work_category: 'Public Infrastructure',
-        flags: { rule_high_severity: false, flag_delay: false, flag_amount: false }
+    // 4. Missing case docket (no fabricated fallback)
+    renderMissingCase(cleanId);
+}
+
+function findCaseInObject(obj, caseId, cleanId, numOnly) {
+    if (!obj) return null;
+    if (obj[caseId]) return obj[caseId];
+    if (obj[cleanId]) return obj[cleanId];
+    if (obj[cleanId.toUpperCase()]) return obj[cleanId.toUpperCase()];
+    if (numOnly) {
+        const p6 = `MPLAD-${numOnly.padStart(6, '0')}`;
+        if (obj[p6]) return obj[p6];
+        const p5 = `MPLAD-${numOnly.padStart(5, '0')}`;
+        if (obj[p5]) return obj[p5];
+        const pRaw = `MPLAD-${numOnly}`;
+        if (obj[pRaw]) return obj[pRaw];
+    }
+    return null;
+}
+
+function findCaseInList(list, caseId, cleanId, numOnly) {
+    if (!list || !Array.isArray(list)) return null;
+    return list.find(c => {
+        const cId = (c.id || c.work_id || '').replace(/^#/, '');
+        if (cId === cleanId || cId.toUpperCase() === cleanId.toUpperCase() || cId === caseId) return true;
+        if (c.originalWorkId && (c.originalWorkId === cleanId || c.originalWorkId === caseId)) return true;
+        if (numOnly) {
+            const p6 = `MPLAD-${numOnly.padStart(6, '0')}`;
+            if (cId === p6) return true;
+            const p5 = `MPLAD-${numOnly.padStart(5, '0')}`;
+            if (cId === p5) return true;
+            const pRaw = `MPLAD-${numOnly}`;
+            if (cId === pRaw) return true;
+        }
+        return false;
     });
-    populateDossier(currentCase);
+}
+
+function renderMissingCase(id) {
+    document.title = `NIDHI TRACE — Case #${id} Not Found`;
+    const bc = document.getElementById('dossier-header-breadcrumb');
+    if (bc) bc.innerText = `Dossier #${id} (Not Found)`;
+
+    const cidEl = document.getElementById('dossier-case-id');
+    if (cidEl) cidEl.innerText = `WORK ID: ${id} (NOT FOUND)`;
+
+    const titleEl = document.getElementById('dossier-title');
+    if (titleEl) titleEl.innerText = `Work docket #${id} not found in validated snapshot`;
+
+    const locEl = document.getElementById('dossier-location');
+    if (locEl) locEl.innerText = 'N/A';
+
+    const mpEl = document.getElementById('dossier-mp');
+    if (mpEl) mpEl.innerText = 'N/A';
+
+    const sDateEl = document.getElementById('dossier-sanction-date');
+    if (sDateEl) sDateEl.innerText = '—';
+
+    const explEl = document.getElementById('dossier-explanation-text');
+    if (explEl) explEl.innerText = `No validated work docket found matching identifier "${id}" in the current 171,890-record dataset snapshot. Please check the Work ID in Data Explorer or Flagged Cases.`;
+
+    const signalBadge = document.getElementById('dossier-signal-count-badge');
+    if (signalBadge) {
+        signalBadge.innerText = '0 Signals Triggered';
+        signalBadge.className = 'nt-badge nt-badge-neutral';
+    }
+
+    const flagBadgeEl = document.getElementById('dossier-flag-count-badge');
+    if (flagBadgeEl) {
+        flagBadgeEl.innerText = '0 SIGNALS FLAGGED';
+        flagBadgeEl.className = 'nt-badge nt-badge-neutral';
+    }
+
+    const highSevBadge = document.getElementById('dossier-high-sev-badge');
+    if (highSevBadge) highSevBadge.classList.add('hidden');
+
+    const dqBadge = document.getElementById('dossier-dq-badge');
+    if (dqBadge) dqBadge.classList.add('hidden');
 }
 
 function normalizeDossierData(d) {
@@ -831,56 +865,64 @@ function normalizeDossierData(d) {
             rawUtilized = utilStr;
         } else if (utilStr) {
             const num = parseFloat(utilStr.replace(/[^0-9.]/g, ''));
-            rawUtilized = isNaN(num) ? rawAmount * 0.88 : (num * (utilStr.includes('Cr') ? 1e7 : (utilStr.includes('L') ? 1e5 : 1)));
+            rawUtilized = isNaN(num) ? 0 : (num * (utilStr.includes('Cr') ? 1e7 : (utilStr.includes('L') ? 1e5 : 1)));
         } else {
-            rawUtilized = rawAmount * 0.92;
+            rawUtilized = 0;
         }
     }
     const utilizedFormatted = formatCurrency(rawUtilized);
-    const unspentRaw = Math.max(0, rawAmount - rawUtilized);
+    const unspentRaw = Math.max(0, (rawAmount || 0) - rawUtilized);
     const unspentFormatted = formatCurrency(unspentRaw);
     const utilPct = rawAmount > 0 ? Math.min(100, Math.round((rawUtilized / rawAmount) * 100)) : 0;
 
     const gapDays = d.gap_days !== undefined ? d.gap_days : (d.gapDays !== undefined ? d.gapDays : 0);
-    const gapRobustZ = d.gap_robust_z !== undefined ? d.gap_robust_z : (d.flags && d.flags.gap_zscore !== undefined ? d.flags.gap_zscore : (gapDays > 180 ? 3.82 : -0.54));
-    const amountRobustZ = d.amount_robust_z !== undefined ? d.amount_robust_z : (d.flags && d.flags.amount_zscore !== undefined ? d.flags.amount_zscore : (d.flag_amount ? 4.23 : 0.20));
-    const mpDriftRobustZ = d.mp_drift_robust_z !== undefined ? d.mp_drift_robust_z : (d.flags && d.flags.mp_drift_zscore !== undefined ? d.flags.mp_drift_zscore : (d.flag_mp_drift ? 14.40 : 0.0));
-    const mpEligible = d.mp_baseline_eligible !== undefined ? d.mp_baseline_eligible : true;
+    // Explicit z-scores: preserve valid numbers or 0.0 (no invented fake z-scores)
+    const gapRobustZ = d.gap_robust_z !== undefined ? d.gap_robust_z : (d.flags && d.flags.gap_zscore !== undefined ? d.flags.gap_zscore : 0.0);
+    const amountRobustZ = d.amount_robust_z !== undefined ? d.amount_robust_z : (d.flags && d.flags.amount_zscore !== undefined ? d.flags.amount_zscore : 0.0);
+    const mpDriftRobustZ = d.mp_drift_robust_z !== undefined ? d.mp_drift_robust_z : (d.flags && d.flags.mp_drift_zscore !== undefined ? d.flags.mp_drift_zscore : 0.0);
+    const mpEligible = d.mp_baseline_eligible !== undefined ? d.mp_baseline_eligible : (d.flags && d.flags.mp_baseline_eligible !== undefined ? d.flags.mp_baseline_eligible : true);
 
     // MP Historical baseline parameters
-    const mpCatMean = d.flags && d.flags.mp_cat_mean !== undefined ? d.flags.mp_cat_mean : (d.mp_cat_mean || 334041.32);
-    const mpCatStd = d.flags && d.flags.mp_cat_std !== undefined ? d.flags.mp_cat_std : (d.mp_cat_std || 489179.59);
-    const mpCatN = d.flags && d.flags.mp_cat_n !== undefined ? d.flags.mp_cat_n : (d.mp_cat_n || 247);
-    const flagRoundNumber = Boolean(d.flags && d.flags.flag_round_number);
-    const isoFlag = Boolean(d.flag_isolation_forest || (d.flags && d.flags.iso_flag));
+    const mpCatMean = d.flags && d.flags.mp_cat_mean !== undefined ? d.flags.mp_cat_mean : (d.mp_cat_mean !== undefined ? d.mp_cat_mean : 0);
+    const mpCatStd = d.flags && d.flags.mp_cat_std !== undefined ? d.flags.mp_cat_std : (d.mp_cat_std !== undefined ? d.mp_cat_std : 0);
+    const mpCatN = d.flags && d.flags.mp_cat_n !== undefined ? d.flags.mp_cat_n : (d.mp_cat_n !== undefined ? d.mp_cat_n : 0);
 
-    const sDate = d.sanction_date || d.sanctionDate || '2023-08-16';
-    const rDate = d.recommended_date || d.recDate || deriveRecommendedDate(sDate, gapDays);
+    const sDate = d.sanction_date || d.sanctionDate || '';
+    const rDate = d.recommended_date || d.recDate || (sDate ? deriveRecommendedDate(sDate, gapDays) : '');
 
-    const dqFlag = Boolean(d.dq_flag || d.dq_implausible_amount || d.dq_possible_miscategorization || d.dq_stale_status);
-    const isHighSev = Boolean(d.is_high_severity || d.severity === 'critical' || gapRobustZ >= 3.5 || amountRobustZ >= 3.5 || d.score >= 90);
+    // Canonical signal normalization via DossierSignals
+    const signals = (typeof DossierSignals !== 'undefined') ? DossierSignals.normalize(d) : {
+        flag_delay: [true, 'True', 'true', 1].includes(d.flag_delay ?? d.flags?.flag_delay),
+        flag_amount: [true, 'True', 'true', 1].includes(d.flag_amount ?? d.flags?.flag_amount),
+        flag_mp_drift: [true, 'True', 'true', 1].includes(d.flag_mp_drift ?? d.flags?.flag_mp_drift),
+        flag_isolation_forest: [true, 'True', 'true', 1].includes(d.flag_isolation_forest ?? d.flags?.iso_flag ?? d.flags?.flag_isolation_forest),
+        dq_flag: ['dq_flag', 'dq_implausible_amount', 'dq_possible_miscategorization', 'dq_stale_status']
+            .some(key => [true, 'True', 'true', 1].includes(d[key] ?? d.flags?.[key]))
+    };
+
+    const isHighSev = Boolean(d.is_high_severity || (d.flags && d.flags.rule_high_severity) || d.severity === 'critical' || gapRobustZ >= 3.5 || amountRobustZ >= 3.5);
 
     // Build synthesized explanation if missing
     let explanation = d.explanation;
     if (!explanation) {
         const parts = [];
-        if (amountRobustZ >= 3.5 || d.flag_amount) {
-            parts.push(`Sanction amount of ${formatCurrency(rawAmount)} is an econometric outlier for this work category in ${d.constituency || 'this constituency'} (robust z = ${amountRobustZ.toFixed(2)}).`);
+        if (signals.flag_amount) {
+            parts.push(`Sanction amount of ${formatCurrency(rawAmount)} is an econometric outlier for this work category in ${d.constituency || 'this constituency'}${amountRobustZ ? ` (robust z = ${amountRobustZ.toFixed(2)})` : ''}.`);
         }
-        if (d.flag_mp_drift || mpDriftRobustZ >= 3.5) {
+        if (signals.flag_mp_drift) {
             if (mpEligible) {
-                parts.push(`Sanctioned amount deviates significantly from this MP's historical category average of ${formatCurrency(mpCatMean)} across ${mpCatN} prior works (drift = +${mpDriftRobustZ.toFixed(1)}σ).`);
+                parts.push(`Sanctioned amount deviates significantly from this MP's historical category average of ${formatCurrency(mpCatMean)} across ${mpCatN} prior works${mpDriftRobustZ ? ` (drift = +${mpDriftRobustZ.toFixed(1)}σ)` : ''}.`);
             } else {
                 parts.push(`Insufficient historical projects for MP baseline (< 5 works). Baseline drift check suppressed.`);
             }
         }
-        if (isoFlag) {
+        if (signals.flag_isolation_forest) {
             parts.push(`Unsupervised Isolation Forest algorithm flagged multivariate feature clustering anomaly across timeline, budget, and implementing agency distribution.`);
         }
-        if (gapDays > 180 || gapRobustZ >= 3.5) {
-            parts.push(`Recommendation-to-sanction timeline of ${gapDays} days deviates from regional norms (robust z = ${gapRobustZ.toFixed(2)}).`);
+        if (signals.flag_delay) {
+            parts.push(`Recommendation-to-sanction timeline of ${gapDays} days deviates from regional norms${gapRobustZ ? ` (robust z = ${gapRobustZ.toFixed(2)})` : ''}.`);
         }
-        if (dqFlag) {
+        if (signals.dq_flag) {
             parts.push(d.dq_reason ? `Data quality notice: ${d.dq_reason}.` : `Data quality flag triggered: potential reporting anomaly or miscategorized record.`);
         }
         explanation = parts.length > 0 ? parts.join(' ') : 'Work parameters conform to standard statutory and statistical tolerance thresholds.';
@@ -889,13 +931,13 @@ function normalizeDossierData(d) {
     return {
         id: workId,
         work_id: workId,
-        work_description: extractWorkDescription(workId, d.work_description || d.title),
-        state: d.state || 'Andhra Pradesh',
-        constituency: d.constituency || 'Vizianagaram',
-        mp_name: d.mp_name || d.mp || 'Chandra Sekhar Bellana',
+        work_description: extractWorkDescription(workId, d.work_description || d.title || 'MPLADS Scheme Work'),
+        state: d.state || 'N/A',
+        constituency: d.constituency || 'N/A',
+        mp_name: d.mp_name || d.mp || 'Member of Parliament',
         work_category: d.work_category || d.sector || 'Public Infrastructure',
         lok_sabha_term: d.lok_sabha_term || '17th Lok Sabha',
-        ida: d.ida || d.agency || 'District Collector Vizianagaram',
+        ida: d.ida || d.agency || 'District Authority',
         sanction_amount: rawAmount,
         sanction_amount_formatted: formatCurrency(rawAmount),
         utilized_amount: rawUtilized,
@@ -913,19 +955,18 @@ function normalizeDossierData(d) {
         mp_cat_mean_formatted: formatCurrency(mpCatMean),
         mp_cat_std: mpCatStd,
         mp_cat_n: mpCatN,
-        flag_round_number: flagRoundNumber,
         work_status: d.workStatus || d.work_status || d.progress || d.status || 'Work Completed',
-        flag_delay: Boolean(d.flag_delay || gapDays > 180 || gapRobustZ >= 3.5),
-        flag_amount: Boolean(d.flag_amount || amountRobustZ >= 3.5),
-        flag_mp_drift: Boolean(d.flag_mp_drift || mpDriftRobustZ >= 3.5),
-        flag_isolation_forest: isoFlag,
-        dq_flag: dqFlag,
-        dq_implausible_amount: Boolean(d.dq_implausible_amount),
-        dq_possible_miscategorization: Boolean(d.dq_possible_miscategorization),
-        dq_stale_status: Boolean(d.dq_stale_status),
+        flag_delay: signals.flag_delay,
+        flag_amount: signals.flag_amount,
+        flag_mp_drift: signals.flag_mp_drift,
+        flag_isolation_forest: signals.flag_isolation_forest,
+        dq_flag: signals.dq_flag,
+        dq_implausible_amount: Boolean(d.dq_implausible_amount ?? d.flags?.dq_implausible_amount),
+        dq_possible_miscategorization: Boolean(d.dq_possible_miscategorization ?? d.flags?.dq_possible_miscategorization),
+        dq_stale_status: Boolean(d.dq_stale_status ?? d.flags?.dq_stale_status),
         dq_reason: d.dq_reason || '',
         is_high_severity: isHighSev,
-        score: d.score || 87,
+        score: d.score !== undefined ? d.score : 0,
         explanation: explanation,
         raw_data: d
     };
@@ -1006,25 +1047,39 @@ function populateDossier(c) {
         gapZEl.className = c.gap_robust_z >= 3.5 ? 'text-[11px] font-bold text-red-600' : 'text-[11px] font-medium text-slate-500';
     }
 
-    // Calculate actual active flagged signals
-    let activeFlagsCount = 0;
-    const isCostOutlier = Boolean(c.flag_amount || c.amount_robust_z >= 3.5);
-    const isMpDrift = Boolean(c.flag_mp_drift || c.mp_drift_robust_z >= 3.5);
-    const isIsoOutlier = Boolean(c.flag_isolation_forest);
-    const isTimelineBreach = Boolean(c.flag_delay || c.gap_days > 45 || c.gap_robust_z >= 3.5);
-    const isDataQuality = Boolean(c.dq_flag);
+    // Authoritative signal count from explicit pipeline booleans
+    const activeFlagsCount = (typeof DossierSignals !== 'undefined') ? DossierSignals.count(c) : [
+        c.flag_delay, c.flag_amount, c.flag_mp_drift, c.flag_isolation_forest, c.dq_flag
+    ].filter(Boolean).length;
 
-    if (isCostOutlier) activeFlagsCount++;
-    if (isMpDrift) activeFlagsCount++;
-    if (isIsoOutlier) activeFlagsCount++;
-    if (isTimelineBreach) activeFlagsCount++;
-    if (isDataQuality) activeFlagsCount++;
+    // Update BOTH badges independently and consistently
+    const signalBadge = document.getElementById('dossier-signal-count-badge');
+    if (signalBadge) {
+        if (activeFlagsCount === 0) {
+            signalBadge.innerText = '0 Signals Triggered';
+            signalBadge.className = 'nt-badge nt-badge-neutral';
+        } else {
+            signalBadge.innerText = `${activeFlagsCount} Signal${activeFlagsCount === 1 ? '' : 's'} Triggered`;
+            signalBadge.className = activeFlagsCount >= 3 ? 'nt-badge nt-badge-critical' : (activeFlagsCount === 2 ? 'nt-badge nt-badge-high' : 'nt-badge nt-badge-medium');
+        }
+    }
 
     const flagBadgeEl = document.getElementById('dossier-flag-count-badge');
     if (flagBadgeEl) {
-        flagBadgeEl.innerText = `${activeFlagsCount} SIGNAL${activeFlagsCount !== 1 ? 'S' : ''} FLAGGED`;
-        flagBadgeEl.className = activeFlagsCount >= 3 ? 'nt-badge nt-badge-critical' : (activeFlagsCount === 2 ? 'nt-badge nt-badge-high' : 'nt-badge nt-badge-medium');
+        if (activeFlagsCount === 0) {
+            flagBadgeEl.innerText = '0 SIGNALS FLAGGED';
+            flagBadgeEl.className = 'nt-badge nt-badge-neutral';
+        } else {
+            flagBadgeEl.innerText = `${activeFlagsCount} SIGNAL${activeFlagsCount !== 1 ? 'S' : ''} FLAGGED`;
+            flagBadgeEl.className = activeFlagsCount >= 3 ? 'nt-badge nt-badge-critical' : (activeFlagsCount === 2 ? 'nt-badge nt-badge-high' : 'nt-badge nt-badge-medium');
+        }
     }
+
+    const isCostOutlier = Boolean(c.flag_amount);
+    const isMpDrift = Boolean(c.flag_mp_drift);
+    const isIsoOutlier = Boolean(c.flag_isolation_forest);
+    const isTimelineBreach = Boolean(c.flag_delay);
+    const isDataQuality = Boolean(c.dq_flag);
 
     // 2. "Why This Case Was Flagged" Cards (100% Dynamic)
     // Card A: Cost Outlier
@@ -1100,14 +1155,14 @@ function populateDossier(c) {
         isoContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${isIsoOutlier ? 'border-l-purple-500' : 'border-l-slate-300'}`;
     }
 
-    // Card D: Project Timeline SLA (DYNMICALLY REFLECTS ACTUAL GAP DAYS)
+    // Card D: Recorded Timeline and Pipeline Delay Flag
     const timeGapEl = document.getElementById('card-timeline-gap');
     if (timeGapEl) timeGapEl.innerText = `${c.gap_days} days elapsed`;
 
     const timeTagEl = document.getElementById('card-timeline-tag');
     if (timeTagEl) {
-        if (c.gap_days > 45) {
-            timeTagEl.innerText = `+${c.gap_days - 45}d BREACH`;
+        if (c.flag_delay) {
+            timeTagEl.innerText = `PIPELINE DELAY FLAG`;
             timeTagEl.className = 'nt-badge nt-badge-critical';
         } else {
             timeTagEl.innerText = `${c.gap_days} DAYS`;
@@ -1117,16 +1172,16 @@ function populateDossier(c) {
 
     const timeDescEl = document.getElementById('card-timeline-desc');
     if (timeDescEl) {
-        if (c.gap_days > 45) {
-            timeDescEl.innerHTML = `<span class="text-red-700 font-semibold">Exceeds statutory 45-day SLA guideline by ${c.gap_days - 45} days</span> between recommendation and district sanction order (robust z = ${c.gap_robust_z.toFixed(2)}).`;
+        if (c.flag_delay) {
+            timeDescEl.innerText = `The pipeline flagged this recommendation-to-sanction duration for review (${c.gap_days} days). This is not a statutory SLA finding.`;
         } else {
-            timeDescEl.innerText = `Conforms to statutory 45-day SLA guideline between recommendation and district sanction order.`;
+            timeDescEl.innerText = `No delay flag is reported for this record. Elapsed duration: ${c.gap_days} days. No statutory SLA benchmark is configured.`;
         }
     }
 
     const timeContainer = document.getElementById('card-timeline-container');
     if (timeContainer) {
-        timeContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${c.gap_days > 45 ? 'border-l-red-500' : 'border-l-blue-500'}`;
+        timeContainer.className = `bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1.5 border-l-4 ${c.flag_delay ? 'border-l-red-500' : 'border-l-blue-500'}`;
     }
 
     // 3. Section 3: MP Historical Category Baseline Comparison
@@ -1215,8 +1270,6 @@ function populateDossier(c) {
     const fdIsoEl = document.getElementById('fd-iso');
     if (fdIsoEl) fdIsoEl.innerText = c.flag_isolation_forest ? 'Outlier' : 'Conforming';
 
-    const fdBoqEl = document.getElementById('fd-boq');
-    if (fdBoqEl) fdBoqEl.innerText = c.flag_round_number ? 'Detected (Round)' : 'Not Detected (Clean)';
 
     // Explanation Box
     const expText = document.getElementById('dossier-explanation-text');
@@ -1239,7 +1292,7 @@ function renderFlagsList(c) {
     const flags = [];
 
     // 1. Recommendation-to-Sanction Latency Flag
-    if (c.flag_delay || c.gap_days > 180 || c.gap_robust_z >= 3.5) {
+    if (c.flag_delay) {
         flags.push({
             color: 'red',
             icon: 'timer_off',
@@ -1250,7 +1303,7 @@ function renderFlagsList(c) {
     }
 
     // 2. Sanction Amount Outlier Flag
-    if (c.flag_amount || c.amount_robust_z >= 3.5) {
+    if (c.flag_amount) {
         flags.push({
             color: 'orange',
             icon: 'account_balance_wallet',
@@ -1269,7 +1322,7 @@ function renderFlagsList(c) {
             desc: 'The MP historical baseline model requires a minimum empirical sample of 5 works in this category. Drift evaluation is suppressed to avoid false positives on sparse data.',
             tag: 'TRIAGE LIST: BASELINE DRIFT (SUPPRESSED)'
         });
-    } else if (c.flag_mp_drift || c.mp_drift_robust_z >= 3.5) {
+    } else if (c.flag_mp_drift) {
         flags.push({
             color: 'amber',
             icon: 'trending_up',
@@ -1314,18 +1367,6 @@ function renderFlagsList(c) {
             desc: 'This project falls within standard statistical tolerance bands (robust z < 3.5) for approval timeline, expenditure, and category distribution.',
             tag: 'STATISTICAL CONFORMITY'
         });
-    }
-
-    // Update signal count badges
-    const signalBadge = document.getElementById('dossier-signal-count-badge');
-    const realFlagCount = flags.filter(f => f.color !== 'emerald' && f.color !== 'slate').length;
-    if (signalBadge) {
-        signalBadge.innerText = `${realFlagCount} Flagged Signal${realFlagCount === 1 ? '' : 's'}`;
-    }
-
-    const countBadge = document.getElementById('dossier-flag-count-badge');
-    if (countBadge) {
-        countBadge.innerText = `${realFlagCount} SIGNALS FLAGGED`;
     }
 
     list.innerHTML = flags.map(fl => {
@@ -1382,10 +1423,10 @@ function loadReviewNotes(workId) {
         const actionSaved = localStorage.getItem('mplad_action_' + workId);
         if (actionSaved) {
             const act = JSON.parse(actionSaved);
-            if (act.type === 'dm') updateDispositionTag('verified', 'ESCALATED / CVC');
-            else if (act.type === 'freeze') updateDispositionTag('priority', 'DISBURSEMENT FROZEN');
-            else if (act.type === 'clear') updateDispositionTag('benign', 'CLEARED / CONFORMING');
-            else if (act.type === 'ground') updateDispositionTag('priority', 'AUDIT ORDERED');
+            if (act.type === 'dm') updateDispositionTag('verified', 'REVIEW REQUEST (LOCAL DEMO)');
+            else if (act.type === 'freeze') updateDispositionTag('priority', 'DISBURSAL REVIEW (LOCAL DEMO)');
+            else if (act.type === 'clear') updateDispositionTag('benign', 'JUSTIFICATION (LOCAL DEMO)');
+            else if (act.type === 'ground') updateDispositionTag('priority', 'SITE REVIEW (LOCAL DEMO)');
         }
 
         const saved = localStorage.getItem('nidhi_review_' + workId);
@@ -1417,7 +1458,7 @@ function updateDispositionTag(val, customLabel) {
         tag.innerText = customLabel || 'PRIORITY INQUIRY';
     } else if (val === 'verified') {
         tag.className = 'px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-300 text-[9.5px] font-mono font-bold';
-        tag.innerText = customLabel || 'ESCALATED';
+        tag.innerText = customLabel || 'REVIEW REQUESTED (LOCAL)';
     } else if (val === 'benign') {
         tag.className = 'px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 text-[9.5px] font-mono font-bold';
         tag.innerText = customLabel || 'CONFORMING / BENIGN';
@@ -1457,41 +1498,7 @@ function saveAuditorNotes() {
 let pendingApprovalAction = null;
 
 function handleRoutineAction(type) {
-    if (!currentCase) return;
-    const workId = currentCase.work_id || currentCase.id;
-    const notesArea = document.getElementById('auditor-notes');
-
-    if (type === 'verify') {
-        const actionData = { type: 'ground', timestamp: new Date().toISOString() };
-        localStorage.setItem('mplad_action_' + workId, JSON.stringify(actionData));
-        updateDispositionTag('priority', 'PHYSICAL VERIFICATION REQ');
-        if (notesArea && !notesArea.value.includes('Physical verification requested')) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Routine Action] Physical verification requested on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Physical verification request logged in docket.', 'success');
-    } else if (type === 'boq') {
-        updateDispositionTag('priority', 'BOQ REQUESTED');
-        if (notesArea && !notesArea.value.includes('Detailed BOQ requested')) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Routine Action] Formal Bill of Quantities (BOQ) requested from implementing agency on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Request for contractor BOQ dispatched.', 'info');
-    } else if (type === 'assign') {
-        updateDispositionTag('priority', 'ASSIGNED FOR REVIEW');
-        if (notesArea && !notesArea.value.includes('Assigned for detailed review')) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Routine Action] Docket assigned to senior vigilance auditor for in-depth review on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Case docket assigned for detailed review.', 'info');
-    } else if (type === 'followup') {
-        updateDispositionTag('pending', 'FOLLOW-UP MARKED');
-        if (notesArea && !notesArea.value.includes('Marked for follow-up')) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Routine Action] Case marked for periodic review on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Case marked for follow-up.', 'info');
-    }
+    showToast('Prototype action unavailable. No request was sent.', 'info');
 }
 
 function toggleMoreActionsDropdown(e) {
@@ -1511,45 +1518,7 @@ document.addEventListener('click', (e) => {
 });
 
 function openApprovalModal(action) {
-    pendingApprovalAction = action;
-    const modal = document.getElementById('approval-modal');
-    const titleEl = document.getElementById('approval-modal-title');
-    const descEl = document.getElementById('approval-modal-desc');
-    const btnEl = document.getElementById('approval-confirm-btn');
-    const iconEl = document.getElementById('approval-modal-icon');
-    const iconWrap = document.getElementById('approval-modal-icon-wrap');
-    const caseIdEl = document.getElementById('approval-case-id');
-
-    if (caseIdEl && currentCase) caseIdEl.innerText = currentCase.work_id;
-
-    if (action === 'escalate') {
-        titleEl.innerText = 'Confirm Formal Case Escalation';
-        descEl.innerText = 'This will mark the docket for formal administrative escalation to CVC / State Vigilance oversight. Authorized officer confirmation required.';
-        btnEl.innerText = 'Confirm Escalation';
-        btnEl.className = 'px-4 py-1.5 rounded-lg bg-red-700 hover:bg-red-800 text-white font-bold text-xs shadow-2xs transition-colors cursor-pointer';
-        iconEl.innerText = 'warning';
-        iconWrap.className = 'w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center shrink-0';
-    } else if (action === 'freeze') {
-        titleEl.innerText = 'Confirm Disbursement Freeze Request';
-        descEl.innerText = 'This is an administrative order requiring authorized nodal approval to suspend further fund transfers from the district treasury for this work.';
-        btnEl.innerText = 'Request Freeze Approval';
-        btnEl.className = 'px-4 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs shadow-2xs transition-colors cursor-pointer';
-        iconEl.innerText = 'lock';
-        iconWrap.className = 'w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0';
-    } else if (action === 'clear') {
-        titleEl.innerText = 'Confirm Conforming / Clearance';
-        descEl.innerText = 'This records that all statistical variances have been reviewed and justified conforming to standard MPLADS scheme guidelines.';
-        btnEl.innerText = 'Confirm Clearance';
-        btnEl.className = 'px-4 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-2xs transition-colors cursor-pointer';
-        iconEl.innerText = 'check_circle';
-        iconWrap.className = 'w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0';
-    }
-
-    // Hide dropdown
-    const dd = document.getElementById('dropdown-more-actions');
-    if (dd) dd.classList.add('hidden');
-
-    if (modal) modal.classList.remove('hidden');
+    showToast('Prototype action unavailable. No request was sent.', 'info');
 }
 
 function closeApprovalModal() {
@@ -1559,40 +1528,8 @@ function closeApprovalModal() {
 }
 
 function confirmApprovalAction() {
-    if (!currentCase || !pendingApprovalAction) return;
-    const workId = currentCase.work_id || currentCase.id;
-    const notesArea = document.getElementById('auditor-notes');
-
-    if (pendingApprovalAction === 'escalate') {
-        const actionData = { type: 'dm', timestamp: new Date().toISOString() };
-        localStorage.setItem('mplad_action_' + workId, JSON.stringify(actionData));
-        updateDispositionTag('verified', 'ESCALATED / CVC');
-        if (notesArea) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Authorized Action] Formally escalated to State Vigilance Commission on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Docket successfully escalated to CVC oversight.', 'error');
-    } else if (pendingApprovalAction === 'freeze') {
-        const actionData = { type: 'freeze', timestamp: new Date().toISOString() };
-        localStorage.setItem('mplad_action_' + workId, JSON.stringify(actionData));
-        updateDispositionTag('priority', 'DISBURSEMENT FROZEN');
-        if (notesArea) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Authorized Action] Fund disbursement suspended pending audit verification on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Disbursement freeze registered with District Treasury.', 'warning');
-    } else if (pendingApprovalAction === 'clear') {
-        const actionData = { type: 'clear', timestamp: new Date().toISOString() };
-        localStorage.setItem('mplad_action_' + workId, JSON.stringify(actionData));
-        updateDispositionTag('benign', 'CLEARED / CONFORMING');
-        if (notesArea) {
-            notesArea.value = (notesArea.value ? notesArea.value + '\n' : '') + '[Authorized Action] Irregularity cleared as benign/justified on ' + new Date().toLocaleDateString('en-GB');
-            saveAuditorNotes();
-        }
-        showToast('Case marked as conforming and cleared.', 'success');
-    }
-
     closeApprovalModal();
+    showToast('Prototype action unavailable. No request was sent.', 'info');
 }
 
 function openTechnicalModal() {
@@ -1703,7 +1640,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <tr>
                                 <td class="p-2 font-sans font-medium text-slate-900">Timeline Latency</td>
                                 <td class="p-2 text-right" id="tech-gap-val">38 Days</td>
-                                <td class="p-2 text-right text-slate-500">45 Days (Statutory SLA)</td>
+                                <td class="p-2 text-right text-slate-500">Pipeline delay flag; no SLA configured</td>
                                 <td class="p-2 text-right font-bold text-emerald-700" id="tech-gap-z">z = -0.54 (OK)</td>
                             </tr>
                             <tr>
@@ -1742,14 +1679,14 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
                 <h3 id="approval-modal-title" class="text-sm font-bold text-slate-900">Administrative Action Confirmation</h3>
                 <p id="approval-modal-desc" class="text-xs text-slate-600 mt-1 leading-relaxed">
-                    This is an authorized administrative decision that will update the formal case docket.
+                    Prototype only. No request is sent and no administrative decision is executed.
                 </p>
             </div>
         </div>
 
         <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg text-[11px] text-slate-700 space-y-1">
             <div class="flex justify-between">
-                <span class="text-slate-500">Authorized Officer:</span>
+                <span class="text-slate-500">Demo reviewer:</span>
                 <strong class="font-mono text-slate-900">AO #104 (MoSPI Vigilance)</strong>
             </div>
             <div class="flex justify-between">
@@ -1762,8 +1699,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <button onclick="closeApprovalModal()" class="px-3.5 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition-colors cursor-pointer">
                 Cancel
             </button>
-            <button id="approval-confirm-btn" onclick="confirmApprovalAction()" class="px-4 py-1.5 rounded-lg bg-red-700 hover:bg-red-800 text-white font-bold text-xs shadow-2xs transition-colors cursor-pointer">
-                Confirm Action
+            <button id="approval-confirm-btn" disabled title="Prototype only — no request will be sent" class="px-4 py-1.5 rounded-lg bg-red-700 hover:bg-red-800 text-white font-bold text-xs shadow-2xs transition-colors cursor-pointer">
+                Prototype Action Unavailable
             </button>
         </div>
     </div>

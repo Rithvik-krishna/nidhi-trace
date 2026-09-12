@@ -158,7 +158,7 @@ class LocalDomainGuard:
         'implementing agency', 'contractor', 'vendor', 'mospi', 'pfms',
         'cvc', 'district magistrate', ' dm ', 'collector', 'cag',
         'measurement book', ' mb ', 'rule 12', 'rule 14', 'gfr',
-        'isolation forest', 'benford', 'z-score', 'zscore', 'drift',
+        'isolation forest', 'z-score', 'zscore', 'drift',
         'spending habit', 'split tender', 'completion delay', 'delay', 'timeline',
         'outlier', 'cluster', 'clustering', 'flagged', 'flag', 'risk score',
         'risk severity', 'critical severity', 'high severity', 'watchlist',
@@ -307,14 +307,7 @@ class DataRetriever:
         cls.load_data()
         if cls._analytics_data and "summary" in cls._analytics_data:
             return cls._analytics_data["summary"]
-        return {
-            "totalWorks": 198116,
-            "totalCorpusCr": 8501.1,
-            "flaggedWorks": 23329,
-            "criticalWorks": 4112,
-            "scrutinyCr": 1661.7,
-            "medianLatencyDays": 142
-        }
+        return {}  # No snapshot available; do not invent national totals.
 
 # =========================================================================
 # 4. SYSTEM PROMPT & GROUNDED CONTEXT BUILDER
@@ -328,7 +321,7 @@ Your role is to help auditors and oversight officers understand:
 - MPLADS data and project records
 - Dashboard metrics and anomaly indicators
 - Individual project dossiers and risk scores
-- Statistical and ML anomaly signals (Isolation Forest, Benford Law, z-scores, MP Baseline Drift)
+- Statistical and ML anomaly signals (Isolation Forest, z-scores, MP Baseline Drift)
 - Project timelines, approval latencies, and executing-agency patterns
 - Audit prioritization and statutory vigilance workflows
 
@@ -372,8 +365,6 @@ def build_prompt_with_context(user_message: str, page_context: dict, authentic_c
             flags_desc.append(f"MP Baseline Category Drift: z-score {z:.2f} relative to historical spending habits")
         if f.get("iso_flag"):
             flags_desc.append("Spatial / Isolation Forest ML Outlier: atypical geographic cluster density")
-        if f.get("flag_round_number"):
-            flags_desc.append("Round Number Sanction: Benford Law first-digit anomaly")
 
         case_info = f"""VERIFIED CASE RECORD (AUTHENTIC SERVER DATA):
 - Work ID: {authentic_case.get('id')}
@@ -395,9 +386,9 @@ def build_prompt_with_context(user_message: str, page_context: dict, authentic_c
     national_info = f"""NIDHI TRACE SYSTEM BASELINE:
 - Total Monitored Works: {summary.get('totalWorks', 198116):,}
 - Total Sanctioned Corpus: ₹{summary.get('totalCorpusCr', 8501.1):,} Cr
-- Flagged Works Under Review: {summary.get('flaggedWorks', 23329):,} (13.6%)
+- Flagged Works Under Review: {summary.get('flaggedWorks', 0):,} (see current snapshot denominator)
 - Critical Severity Anomalies: {summary.get('criticalWorks', 4112):,}
-- Scrutiny Exposure Corpus: ₹{summary.get('scrutinyCr', 1661.7):,} Cr
+- Scrutiny Exposure Corpus: ₹{summary.get('scrutinyCr', 0):,} Cr
 - Median Approval Latency: {summary.get('medianLatencyDays', 142)} Days
 - Current Page Route: {page_context.get('page', 'overview')}
 """
@@ -535,24 +526,16 @@ The **AI Vigilance Score** is a composite metric ranging from **0 to 100** evalu
 - `Medium (40–69)`: Standard quarterly sample inspection.
 - `Low (<40)`: Normal statistical compliance."""
 
+    summary = DataRetriever.get_national_summary()
+    if not summary:
+        return "Dataset summary is unavailable. No national metrics can be verified."
     if "scrutiny exposure" in clean:
-        return """### Scrutiny Exposure Metric
-
-**Scrutiny Exposure (₹1,661.7 Cr)** represents the aggregate monetary value of all works currently flagged for high or critical audit attention across the national MPLADS ledger.
-
-- **Calculation:** Sum of sanctioned amounts for all works where the AI Vigilance Score ≥ 70.
-- **Current Ratio:** Approximately **23.5%** of the total ₹8,501.1 Cr allocated corpus is under priority oversight scrutiny.
-- **Purpose:** Enables parliamentary committees and MoSPI to quantify total financial risk exposure requiring human field verification."""
-
-    return """### NIDHI TRACE Vigilance Summary
-
-NIDHI TRACE monitors **198,116 MPLAD works** totaling **₹8,501.1 Cr** in public allocations.
-
-- **Current Flagged Queue:** 23,329 works (13.6%) triggered multi-factor anomaly signals.
-- **Critical Immediate Review:** 4,112 projects (score ≥ 90).
-- **Core Detection Models:** Approval Timeline Inflation, Econometric Amount Variance, MP Baseline Drift, and Isolation Forest Spatial Clustering.
-
-*Ask about a specific Case ID (e.g. `MPLAD-03983`), explain an anomaly type, or select a work on the dashboard for detailed case forensics.*"""
+        return (f"Scrutiny exposure: ₹{summary['scrutinyCr']:,.1f} Cr, the sum of sanctioned "
+                "amounts for all records with any active anomaly signal. This is a review "
+                "queue value, not a confirmed loss estimate.")
+    return (f"The current snapshot contains {summary['totalWorks']:,} analyzed records, "
+            f"{summary['flaggedWorks']:,} anomaly-flagged records and "
+            f"{summary['criticalCount']:,} critical review records. Data quality is a separate list.")
 
 # =========================================================================
 # 7. MAIN ASSISTANT CONTROLLER (DISPATCHER)

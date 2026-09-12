@@ -1,3 +1,5 @@
+> Dashboard integrity cleanup: see [source definitions, regenerated counts and limitations](docs/dashboard-integrity.md). The snapshot has 23,329 rule-only flags and 23,907 flags including Isolation Forest; DQ is separate.
+
 # NIDHI TRACE — MPLAD-INSIGHT
 
 <div align="center">
@@ -43,10 +45,10 @@ The system operates over a consolidated, empirical seed of MPLADS works derived 
 |---|---|---|
 | **Total Registered Works** | **198,116** | Consolidated administrative records across 785 district nodes |
 | **Analyzed Works** | **171,890** (86.8%) | Records processed through multi-signal econometric pipeline |
-| **Review Queue (Flagged)** | **23,329** (13.6%) | Works triggering at least one independent statistical triage list |
+| **Review Queue (Flagged)** | **23,907** (13.9%) | Works triggering at least one independent statistical triage list |
 | **Critical / High Severity Outliers** | **1,137** (4.9% of flagged) | Breaching robust statistical bounds ($\text{Robust } z \ge 3.5$) |
 | **Total Analyzed Corpus** | **₹8,501.1 Cr** | Cumulative value of analyzed infrastructure allocations |
-| **Flagged Review Exposure** | **₹1,661.7 Cr** (19.5%) | Total rupee value associated with flagged works |
+| **Flagged Review Exposure** | **₹1,769.8 Cr** (20.8%) | Total rupee value associated with flagged works |
 | **High-Severity Exposure** | **₹262.3 Cr** | Capital allocated to severe cost/timeline outliers |
 | **Data Quality Exposure** | **₹494.2 Cr** | Capital tied to reporting errors, stale records, or misclassifications |
 
@@ -67,7 +69,7 @@ flowchart TD
     Analyzed --> T4[Triage List 4: Unsupervised Outlier<br/>Isolation Forest Multivariate Anomaly]
     Analyzed --> T5[Triage List 5: Data Quality<br/>Implausible Amounts / Miscategorized / Stale]
     
-    T1 --> Queue[Review Queue: 23,329 Flagged Works]
+    T1 --> Queue[Review Queue: 23,907 Flagged Works]
     T2 --> Queue
     T3 --> Queue
     T4 --> Queue
@@ -154,11 +156,12 @@ GET /api/anomalies/summary/breakdown
 ```json
 {
   "total_works": 171890,
-  "flagged_count": 23329,
+  "flagged_count": 23907,
   "high_severity_count": 1137,
-  "medium_severity_count": 17761,
-  "low_severity_count": 4431,
-  "data_quality_count": 3120
+  "high_count": 6844,
+  "med_count": 15926,
+  "low_count": 147983,
+  "dq_flagged_count": 62089
 }
 ```
 
@@ -170,7 +173,7 @@ GET /api/anomalies/summary/rupee-impact
 ```json
 {
   "total_analyzed_cr": 8501.1,
-  "flagged_review_cr": 1661.7,
+  "flagged_review_cr": 1769.8,
   "high_severity_cr": 262.3,
   "data_quality_cr": 494.2
 }
