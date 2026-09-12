@@ -71,11 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         showToast('Audit report exported successfully!', 'success');
                     }, 900);
                 } else if (text.includes('approve')) {
-                    showToast('Work compliance approved. Status logged to central ledger.', 'success');
+                    showToast('Prototype only: no approval was recorded or sent.', 'success');
                 } else if (text.includes('escalate')) {
-                    showToast('Dossier escalated to District Magistrate & Central Vigilance.', 'warning');
+                    showToast('Prototype only: no review request was sent.', 'warning');
                 } else if (text.includes('audit') || text.includes('request audit')) {
-                    showToast('Physical verification audit order generated (#ORD-2026-X).', 'info');
+                    showToast('Prototype only: no site verification request was sent.', 'info');
                 } else if (text.includes('filter') || text.includes('apply')) {
                     showToast('Audit filter matrix updated.', 'info');
                 } else if (text.includes('retry') || text.includes('reload')) {

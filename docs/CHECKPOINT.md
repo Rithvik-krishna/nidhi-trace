@@ -1,5 +1,16 @@
 # Dashboard cleanup checkpoint — 2026-09-12
 
+## Latest update — quick fixes resumed
+
+Fixes **6 and 7 are now implemented** in separate commits: removed the unsupported
+SLA and disabled/reworded prototype administrative actions. Focused JavaScript
+checks passed; full browser/backend integration tests have not run.
+**Remaining: fix 3 (signal badge), fix 4 (percentage denominators), fix 5 (chart
+provenance/labels), plus the integration/performance checks below.**
+The sections below record the earlier checkpoint; their unfinished entries for
+6–7 are superseded by this update and `dashboard-integrity.md`.
+
+
 Stopped at the user's request. This is a partial implementation, not a release.
 Branch: `fix/dashboard-data-integrity`. Nothing was merged into main or deployed.
 

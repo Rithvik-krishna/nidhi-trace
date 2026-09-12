@@ -48,3 +48,19 @@ no rule/config source for a 45-day SLA. Removed the claim from initial and dynam
 dossier text and the technical modal. Delay-card state now uses the explicit
 top-level or nested pipeline flag instead of a UI-invented day cutoff. This does
 not complete the separate multi-signal badge fix (#3).
+
+## 7. Prototype review actions
+
+The dossier's assignment, escalation, freeze, verification, BoQ and clearance
+handlers only wrote browser storage/notes and displayed toasts; they had no
+backend integration. Reworded enforcement buttons as review suggestions and
+disabled the six controls with a visible prototype notice and tooltips. Removed
+the simulated action writes; direct handler calls now only explain unavailability.
+Legacy saved action badges in the dossier/workbench are labeled local demos;
+global stub toasts no longer claim approval, escalation or audit orders occurred.
+Existing user notes are preserved. No backend or model changes were needed.
+
+Quick verification for fixes 6–7: JavaScript syntax checks, root/screens equality,
+explicit delay flag versus elapsed-day checks, disabled button checks and direct
+prototype-handler checks (no storage/API calls). Full browser layout and backend
+integration tests remain pending.
