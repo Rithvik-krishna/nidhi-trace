@@ -298,14 +298,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-blue-700 text-base">insights</span>
                 <span class="font-bold">Key Operational Finding:</span>
-                <span class="text-blue-900"><span id="overview-finding-text">Completion delay is the dominant anomaly signal (52.7%), followed by spatial clustering (33.6%) and cost outliers (27.5%).</span></span>
+                <span class="text-blue-900"><span id="overview-finding-text">Completion delay is the dominant anomaly signal (56.2% of 23,907 flagged works), followed by spatial ML outliers (35.8%) and cost outliers (29.3%). Separately, 62,089 records (36.1% of 171,890 scanned) require Data Quality review.</span></span>
             </div>
             <div class="flex items-center gap-3 font-mono text-[11px] text-blue-800">
-                <span>13.6% of analyzed works require review</span>
+                <span>13.9% of analyzed works require review (23,907)</span>
                 <span>•</span>
-                <span>Critical cases represent 4.9% of queue</span>
+                <span>Critical cases represent 4.8% of queue (1,137)</span>
                 <span>•</span>
-                <span>₹1,661.7 Cr under active scrutiny</span>
+                <span>₹1,769.8 Cr under active scrutiny</span>
             </div>
         </div>
 
@@ -317,7 +317,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 <div class="flex items-center justify-between border-b border-slate-200 pb-2">
                     <div>
                         <h2 class="text-xs font-bold text-slate-900 tracking-tight uppercase">AI Anomaly Detection Categories</h2>
-                        <p class="text-[10px] text-slate-500">Automated irregularity vectors detected across 171,890 works</p>
+                        <p class="text-[10px] text-slate-500">Percentages calculated over 23,907 flagged works (multi-signal overlap applies)</p>
                     </div>
                     <a href="Analytics.html" class="text-[11px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5">
                         <span>Deep Dive Analytics</span>
@@ -333,10 +333,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
                                 <span>Completion Delay (>200% over sanctioned timeline)</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">13,435 <span class="text-slate-400 font-normal">(52.7%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">13,435 <span class="text-slate-400 font-normal">(56.2%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-red-600 h-full rounded-full" style="width: 52.7%;"></div>
+                            <div class="bg-red-600 h-full rounded-full" style="width: 56.2%;"></div>
                         </div>
                     </div>
 
@@ -344,13 +344,13 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <div>
                         <div class="flex justify-between items-center text-[11px] mb-1">
                             <span class="font-semibold text-slate-800 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-                                <span>Amount / Cost Outlier (Extreme z-score)</span>
+                                <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                                <span>Spatial / Cluster ML Outlier (Isolation Forest)</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">7,000 <span class="text-slate-400 font-normal">(27.5%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">8,549 <span class="text-slate-400 font-normal">(35.8%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-orange-500 h-full rounded-full" style="width: 27.5%;"></div>
+                            <div class="bg-amber-500 h-full rounded-full" style="width: 35.8%;"></div>
                         </div>
                     </div>
 
@@ -358,13 +358,13 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <div>
                         <div class="flex justify-between items-center text-[11px] mb-1">
                             <span class="font-semibold text-slate-800 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
-                                <span>Spatial Cluster ML Outlier (Isolation Forest)</span>
+                                <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                <span>Amount / Cost Outlier (Extreme z-score)</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">8,563 <span class="text-slate-400 font-normal">(33.6%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">7,000 <span class="text-slate-400 font-normal">(29.3%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-amber-500 h-full rounded-full" style="width: 33.6%;"></div>
+                            <div class="bg-orange-500 h-full rounded-full" style="width: 29.3%;"></div>
                         </div>
                     </div>
 
@@ -375,26 +375,21 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
                                 <span>MP Spending Habit Drift</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">4,110 <span class="text-slate-400 font-normal">(16.1%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">4,110 <span class="text-slate-400 font-normal">(17.2%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-blue-600 h-full rounded-full" style="width: 16.1%;"></div>
+                            <div class="bg-blue-600 h-full rounded-full" style="width: 17.2%;"></div>
                         </div>
                     </div>
 
-                    <!-- Anomaly 6: Data Quality -->
-                    <div>
-                        <div class="flex justify-between items-center text-[11px] mb-1">
-                            <span class="font-semibold text-slate-800 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-rose-600 shrink-0"></span>
-                                <span>Data Quality &amp; Stale Status (MoSPI Reporting Discrepancy)</span>
-                            </span>
-                            <span class="font-mono font-bold text-slate-900">62,089 <span class="text-slate-400 font-normal">(36.1%)</span></span>
-                        </div>
-                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-rose-600 h-full rounded-full" style="width: 36.1%;"></div>
-                        </div>
-                    </div></div>
+                    <!-- Separate Data Quality Review List Callout -->
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-600 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-rose-600 shrink-0"></span>
+                            <span>Data Quality &amp; Stale Reporting (Separate Review List)</span>
+                        </span>
+                        <span class="font-mono font-bold text-slate-800">62,089 <span class="text-slate-400 font-normal">(36.1% of 171,890 scanned)</span></span>
+                    </div>
                 </div>
             </div>
 
@@ -714,12 +709,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             }).join('');
         }
 
-        // Dynamically synthesize Key Operational Finding
+        // Dynamically synthesize Key Operational Finding with explicit denominators
         const sortedCats = [...data.anomalyCategories].sort((a, b) => b.count - a.count);
         if (sortedCats.length >= 3) {
             const findingEl = document.getElementById('overview-finding-text');
             if (findingEl) {
-                findingEl.innerText = `${sortedCats[0].name.split('(')[0].trim()} is the dominant anomaly signal (${sortedCats[0].pct}%), followed by ${sortedCats[1].name.split('(')[0].trim().toLowerCase()} (${sortedCats[1].pct}%) and ${sortedCats[2].name.split('(')[0].trim().toLowerCase()} (${sortedCats[2].pct}%).`;
+                const totalFlagged = data.flaggedCount || 23907;
+                const totalScanned = data.totalScannedWorks || 171890;
+                const dqCount = data.dataQualityCount || 62089;
+                const dqPct = totalScanned > 0 ? ((dqCount / totalScanned) * 100).toFixed(1) : '36.1';
+                findingEl.innerText = `${sortedCats[0].name.split('(')[0].trim()} is the dominant anomaly signal (${sortedCats[0].pct}% of ${totalFlagged.toLocaleString()} flagged works), followed by ${sortedCats[1].name.split('(')[0].trim().toLowerCase()} (${sortedCats[1].pct}%) and ${sortedCats[2].name.split('(')[0].trim().toLowerCase()} (${sortedCats[2].pct}%). Separately, ${dqCount.toLocaleString()} works (${dqPct}% of ${totalScanned.toLocaleString()} scanned) require Data Quality review.`;
             }
         }
     }
