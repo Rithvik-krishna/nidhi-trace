@@ -222,17 +222,20 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <!-- View 1: 4 Forensic Charts in 2x2 Responsive Grid -->
         <div id="view-charts" class="flex-1 min-h-0 flex flex-col md:grid md:grid-cols-12 md:grid-rows-2 gap-3 overflow-y-auto md:overflow-hidden h-full">
             
-            <!-- Chart 1: Fund Allocation vs Release vs Actual Expenditure (8 cols, row 1) -->
+            <!-- Chart 1: Fund Allocation vs Release vs Estimated Expenditure (8 cols, row 1) -->
             <div class="col-span-12 md:col-span-8 min-h-[270px] md:min-h-0 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-1 mb-1.5 shrink-0">
                     <div>
-                        <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Fund Allocation vs Release vs Actual Expenditure</h2>
-                        <p class="text-[9.5px] text-slate-500">Quarterly capital deployment trajectory (₹ Crores)</p>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Fund Allocation vs Release vs Estimated Expenditure</h2>
+                            <span class="px-1.5 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-200 text-[8.5px] font-mono font-bold">ILLUSTRATIVE MODEL — NOT RECORDED PFMS DATA</span>
+                        </div>
+                        <p class="text-[9.5px] text-slate-500">Quarterly capital deployment trajectory (₹ Cr) — releases modeled at 92% and expenditure estimated from reporting status; not derived from recorded treasury disbursal data</p>
                     </div>
                     <div class="flex items-center gap-2 font-mono text-[9.5px]">
                         <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-slate-900"></span> Allocated</span>
-                        <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Released</span>
-                        <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Utilized</span>
+                        <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Modeled Release (92%)</span>
+                        <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Estimated Expenditure</span>
                     </div>
                 </div>
                 <div class="flex-1 min-h-0 relative w-full">
@@ -240,14 +243,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
             </div>
 
-            <!-- Chart 2: Monthly Risk Trend Spike Chart (4 cols, row 1) -->
+            <!-- Chart 2: Flagged Works by Sanction Month (4 cols, row 1) -->
             <div class="col-span-12 md:col-span-4 min-h-[270px] md:min-h-0 bg-white border border-slate-200 rounded-lg shadow-2xs p-3 flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-1 mb-1.5 shrink-0">
                     <div>
-                        <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Monthly Flagged Cases Trend</h2>
-                        <p class="text-[9.5px] text-slate-500">Vigilance anomaly incidence volume</p>
+                        <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Flagged Works by Sanction Month</h2>
+                        <p class="text-[9.5px] text-slate-500">Cohort volume by administrative sanction date (Critical z ≥ 3.5 &amp; High tiers; not a live detection timeline)</p>
                     </div>
-                    <span class="px-1.5 py-0.2 rounded bg-red-50 text-red-800 border border-red-200 text-[9px] font-mono font-bold">2025 SURGES</span>
+                    <span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-300 text-[9px] font-mono font-bold">SANCTION COHORTS (CRIT + HIGH)</span>
                 </div>
                 <div class="flex-1 min-h-0 relative w-full">
                     <canvas id="chartRiskTrend"></canvas>
@@ -385,7 +388,7 @@ function renderCharts(data) {
                         pointRadius: 2
                     },
                     {
-                        label: 'Released (₹ Cr)',
+                        label: 'Modeled Release (92% guideline)',
                         data: qData.released,
                         borderColor: '#2563eb',
                         backgroundColor: 'rgba(37, 99, 235, 0.08)',
@@ -396,7 +399,7 @@ function renderCharts(data) {
                         pointBackgroundColor: '#2563eb'
                     },
                     {
-                        label: 'Utilized (₹ Cr)',
+                        label: 'Estimated Expenditure (Status Model)',
                         data: qData.utilized,
                         borderColor: '#059669',
                         backgroundColor: 'rgba(5, 150, 105, 0.08)',
@@ -420,7 +423,7 @@ function renderCharts(data) {
                         titleFont: { weight: 'bold' },
                         callbacks: {
                             label: function(context) {
-                                return `${context.dataset.label}: ₹${context.parsed.y} Cr`;
+                                return `${context.dataset.label}: ₹${context.parsed.y} Cr (Model estimate)`;
                             }
                         }
                     }
@@ -442,7 +445,7 @@ function renderCharts(data) {
         });
     }
 
-    // 2. Area Chart: Monthly Risk / Flagged Cases Trend
+    // 2. Area Chart: Flagged Works by Sanction Month
     const mData = data.monthlyRiskTrend || { labels: [], critical: [], high: [] };
     const ctxRisk = document.getElementById('chartRiskTrend')?.getContext('2d');
     if (ctxRisk) {
@@ -456,7 +459,7 @@ function renderCharts(data) {
                 labels: mData.labels,
                 datasets: [
                     {
-                        label: 'Critical Flagged Works',
+                        label: 'Critical Flagged Tier (Sanction Month)',
                         data: mData.critical,
                         borderColor: '#dc2626',
                         backgroundColor: 'rgba(220, 38, 38, 0.15)',
@@ -467,7 +470,7 @@ function renderCharts(data) {
                         pointBackgroundColor: '#dc2626'
                     },
                     {
-                        label: 'High-Risk Works',
+                        label: 'High Priority Tier (Sanction Month)',
                         data: mData.high,
                         borderColor: '#ea580c',
                         backgroundColor: 'rgba(234, 88, 12, 0.08)',
@@ -486,7 +489,12 @@ function renderCharts(data) {
                     legend: { display: false },
                     tooltip: {
                         backgroundColor: '#0a1128',
-                        padding: 6
+                        padding: 6,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.parsed.y} works sanctioned`;
+                            }
+                        }
                     }
                 },
                 scales: {
