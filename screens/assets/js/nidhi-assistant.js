@@ -66,7 +66,7 @@
         } else if (route === 'geographic-map') {
             context.activeState = document.getElementById('selected-state-name')?.innerText || 'National View';
         } else if (route === 'analytics') {
-            context.timespan = document.getElementById('timespan-select')?.value || '2019-2024';
+            context.timespan = document.getElementById('timespan-select')?.value || '2019–Present';
         }
 
         return context;
@@ -78,7 +78,7 @@
         if (ctx.page === 'case-details') return `Case Dossier (${ctx.caseId || 'Active Project'})`;
         if (ctx.page === 'flagged-cases') return `Flagged Queue (${ctx.activeTab || 'All'})`;
         if (ctx.page === 'geographic-map') return `Geographic Map (${ctx.activeState || 'National'})`;
-        if (ctx.page === 'analytics') return `Analytics (${ctx.timespan || '2019-2024'})`;
+        if (ctx.page === 'analytics') return `Analytics (${ctx.timespan || '2019–Present'})`;
         if (ctx.page === 'data-explorer') return 'Data Explorer (Full Ledger)';
         return 'Overview Dashboard (National Scope)';
     }
@@ -751,7 +751,7 @@ $$S_{\\text{vigilance}} = 0.30(T_v) + 0.25(A_o) + 0.20(D_m) + 0.15(C_s) + 0.10(M
         return {
             text: `### NIDHI TRACE Intelligence Copilot
 
-NIDHI TRACE continuously monitors **198,116 registered MPLAD works** totaling **₹8,501.1 Cr** across India's 543 Parliamentary Constituencies (2019-2024).
+NIDHI TRACE continuously monitors **198,116 registered MPLAD works** totaling **₹8,501.1 Cr** across India's 543 Parliamentary Constituencies (2019–Present).
 
 - **Current Flagged Queue:** 23,329 works (13.6% anomaly rate).
 - **Critical Immediate Review:** 4,112 projects (score $\\ge 90$).

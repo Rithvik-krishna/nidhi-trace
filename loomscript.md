@@ -87,7 +87,7 @@
 
 **On-Screen Actions**:
 - **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `EST. UTILIZATION: 66.5%*`, `SCRUTINY: ₹1,769.8 Cr`.
-- **Point to the cohort selector**: `17th & 18th Lok Sabha (2019–2024)`.
+- **Point to the cohort selector**: `17th & 18th Lok Sabha (2019–Present)`.
 - **Top-Left Line Chart**: Hover over the quarterly curve points (e.g., `2024 Q1`) to show the interactive Chart.js tooltip displaying Allocated, Modeled Release, and Estimated Expenditure figures.
 - **Top-Right Area Chart**: Point out the `SANCTION COHORTS (CRIT + HIGH)` badge and trace the spike curve in early 2025.
 - **Bottom-Left Bar Chart**: Hover over Maharashtra's tall orange bar showing flagged exposure rate.
