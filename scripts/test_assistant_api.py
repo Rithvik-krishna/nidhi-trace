@@ -4,7 +4,7 @@ import os
 # Add parent directory to path
 sys.path.insert(0, r"c:\Users\Hp\Desktop\SIH")
 
-from backend.assistant_service import LocalDomainGuard, handle_chat_request, REFUSAL_MESSAGE, AMBIGUOUS_REPHRASE_MESSAGE
+from assistant_service import LocalDomainGuard, handle_chat_request, REFUSAL_MESSAGE, AMBIGUOUS_REPHRASE_MESSAGE
 
 def run_tests():
     print("=== NIDHI ASSISTANT TEST SUITE ===")
@@ -28,7 +28,7 @@ def run_tests():
         verdict, msg = LocalDomainGuard.evaluate(q)
         assert verdict == "REJECT", f"Expected REJECT for '{q}', got {verdict}"
         assert msg == REFUSAL_MESSAGE, f"Expected refusal message for '{q}'"
-        print(f"✓ REJECT: '{q}' -> Refusal Returned")
+        print(f"[PASS] REJECT: '{q}' -> Refusal Returned")
 
     # 2. Test Prompt Injection Rejections (MUST REJECT BEFORE NVIDIA CALL)
     injection_queries = [
@@ -47,7 +47,7 @@ def run_tests():
         verdict, msg = LocalDomainGuard.evaluate(q)
         assert verdict == "REJECT", f"Expected REJECT for '{q}', got {verdict}"
         assert msg == REFUSAL_MESSAGE, f"Expected refusal message for '{q}'"
-        print(f"✓ REJECT (Injection): '{q}' -> Refusal Returned")
+        print(f"[PASS] REJECT (Injection): '{q}' -> Refusal Returned")
 
     # 3. Test Allowed In-Domain Queries (MUST ALLOW)
     allowed_queries = [
@@ -67,7 +67,7 @@ def run_tests():
     for q, ctx in allowed_queries:
         verdict, msg = LocalDomainGuard.evaluate(q, ctx)
         assert verdict == "ALLOW", f"Expected ALLOW for '{q}' with ctx {ctx}, got {verdict}"
-        print(f"✓ ALLOW: '{q}' (ctx: {ctx.get('page', 'none')})")
+        print(f"[PASS] ALLOW: '{q}' (ctx: {ctx.get('page', 'none')})")
 
     # 4. Test Ambiguous Query Rephrase Guidance
     ambiguous_queries = [
@@ -79,7 +79,7 @@ def run_tests():
     for q in ambiguous_queries:
         verdict, msg = LocalDomainGuard.evaluate(q)
         assert verdict in ("AMBIGUOUS", "REJECT"), f"Expected AMBIGUOUS or REJECT for '{q}', got {verdict}"
-        print(f"✓ {verdict}: '{q}' -> Non-external call")
+        print(f"[PASS] {verdict}: '{q}' -> Non-external call")
 
     # 5. Test Full Request Handler & Data Grounding
     print("\n--- 5. Testing Full Request Handler with Case Context ---")
@@ -94,7 +94,7 @@ def run_tests():
     assert resp.get("status") == "success", f"Expected success, got {resp}"
     assert "MPLAD-03983" in resp.get("message", "")
     assert "Delay" in resp.get("message", "") or "Latency" in resp.get("message", "")
-    print(f"✓ Grounded Case Analysis: Successfully identified #{resp.get('caseId')} with authentic metrics.")
+    print(f"[PASS] Grounded Case Analysis: Successfully identified #{resp.get('caseId')} with authentic metrics.")
 
     print("\n=== ALL TESTS PASSED SUCCESSFULLY ===")
 

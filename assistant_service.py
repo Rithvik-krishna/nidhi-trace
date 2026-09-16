@@ -23,7 +23,7 @@ from collections import defaultdict, deque
 # =========================================================================
 
 def load_dotenv():
-    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
     if os.path.exists(env_path):
         try:
             with open(env_path, 'r', encoding='utf-8') as f:
@@ -253,7 +253,7 @@ class DataRetriever:
     _cases_index = None
     _flagged_cases = None
     _analytics_data = None
-    _data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'assets', 'data')
+    _data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'data')
 
     @classmethod
     def load_data(cls):
