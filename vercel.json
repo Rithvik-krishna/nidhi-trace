@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**/*.py": {
-      "includeFiles": "backend/**,assets/data/**",
+      "includeFiles": "assistant_service.py,assets/data/**",
       "maxDuration": 15
     }
   },

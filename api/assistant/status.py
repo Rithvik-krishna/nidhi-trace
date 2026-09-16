@@ -13,7 +13,7 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from backend.assistant_service import get_assistant_status
+from assistant_service import get_assistant_status
 
 class handler(BaseHTTPRequestHandler):
     def _set_cors(self):
