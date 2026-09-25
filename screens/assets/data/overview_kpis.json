@@ -2,7 +2,7 @@
   "totalRegisteredWorks": 198116,
   "totalScannedWorks": 171890,
   "coveragePct": 86.8,
-  "flaggedCount": 23907,
+  "flaggedCount": 23329,
   "ruleFlaggedCount": 23329,
   "dataQualityCount": 62089,
   "dqCounts": {
@@ -20,59 +20,59 @@
     "tierDefinition": "Critical: rule_high_severity; High: existing dashboard score >= 70; Medium: all remaining flagged records. Low: no anomaly signal. Tiers do not overlap.",
     "idDefinition": "MPLAD plus six-digit real source row; unique within this versioned snapshot. originalWorkId preserves the source work reference."
   },
-  "flaggedPct": 13.9,
+  "flaggedPct": 13.6,
   "criticalCount": 1137,
   "highCount": 6844,
-  "medCount": 15926,
-  "lowCount": 147983,
+  "medCount": 15348,
+  "lowCount": 148561,
   "totalSanctionedCr": 8501.1,
-  "scrutinyExposureCr": 1769.8,
+  "scrutinyExposureCr": 1661.7,
   "anomalyCategories": [
     {
       "name": "Completion Delay (>200% over timeline)",
       "type": "Delay",
       "count": 13435,
-      "pct": 56.2,
+      "pct": 57.6,
       "color": "#dc2626"
     },
     {
       "name": "Amount / Cost Outlier (Extreme z-score)",
       "type": "Cost",
       "count": 7000,
-      "pct": 29.3,
+      "pct": 30.0,
       "color": "#ea580c"
     },
     {
       "name": "Spatial / Cluster ML Outlier (Isolation Forest)",
       "type": "Spatial",
-      "count": 8549,
-      "pct": 35.8,
+      "count": 7971,
+      "pct": 34.2,
       "color": "#d97706"
     },
     {
       "name": "MP Spending Habit Drift",
       "type": "MP Drift",
       "count": 4110,
-      "pct": 17.2,
+      "pct": 17.6,
       "color": "#2563eb"
     }
   ],
   "severityBreakdown": {
     "critical": {
       "count": 1137,
-      "pct": 4.8
+      "pct": 4.9
     },
     "high": {
       "count": 6844,
-      "pct": 28.6
+      "pct": 29.3
     },
     "med": {
-      "count": 15926,
-      "pct": 66.6
+      "count": 15348,
+      "pct": 65.8
     },
     "low": {
-      "count": 147983,
-      "pct": 86.1
+      "count": 148561,
+      "pct": 86.4
     }
   },
   "immediateQueue": [

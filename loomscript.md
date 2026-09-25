@@ -15,7 +15,7 @@
 > 
 > Under MPLADS, over ₹8,500 Crores of public capital is allocated across India’s 543 Parliamentary constituencies. Historically, audit oversight relied on slow, manual sampling. NIDHI TRACE brings automated, continuous macro surveillance to public finance.
 > 
-> Here on our Executive Overview, the system is actively monitoring **198,116 registered works** across 785 district nodes. Out of **171,890 algorithmically scanned works**, our multi-signal detection engine has flagged **23,329 works** requiring review, representing **₹1,661.7 Crores** in scrutiny exposure. Crucially, high-severity critical outliers are isolated to just **1,137 works** (0.7% of the total corpus), giving vigilance officers an immediate, prioritized triage surface rather than an overwhelming backlog."*
+> Here on our Executive Overview, the system is actively monitoring **198,116 registered works** across 785 district nodes. Out of **171,890 algorithmically scanned works**, our multi-signal detection engine has flagged **23,907 works** requiring review, representing **₹1,661.7 Crores** in scrutiny exposure (19.6% of total corpus). Crucially, high-severity critical outliers are isolated to just **1,137 works** (0.7% of the total corpus), giving vigilance officers an immediate, prioritized triage surface rather than an overwhelming backlog."*
 
 **On-Screen Actions**:
 - **Show**: The dark institutional sidebar with live seed status (`198,116 Works`, `Robust z ≥ 3.5`, `23,329 Flagged Queue`).
@@ -30,14 +30,14 @@
 
 > *"Now stepping into the auditor's daily operating environment: the **Flagged Cases Audit Workbench**.
 > 
-> Unlike typical prototypes that calculate arbitrary 'scores out of 100', NIDHI TRACE is strictly grounded in statistical anomalies and actionable severity levels. At the top, you see our immediate triage breakdown: **1,137 Critical outliers** ($z \ge 3.5$), **5,507 High**, and **17,761 Medium** priority works.
+> Unlike typical prototypes that calculate arbitrary 'scores out of 100', NIDHI TRACE is strictly grounded in statistical anomalies and actionable severity levels. At the top, you see our immediate triage breakdown: **1,137 Critical outliers** ($z \ge 3.5$), **6,844 High**, and **15,348 Medium** priority works.
 > 
 > The filter bar allows auditors to slice data instantly across all 29 States and UTs, search by MP or project ID, or filter by specific anomaly vectors. 
 > 
 > In the table below, every record exposes its full administrative lineage: the project title, constituency, recommending MP, sanctioned versus utilized capital, implementing agency, and the exact mathematical trigger—for example, *Sanction Delay (603 days) & Amount Outlier ($z=4.6$)*. The currency numbers use tabular monospace formatting for zero-error scanning, and clicking any work immediately opens its deep forensic dossier."*
 
 **On-Screen Actions**:
-- **Point cursor to**: The sub-header badge strip showing `1,137 CRITICAL (z ≥ 3.5)`, `5,507 HIGH`, and `17,761 MEDIUM`.
+- **Point cursor to**: The sub-header badge strip showing `1,137 CRITICAL (z ≥ 3.5)`, `6,844 HIGH`, and `15,348 MEDIUM`.
 - **Interact with Filters**:
   - Click into the **Search** input and type a state or MP name (e.g., *"Gujarat"* or *"Vadodara"*).
   - Click the **"Critical"** severity filter pill to demonstrate instant filtering of the table rows.
@@ -77,7 +77,7 @@
 
 > *"Next, we enter **Forensic Econometric Analytics**. This view reveals the macro-financial dynamics and temporal surges that file-by-file audits completely miss.
 > 
-> In the top badge strip, we monitor the total fund envelope: **₹8,501.1 Crores total corpus**, an **estimated 66.5% utilization rate (status model)**, and **₹1,769.8 Crores under active scrutiny**.
+> In the top badge strip, we monitor the total fund envelope: **₹8,501.1 Crores total corpus**, an **estimated 66.5% utilization rate (status model)**, and **₹1,661.7 Crores under active scrutiny**.
 > 
 > The dashboard presents four complementary models:
 > 1. **Fund Allocation vs. Release vs. Estimated Expenditure**: An illustrative quarterly capital trajectory model with releases modeled at 92% and expenditure estimated from reported progress status.
@@ -86,7 +86,7 @@
 > 4. **Anomaly Vector Donut**: Breaks down the share of flagged signal occurrences across Completion Delays, Cost Outliers, Isolation Forest spatial outliers, and MP spending drift."*
 
 **On-Screen Actions**:
-- **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `EST. UTILIZATION: 66.5%*`, `SCRUTINY: ₹1,769.8 Cr`.
+- **Point cursor to**: The top sub-header badges: `TOTAL CORPUS: ₹8,501.1 Cr`, `EST. UTILIZATION: 66.5%*`, `SCRUTINY: ₹1,661.7 Cr`.
 - **Point to the cohort selector**: `17th & 18th Lok Sabha (2019–Present)`.
 - **Top-Left Line Chart**: Hover over the quarterly curve points (e.g., `2024 Q1`) to show the interactive Chart.js tooltip displaying Allocated, Modeled Release, and Estimated Expenditure figures.
 - **Top-Right Area Chart**: Point out the `SANCTION COHORTS (CRIT + HIGH)` badge and trace the spike curve in early 2025.

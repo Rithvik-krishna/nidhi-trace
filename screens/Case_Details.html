@@ -109,7 +109,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <a class="flex items-center gap-2.5 px-3 py-2 bg-blue-600 text-white rounded-md text-xs font-semibold shadow-2xs transition-all" href="Flagged_Cases.html">
             <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">report_problem</span>
             <span>Flagged Cases</span>
-            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,907</span>
+            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,329</span>
         </a>
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Geographic_Map.html">
             <span class="material-symbols-outlined text-base">map</span>
@@ -141,7 +141,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
             <span>Review Queue:</span>
             <span class="text-red-400 font-semibold flex items-center gap-1 font-mono">
-                23,907 Flagged
+                23,329 Flagged
             </span>
         </div>
     </div>
@@ -1197,20 +1197,30 @@ function populateDossier(c) {
         mpBarCurVal.innerText = `${c.sanction_amount_formatted} (${sign}${c.mp_drift_robust_z.toFixed(1)}σ deviation)`;
     }
 
+    const maxVal = Math.max(c.sanction_amount || 0, c.mp_cat_mean || 0);
     const barMeanEl = document.getElementById('card-mp-bar-mean');
-    if (barMeanEl && c.sanction_amount > 0) {
-        const ratio = Math.max(5, Math.min(100, Math.round((c.mp_cat_mean / c.sanction_amount) * 100)));
-        barMeanEl.style.width = `${ratio}%`;
+    const barCurEl = document.getElementById('card-mp-bar-current');
+    if (maxVal > 0) {
+        const meanRatio = Math.max(4, Math.min(100, Math.round(((c.mp_cat_mean || 0) / maxVal) * 100)));
+        const curRatio = Math.max(4, Math.min(100, Math.round(((c.sanction_amount || 0) / maxVal) * 100)));
+        if (barMeanEl) barMeanEl.style.width = `${meanRatio}%`;
+        if (barCurEl) barCurEl.style.width = `${curRatio}%`;
     }
 
     const mpInterpEl = document.getElementById('card-mp-interpretation');
     if (mpInterpEl) {
-        const surgeRatio = c.mp_cat_mean > 0 ? (c.sanction_amount / c.mp_cat_mean).toFixed(1) : '1.0';
-        const sign = c.mp_drift_robust_z >= 0 ? '+' : '';
-        if (c.mp_drift_robust_z >= 3.5) {
-            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} represents a ${surgeRatio}× surge (${sign}${c.mp_drift_robust_z.toFixed(1)}σ deviation), establishing prima facie grounds for physical BoQ verification.`;
+        const z = c.mp_drift_robust_z || 0;
+        const sign = z >= 0 ? '+' : '';
+        const isFlaggedDrift = Boolean(c.flag_mp_drift);
+
+        if (z >= 3.0 || (isFlaggedDrift && z > 0)) {
+            const surgeRatio = c.mp_cat_mean > 0 ? (c.sanction_amount / c.mp_cat_mean).toFixed(1) : '1.0';
+            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} represents a ${surgeRatio}× surge (${sign}${z.toFixed(1)}σ deviation), establishing prima facie grounds for physical BoQ verification.`;
+        } else if (z <= -3.0 || (isFlaggedDrift && z < 0)) {
+            const dropRatio = c.sanction_amount > 0 ? (c.mp_cat_mean / c.sanction_amount).toFixed(1) : '—';
+            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} represents an anomalous downward deviation (${z.toFixed(1)}σ deviation, ${dropRatio}× below historical average), warranting review for potential work fragmentation/splitting, token allocation, or misrecorded units.`;
         } else {
-            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} conforms within typical variance (${sign}${c.mp_drift_robust_z.toFixed(1)}σ).`;
+            mpInterpEl.innerHTML = `<strong>Auditor Interpretation:</strong> Across ${c.mp_cat_n} historical community works recommended by ${c.mp_name} in ${c.work_category}, the mean sanction value was ${c.mp_cat_mean_formatted}. The current allocation of ${c.sanction_amount_formatted} conforms within typical variance (${sign}${z.toFixed(1)}σ).`;
         }
     }
 

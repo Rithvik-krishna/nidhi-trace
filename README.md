@@ -45,10 +45,10 @@ The system operates over a consolidated, empirical seed of MPLADS works derived 
 |---|---|---|
 | **Total Registered Works** | **198,116** | Consolidated administrative records across 785 district nodes |
 | **Analyzed Works** | **171,890** (86.8%) | Records processed through multi-signal econometric pipeline |
-| **Review Queue (Flagged)** | **23,907** (13.9%) | Works triggering at least one independent statistical triage list |
+| **Review Queue (Flagged)** | **23,329** (13.6%) | Works triggering at least one independent statistical triage list |
 | **Critical / High Severity Outliers** | **1,137** (4.9% of flagged) | Breaching robust statistical bounds ($\text{Robust } z \ge 3.5$) |
 | **Total Analyzed Corpus** | **₹8,501.1 Cr** | Cumulative value of analyzed infrastructure allocations |
-| **Flagged Review Exposure** | **₹1,769.8 Cr** (20.8%) | Total rupee value associated with flagged works |
+| **Flagged Review Exposure** | **₹1,661.7 Cr** (19.6%) | Total rupee value associated with flagged works |
 | **High-Severity Exposure** | **₹262.3 Cr** | Capital allocated to severe cost/timeline outliers |
 | **Data Quality Exposure** | **₹494.2 Cr** | Capital tied to reporting errors, stale records, or misclassifications |
 

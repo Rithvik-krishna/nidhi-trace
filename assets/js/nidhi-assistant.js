@@ -722,11 +722,11 @@ $$S_{\\text{vigilance}} = 0.30(T_v) + 0.25(A_o) + 0.20(D_m) + 0.15(C_s) + 0.10(M
             return {
                 text: `### Scrutiny Exposure Metric (₹1,661.7 Cr)
 
-**Scrutiny Exposure** represents the total public expenditure currently allocated to works bearing an anomaly score $\\ge 70$.
+**Scrutiny Exposure** represents the total public expenditure allocated to works flagged in the prioritized audit review queue (23,329 works across validated anomaly detection vectors).
 
-- **Aggregate Exposure:** **₹1,661.7 Crore**
-- **Share of National Corpus:** **23.5%** of the ₹8,501.1 Cr 17th & 18th Lok Sabha allocations.
-- **Audit Purpose:** Enables MoSPI and parliamentary oversight committees to size financial risk and focus field inspection manpower where financial exposure is largest.`,
+- **Aggregate Exposure:** **₹1,769.8 Crore** (20.8% of the ₹8,501.1 Cr analyzed corpus).
+- **Core Rule Validation Baseline:** **23,329 works** representing **₹1,661.7 Crore** (19.6%) flagged under deterministic rules (delay, cost, and MP drift), plus **578 works** (₹108.1 Cr / 1.3%) identified via unsupervised spatial ML clustering (Isolation Forest).
+- **Audit Purpose:** Enables MoSPI, CAG, and vigilance officers to size financial risk and focus field inspection manpower where financial exposure is largest.`,
                 source: "NIDHI Knowledge Engine (Fiscal Analytics)"
             };
         }

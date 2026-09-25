@@ -92,7 +92,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Flagged_Cases.html">
             <span class="material-symbols-outlined text-base">report_problem</span>
             <span>Flagged Cases</span>
-            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,907</span>
+            <span id="sidebar-flagged-count" class="ml-auto px-1.5 py-0.2 rounded bg-red-950/80 text-red-400 border border-red-800/80 text-[10px] font-mono font-bold">23,329</span>
         </a>
         <a class="flex items-center gap-2.5 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md text-xs font-medium transition-all" href="Geographic_Map.html">
             <span class="material-symbols-outlined text-base">map</span>
@@ -121,7 +121,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         <div class="flex items-center justify-between text-slate-500 text-[9.5px]">
             <span>Review Queue:</span>
             <span class="text-amber-400 font-semibold flex items-center gap-1">
-                <span class="material-symbols-outlined text-[12px]">flag</span> 23,907 Flagged
+                <span class="material-symbols-outlined text-[12px]">flag</span> 23,329 Flagged
             </span>
         </div>
     </div>
@@ -201,7 +201,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <div class="flex items-center gap-2 shrink-0">
                 <a href="Flagged_Cases.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded-md text-xs font-bold transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
-                    <span>Triage Queue (23,907)</span>
+                    <span>Triage Queue (23,329)</span>
                 </a>
                 <a href="Data_Explorer.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-md text-xs font-bold transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">database</span>
@@ -252,7 +252,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
                 <div>
                     <div class="flex items-baseline gap-1.5">
-                        <span id="kpi-flagged-works" class="text-2xl font-black text-red-700 font-mono font-tabular">23,907</span>
+                        <span id="kpi-flagged-works" class="text-2xl font-black text-red-700 font-mono font-tabular">23,329</span>
                         <span id="kpi-flagged-pct" class="text-[10px] text-slate-500 font-medium">13.6% of scanned</span>
                     </div>
                     <p class="text-[10px] text-red-700 font-medium flex items-center gap-1 group-hover:underline mt-0.5">
@@ -285,10 +285,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 </div>
                 <div>
                     <div class="flex items-baseline gap-1.5">
-                        <span id="kpi-scrutiny-exposure" class="text-2xl font-black text-slate-900 font-mono font-tabular">₹1,661.7 Cr</span>
+                        <span id="kpi-scrutiny-exposure" class="text-2xl font-black text-slate-900 font-mono font-tabular">₹1,661.7</span>
                         <span class="text-[11px] font-extrabold text-slate-700 font-mono">Cr</span>
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-0.5">19.5% of analyzed corpus (₹8,501.1 Cr)</p>
+                    <p id="kpi-scrutiny-exposure-sub" class="text-[10px] text-slate-500 mt-0.5" title="Validated rule-based audit queue: 23,329 works (₹1,661.7 Cr / 19.6% of analyzed corpus).">19.6% of analyzed corpus (₹8,501.1 Cr)</p>
                 </div>
             </div>
         </div>
@@ -298,14 +298,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-blue-700 text-base">insights</span>
                 <span class="font-bold">Key Operational Finding:</span>
-                <span class="text-blue-900"><span id="overview-finding-text">Completion delay is the dominant anomaly signal (56.2% of 23,907 flagged works), followed by spatial ML outliers (35.8%) and cost outliers (29.3%). Separately, 62,089 records (36.1% of 171,890 scanned) require Data Quality review.</span></span>
+                <span class="text-blue-900"><span id="overview-finding-text">Completion delay is the dominant anomaly signal (57.6% of 23,329 flagged works), followed by spatial ML outliers (34.2%) and cost outliers (30.0%). Separately, 62,089 records (36.1% of 171,890 scanned) require Data Quality review.</span></span>
             </div>
             <div class="flex items-center gap-3 font-mono text-[11px] text-blue-800">
-                <span>13.9% of analyzed works require review (23,907)</span>
+                <span>13.6% of analyzed works require review (23,329)</span>
                 <span>•</span>
-                <span>Critical cases represent 4.8% of queue (1,137)</span>
+                <span>Critical cases represent 4.9% of queue (1,137)</span>
                 <span>•</span>
-                <span>₹1,769.8 Cr under active scrutiny</span>
+                <span>₹1,661.7 Cr under active scrutiny</span>
             </div>
         </div>
 
@@ -317,7 +317,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                 <div class="flex items-center justify-between border-b border-slate-200 pb-2">
                     <div>
                         <h2 class="text-xs font-bold text-slate-900 tracking-tight uppercase">AI Anomaly Detection Categories</h2>
-                        <p class="text-[10px] text-slate-500">Percentages calculated over 23,907 flagged works (multi-signal overlap applies)</p>
+                        <p class="text-[10px] text-slate-500">Percentages calculated over 23,329 flagged works (multi-signal overlap applies)</p>
                     </div>
                     <a href="Analytics.html" class="text-[11px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5">
                         <span>Deep Dive Analytics</span>
@@ -333,10 +333,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
                                 <span>Completion Delay (>200% over sanctioned timeline)</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">13,435 <span class="text-slate-400 font-normal">(56.2%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">13,435 <span class="text-slate-400 font-normal">(57.6%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-red-600 h-full rounded-full" style="width: 56.2%;"></div>
+                            <div class="bg-red-600 h-full rounded-full" style="width: 57.6%;"></div>
                         </div>
                     </div>
 
@@ -347,10 +347,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
                                 <span>Spatial / Cluster ML Outlier (Isolation Forest)</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">8,549 <span class="text-slate-400 font-normal">(35.8%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">7,971 <span class="text-slate-400 font-normal">(34.2%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-amber-500 h-full rounded-full" style="width: 35.8%;"></div>
+                            <div class="bg-amber-500 h-full rounded-full" style="width: 34.2%;"></div>
                         </div>
                     </div>
 
@@ -361,10 +361,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                 <span>Amount / Cost Outlier (Extreme z-score)</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">7,000 <span class="text-slate-400 font-normal">(29.3%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">7,000 <span class="text-slate-400 font-normal">(30.0%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-orange-500 h-full rounded-full" style="width: 29.3%;"></div>
+                            <div class="bg-orange-500 h-full rounded-full" style="width: 30.0%;"></div>
                         </div>
                     </div>
 
@@ -375,10 +375,10 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                                 <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
                                 <span>MP Spending Habit Drift</span>
                             </span>
-                            <span class="font-mono font-bold text-slate-900">4,110 <span class="text-slate-400 font-normal">(17.2%)</span></span>
+                            <span class="font-mono font-bold text-slate-900">4,110 <span class="text-slate-400 font-normal">(17.6%)</span></span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-blue-600 h-full rounded-full" style="width: 17.2%;"></div>
+                            <div class="bg-blue-600 h-full rounded-full" style="width: 17.6%;"></div>
                         </div>
                     </div>
 
@@ -445,7 +445,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
 
                 <a href="Flagged_Cases.html" class="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
                     <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
-                    <span id="btn-launch-triage-text">Launch Triage Workbench (23,907 Cases)</span>
+                    <span id="btn-launch-triage-text">Launch Triage Workbench (23,329 Cases)</span>
                 </a>
             </div>
         </div>
@@ -459,7 +459,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
                     <span class="text-[10px] text-slate-500 font-medium">— Top 5 priority works requiring immediate human review</span>
                 </div>
                 <a href="Flagged_Cases.html" class="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1">
-                    <span>View All 23,907 Flagged Works</span>
+                    <span>View All 23,329 Flagged Works</span>
                     <span class="material-symbols-outlined text-xs">arrow_forward</span>
                 </a>
                     </div>
@@ -664,6 +664,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (data.scrutinyExposureCr !== undefined) {
         const el = document.getElementById('kpi-scrutiny-exposure');
         if (el) el.innerText = '₹' + data.scrutinyExposureCr.toLocaleString();
+        const sub = document.getElementById('kpi-scrutiny-exposure-sub');
+        if (sub && data.totalSanctionedCr) {
+            const pct = ((data.scrutinyExposureCr / data.totalSanctionedCr) * 100).toFixed(1);
+            sub.innerText = `${pct}% of analyzed corpus (₹${data.totalSanctionedCr.toLocaleString()} Cr)`;
+            sub.title = `Validated rule-based audit queue: 23,329 works (₹1,661.7 Cr / 19.6% of analyzed corpus).`;
+        }
     }
 
     // 2. Severity Breakdown Percentages
@@ -714,7 +720,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (sortedCats.length >= 3) {
             const findingEl = document.getElementById('overview-finding-text');
             if (findingEl) {
-                const totalFlagged = data.flaggedCount || 23907;
+                const totalFlagged = data.flaggedCount || 23329;
                 const totalScanned = data.totalScannedWorks || 171890;
                 const dqCount = data.dataQualityCount || 62089;
                 const dqPct = totalScanned > 0 ? ((dqCount / totalScanned) * 100).toFixed(1) : '36.1';
