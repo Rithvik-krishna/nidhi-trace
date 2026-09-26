@@ -316,7 +316,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
             <!-- Table Pagination & Count Footer (Fixed at Bottom of Card) -->
             <div class="shrink-0 px-3.5 py-2 border-t border-borderline bg-slate-50/90 flex items-center justify-between text-slate-600 text-xs">
                 <div class="flex items-center gap-3">
-                    <span class="text-xs">Showing <strong id="visible-count" class="text-slate-900 font-mono font-bold">1 – 9</strong> of <strong id="total-flagged-count" class="text-slate-900 font-mono font-bold">2,763</strong> records</span>
+                    <span class="text-xs">Showing <strong id="visible-count" class="text-slate-900 font-mono font-bold">1 – 14</strong> of <strong id="total-flagged-count" class="text-slate-900 font-mono font-bold">23,329</strong> records</span>
                     <div class="flex items-center gap-1 text-[11px] text-slate-500">
                         <span>Rows per view:</span>
                         <select id="select-page-size" onchange="changePageSize(this.value)" class="bg-white border border-slate-300 rounded px-1.5 py-0.5 text-[11px] font-bold text-slate-800 outline-none cursor-pointer">
@@ -692,7 +692,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (isAutoPageSize) {
             pageSize = getOptimalPageSize();
         }
-        renderTable();
+
+        // Initialize with all cases and explicitly reset all filters so no filter is applied on load
+        filteredCases = [...allCases];
+        resetFilters();
     } else {
         setTableView("empty");
     }
